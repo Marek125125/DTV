@@ -1,0 +1,426 @@
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"spi_app.c"
+  14              		.text
+  15              		.section	.text.spi_set_pcs_master,"ax",%progbits
+  16              		.align	1
+  17              		.arch armv7e-m
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu fpv4-sp-d16
+  23              	spi_set_pcs_master:
+  24              		@ args = 0, pretend = 0, frame = 0
+  25              		@ frame_needed = 0, uses_anonymous_args = 0
+  26 0000 08B5     		push	{r3, lr}
+  27 0002 0A4B     		ldr	r3, .L6
+  28 0004 03EB0013 		add	r3, r3, r0, lsl #4
+  29 0008 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+  30 000a 8B42     		cmp	r3, r1
+  31 000c 01D1     		bne	.L5
+  32 000e 0020     		movs	r0, #0
+  33              	.L2:
+  34 0010 08BD     		pop	{r3, pc}
+  35              	.L5:
+  36 0012 064B     		ldr	r3, .L6
+  37 0014 03EB0013 		add	r3, r3, r0, lsl #4
+  38 0018 1971     		strb	r1, [r3, #4]
+  39 001a 00EB4000 		add	r0, r0, r0, lsl #1
+  40 001e 5A79     		ldrb	r2, [r3, #5]	@ zero_extendqisi2
+  41 0020 034B     		ldr	r3, .L6+4
+  42 0022 03EB8000 		add	r0, r3, r0, lsl #2
+  43 0026 FFF7FEFF 		bl	hal_spi_set_pcs
+  44 002a F1E7     		b	.L2
+  45              	.L7:
+  46              		.align	2
+  47              	.L6:
+  48 002c 00000000 		.word	.LANCHOR0
+  49 0030 00000000 		.word	.LANCHOR1
+  51              		.section	.text.spi_set_configuration,"ax",%progbits
+  52              		.align	1
+  53              		.global	spi_set_configuration
+  54              		.syntax unified
+  55              		.thumb
+  56              		.thumb_func
+  57              		.fpu fpv4-sp-d16
+  59              	spi_set_configuration:
+  60              		@ args = 0, pretend = 0, frame = 0
+  61              		@ frame_needed = 0, uses_anonymous_args = 0
+  62              		@ link register save eliminated.
+  63 0000 08B1     		cbz	r0, .L8
+  64 0002 014A     		ldr	r2, .L10
+  65 0004 1060     		str	r0, [r2]
+  66              	.L8:
+  67 0006 7047     		bx	lr
+  68              	.L11:
+  69              		.align	2
+  70              	.L10:
+  71 0008 00000000 		.word	.LANCHOR2
+  73              		.section	.text.spi_master_init,"ax",%progbits
+  74              		.align	1
+  75              		.global	spi_master_init
+  76              		.syntax unified
+  77              		.thumb
+  78              		.thumb_func
+  79              		.fpu fpv4-sp-d16
+  81              	spi_master_init:
+  82              		@ args = 0, pretend = 0, frame = 0
+  83              		@ frame_needed = 0, uses_anonymous_args = 0
+  84 0000 08B5     		push	{r3, lr}
+  85 0002 0A4B     		ldr	r3, .L18
+  86 0004 1B68     		ldr	r3, [r3]
+  87 0006 7BB1     		cbz	r3, .L14
+  88 0008 0228     		cmp	r0, #2
+  89 000a 01D9     		bls	.L17
+  90 000c 0420     		movs	r0, #4
+  91              	.L13:
+  92 000e 08BD     		pop	{r3, pc}
+  93              	.L17:
+  94 0010 0146     		mov	r1, r0
+  95 0012 00EB4000 		add	r0, r0, r0, lsl #1
+  96 0016 064A     		ldr	r2, .L18+4
+  97 0018 02EB0112 		add	r2, r2, r1, lsl #4
+  98 001c 054B     		ldr	r3, .L18+8
+  99 001e 03EB8000 		add	r0, r3, r0, lsl #2
+ 100 0022 FFF7FEFF 		bl	hal_spi_master_init
+ 101 0026 F2E7     		b	.L13
+ 102              	.L14:
+ 103 0028 0420     		movs	r0, #4
+ 104 002a F0E7     		b	.L13
+ 105              	.L19:
+ 106              		.align	2
+ 107              	.L18:
+ 108 002c 00000000 		.word	.LANCHOR2
+ 109 0030 00000000 		.word	.LANCHOR0
+ 110 0034 00000000 		.word	.LANCHOR1
+ 112              		.section	.text.spi_master_deinit,"ax",%progbits
+ 113              		.align	1
+ 114              		.global	spi_master_deinit
+ 115              		.syntax unified
+ 116              		.thumb
+ 117              		.thumb_func
+ 118              		.fpu fpv4-sp-d16
+ 120              	spi_master_deinit:
+ 121              		@ args = 0, pretend = 0, frame = 0
+ 122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 123 0000 0E4B     		ldr	r3, .L29
+ 124 0002 1B68     		ldr	r3, [r3]
+ 125 0004 BBB1     		cbz	r3, .L22
+ 126 0006 0228     		cmp	r0, #2
+ 127 0008 02D9     		bls	.L28
+ 128 000a 0423     		movs	r3, #4
+ 129              	.L25:
+ 130 000c 1846     		mov	r0, r3
+ 131 000e 7047     		bx	lr
+ 132              	.L28:
+ 133 0010 10B5     		push	{r4, lr}
+ 134 0012 0446     		mov	r4, r0
+ 135 0014 00EB4000 		add	r0, r0, r0, lsl #1
+ 136 0018 094B     		ldr	r3, .L29+4
+ 137 001a 03EB8000 		add	r0, r3, r0, lsl #2
+ 138 001e FFF7FEFF 		bl	hal_spi_master_deinit
+ 139 0022 0346     		mov	r3, r0
+ 140 0024 28B9     		cbnz	r0, .L21
+ 141 0026 04EB4400 		add	r0, r4, r4, lsl #1
+ 142 002a 8000     		lsls	r0, r0, #2
+ 143 002c 044A     		ldr	r2, .L29+4
+ 144 002e 0021     		movs	r1, #0
+ 145 0030 1150     		str	r1, [r2, r0]
+ 146              	.L21:
+ 147 0032 1846     		mov	r0, r3
+ 148 0034 10BD     		pop	{r4, pc}
+ 149              	.L22:
+ 150 0036 0423     		movs	r3, #4
+ 151 0038 E8E7     		b	.L25
+ 152              	.L30:
+ 153 003a 00BF     		.align	2
+ 154              	.L29:
+ 155 003c 00000000 		.word	.LANCHOR2
+ 156 0040 00000000 		.word	.LANCHOR1
+ 158              		.section	.text.spi_master_transfer,"ax",%progbits
+ 159              		.align	1
+ 160              		.global	spi_master_transfer
+ 161              		.syntax unified
+ 162              		.thumb
+ 163              		.thumb_func
+ 164              		.fpu fpv4-sp-d16
+ 166              	spi_master_transfer:
+ 167              		@ args = 0, pretend = 0, frame = 0
+ 168              		@ frame_needed = 0, uses_anonymous_args = 0
+ 169 0000 38B5     		push	{r3, r4, r5, lr}
+ 170 0002 144B     		ldr	r3, .L41
+ 171 0004 1B68     		ldr	r3, [r3]
+ 172 0006 FBB1     		cbz	r3, .L33
+ 173 0008 0228     		cmp	r0, #2
+ 174 000a 1FD8     		bhi	.L34
+ 175 000c 00EB4004 		add	r4, r0, r0, lsl #1
+ 176 0010 114D     		ldr	r5, .L41+4
+ 177 0012 55F82440 		ldr	r4, [r5, r4, lsl #2]
+ 178 0016 DCB1     		cbz	r4, .L35
+ 179 0018 00EB8004 		add	r4, r0, r0, lsl #2
+ 180 001c 2344     		add	r3, r3, r4
+ 181 001e 0B44     		add	r3, r3, r1
+ 182 0020 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 183 0022 0BB9     		cbnz	r3, .L39
+ 184 0024 0120     		movs	r0, #1
+ 185 0026 12E0     		b	.L32
+ 186              	.L39:
+ 187 0028 1546     		mov	r5, r2
+ 188 002a 0446     		mov	r4, r0
+ 189 002c FFF7FEFF 		bl	spi_set_pcs_master
+ 190 0030 08B1     		cbz	r0, .L40
+ 191 0032 0120     		movs	r0, #1
+ 192 0034 0BE0     		b	.L32
+ 193              	.L40:
+ 194 0036 04EB4404 		add	r4, r4, r4, lsl #1
+ 195 003a 2946     		mov	r1, r5
+ 196 003c 064B     		ldr	r3, .L41+4
+ 197 003e 03EB8400 		add	r0, r3, r4, lsl #2
+ 198 0042 FFF7FEFF 		bl	hal_spi_master_transfer
+ 199 0046 02E0     		b	.L32
+ 200              	.L33:
+ 201 0048 0120     		movs	r0, #1
+ 202 004a 00E0     		b	.L32
+ 203              	.L34:
+ 204 004c 0120     		movs	r0, #1
+ 205              	.L32:
+ 206 004e 38BD     		pop	{r3, r4, r5, pc}
+ 207              	.L35:
+ 208 0050 0120     		movs	r0, #1
+ 209 0052 FCE7     		b	.L32
+ 210              	.L42:
+ 211              		.align	2
+ 212              	.L41:
+ 213 0054 00000000 		.word	.LANCHOR2
+ 214 0058 00000000 		.word	.LANCHOR1
+ 216              		.section	.text.spi_master_transfer_blocking,"ax",%progbits
+ 217              		.align	1
+ 218              		.global	spi_master_transfer_blocking
+ 219              		.syntax unified
+ 220              		.thumb
+ 221              		.thumb_func
+ 222              		.fpu fpv4-sp-d16
+ 224              	spi_master_transfer_blocking:
+ 225              		@ args = 0, pretend = 0, frame = 0
+ 226              		@ frame_needed = 0, uses_anonymous_args = 0
+ 227 0000 70B5     		push	{r4, r5, r6, lr}
+ 228 0002 154C     		ldr	r4, .L53
+ 229 0004 2468     		ldr	r4, [r4]
+ 230 0006 0CB3     		cbz	r4, .L45
+ 231 0008 0228     		cmp	r0, #2
+ 232 000a 21D8     		bhi	.L46
+ 233 000c 00EB4005 		add	r5, r0, r0, lsl #1
+ 234 0010 124E     		ldr	r6, .L53+4
+ 235 0012 56F82550 		ldr	r5, [r6, r5, lsl #2]
+ 236 0016 EDB1     		cbz	r5, .L47
+ 237 0018 00EB8005 		add	r5, r0, r0, lsl #2
+ 238 001c 2C44     		add	r4, r4, r5
+ 239 001e 0C44     		add	r4, r4, r1
+ 240 0020 6478     		ldrb	r4, [r4, #1]	@ zero_extendqisi2
+ 241 0022 0CB9     		cbnz	r4, .L51
+ 242 0024 0120     		movs	r0, #1
+ 243 0026 14E0     		b	.L44
+ 244              	.L51:
+ 245 0028 1E46     		mov	r6, r3
+ 246 002a 1546     		mov	r5, r2
+ 247 002c 0446     		mov	r4, r0
+ 248 002e FFF7FEFF 		bl	spi_set_pcs_master
+ 249 0032 08B1     		cbz	r0, .L52
+ 250 0034 0120     		movs	r0, #1
+ 251 0036 0CE0     		b	.L44
+ 252              	.L52:
+ 253 0038 04EB4404 		add	r4, r4, r4, lsl #1
+ 254 003c 3246     		mov	r2, r6
+ 255 003e 2946     		mov	r1, r5
+ 256 0040 064B     		ldr	r3, .L53+4
+ 257 0042 03EB8400 		add	r0, r3, r4, lsl #2
+ 258 0046 FFF7FEFF 		bl	hal_spi_master_transfer_blocking
+ 259 004a 02E0     		b	.L44
+ 260              	.L45:
+ 261 004c 0120     		movs	r0, #1
+ 262 004e 00E0     		b	.L44
+ 263              	.L46:
+ 264 0050 0120     		movs	r0, #1
+ 265              	.L44:
+ 266 0052 70BD     		pop	{r4, r5, r6, pc}
+ 267              	.L47:
+ 268 0054 0120     		movs	r0, #1
+ 269 0056 FCE7     		b	.L44
+ 270              	.L54:
+ 271              		.align	2
+ 272              	.L53:
+ 273 0058 00000000 		.word	.LANCHOR2
+ 274 005c 00000000 		.word	.LANCHOR1
+ 276              		.section	.text.spi_master_send,"ax",%progbits
+ 277              		.align	1
+ 278              		.global	spi_master_send
+ 279              		.syntax unified
+ 280              		.thumb
+ 281              		.thumb_func
+ 282              		.fpu fpv4-sp-d16
+ 284              	spi_master_send:
+ 285              		@ args = 0, pretend = 0, frame = 0
+ 286              		@ frame_needed = 0, uses_anonymous_args = 0
+ 287 0000 70B5     		push	{r4, r5, r6, lr}
+ 288 0002 154C     		ldr	r4, .L65
+ 289 0004 2468     		ldr	r4, [r4]
+ 290 0006 0CB3     		cbz	r4, .L57
+ 291 0008 0228     		cmp	r0, #2
+ 292 000a 21D8     		bhi	.L58
+ 293 000c 00EB4005 		add	r5, r0, r0, lsl #1
+ 294 0010 124E     		ldr	r6, .L65+4
+ 295 0012 56F82550 		ldr	r5, [r6, r5, lsl #2]
+ 296 0016 EDB1     		cbz	r5, .L59
+ 297 0018 00EB8005 		add	r5, r0, r0, lsl #2
+ 298 001c 2C44     		add	r4, r4, r5
+ 299 001e 0C44     		add	r4, r4, r1
+ 300 0020 6478     		ldrb	r4, [r4, #1]	@ zero_extendqisi2
+ 301 0022 0CB9     		cbnz	r4, .L63
+ 302 0024 0120     		movs	r0, #1
+ 303 0026 14E0     		b	.L56
+ 304              	.L63:
+ 305 0028 1E46     		mov	r6, r3
+ 306 002a 1546     		mov	r5, r2
+ 307 002c 0446     		mov	r4, r0
+ 308 002e FFF7FEFF 		bl	spi_set_pcs_master
+ 309 0032 08B1     		cbz	r0, .L64
+ 310 0034 0120     		movs	r0, #1
+ 311 0036 0CE0     		b	.L56
+ 312              	.L64:
+ 313 0038 04EB4404 		add	r4, r4, r4, lsl #1
+ 314 003c 3246     		mov	r2, r6
+ 315 003e 2946     		mov	r1, r5
+ 316 0040 064B     		ldr	r3, .L65+4
+ 317 0042 03EB8400 		add	r0, r3, r4, lsl #2
+ 318 0046 FFF7FEFF 		bl	hal_spi_master_send
+ 319 004a 02E0     		b	.L56
+ 320              	.L57:
+ 321 004c 0120     		movs	r0, #1
+ 322 004e 00E0     		b	.L56
+ 323              	.L58:
+ 324 0050 0120     		movs	r0, #1
+ 325              	.L56:
+ 326 0052 70BD     		pop	{r4, r5, r6, pc}
+ 327              	.L59:
+ 328 0054 0120     		movs	r0, #1
+ 329 0056 FCE7     		b	.L56
+ 330              	.L66:
+ 331              		.align	2
+ 332              	.L65:
+ 333 0058 00000000 		.word	.LANCHOR2
+ 334 005c 00000000 		.word	.LANCHOR1
+ 336              		.section	.text.spi_master_send_blocking,"ax",%progbits
+ 337              		.align	1
+ 338              		.global	spi_master_send_blocking
+ 339              		.syntax unified
+ 340              		.thumb
+ 341              		.thumb_func
+ 342              		.fpu fpv4-sp-d16
+ 344              	spi_master_send_blocking:
+ 345              		@ args = 4, pretend = 0, frame = 0
+ 346              		@ frame_needed = 0, uses_anonymous_args = 0
+ 347 0000 70B5     		push	{r4, r5, r6, lr}
+ 348 0002 164C     		ldr	r4, .L77
+ 349 0004 2468     		ldr	r4, [r4]
+ 350 0006 14B3     		cbz	r4, .L69
+ 351 0008 0228     		cmp	r0, #2
+ 352 000a 22D8     		bhi	.L70
+ 353 000c 00EB4005 		add	r5, r0, r0, lsl #1
+ 354 0010 134E     		ldr	r6, .L77+4
+ 355 0012 56F82550 		ldr	r5, [r6, r5, lsl #2]
+ 356 0016 F5B1     		cbz	r5, .L71
+ 357 0018 00EB8005 		add	r5, r0, r0, lsl #2
+ 358 001c 2C44     		add	r4, r4, r5
+ 359 001e 0C44     		add	r4, r4, r1
+ 360 0020 6478     		ldrb	r4, [r4, #1]	@ zero_extendqisi2
+ 361 0022 0CB9     		cbnz	r4, .L75
+ 362 0024 0120     		movs	r0, #1
+ 363 0026 15E0     		b	.L68
+ 364              	.L75:
+ 365 0028 1E46     		mov	r6, r3
+ 366 002a 1546     		mov	r5, r2
+ 367 002c 0446     		mov	r4, r0
+ 368 002e FFF7FEFF 		bl	spi_set_pcs_master
+ 369 0032 08B1     		cbz	r0, .L76
+ 370 0034 0120     		movs	r0, #1
+ 371 0036 0DE0     		b	.L68
+ 372              	.L76:
+ 373 0038 04EB4400 		add	r0, r4, r4, lsl #1
+ 374 003c 049B     		ldr	r3, [sp, #16]
+ 375 003e 3246     		mov	r2, r6
+ 376 0040 2946     		mov	r1, r5
+ 377 0042 074C     		ldr	r4, .L77+4
+ 378 0044 04EB8000 		add	r0, r4, r0, lsl #2
+ 379 0048 FFF7FEFF 		bl	hal_spi_master_send_blocking
+ 380 004c 02E0     		b	.L68
+ 381              	.L69:
+ 382 004e 0120     		movs	r0, #1
+ 383 0050 00E0     		b	.L68
+ 384              	.L70:
+ 385 0052 0120     		movs	r0, #1
+ 386              	.L68:
+ 387 0054 70BD     		pop	{r4, r5, r6, pc}
+ 388              	.L71:
+ 389 0056 0120     		movs	r0, #1
+ 390 0058 FCE7     		b	.L68
+ 391              	.L78:
+ 392 005a 00BF     		.align	2
+ 393              	.L77:
+ 394 005c 00000000 		.word	.LANCHOR2
+ 395 0060 00000000 		.word	.LANCHOR1
+ 397              		.section	.bss.spi_handle,"aw",%nobits
+ 398              		.align	2
+ 399              		.set	.LANCHOR1,. + 0
+ 402              	spi_handle:
+ 403 0000 00000000 		.space	36
+ 403      00000000 
+ 403      00000000 
+ 403      00000000 
+ 403      00000000 
+ 404              		.section	.bss.spi_hardware_config,"aw",%nobits
+ 405              		.align	2
+ 406              		.set	.LANCHOR2,. + 0
+ 409              	spi_hardware_config:
+ 410 0000 00000000 		.space	4
+ 411              		.section	.data.spi_master_config,"aw"
+ 412              		.align	2
+ 413              		.set	.LANCHOR0,. + 0
+ 416              	spi_master_config:
+ 417 0000 50C30000 		.word	50000
+ 418 0004 00       		.space	1
+ 419 0005 01       		.byte	1
+ 420 0006 00       		.byte	0
+ 421 0007 00       		.byte	0
+ 422 0008 00       		.byte	0
+ 423 0009 00       		.byte	0
+ 424 000a 00000000 		.space	6
+ 424      0000
+ 425 0010 50C30000 		.word	50000
+ 426 0014 00       		.space	1
+ 427 0015 01       		.byte	1
+ 428 0016 00       		.byte	0
+ 429 0017 00       		.byte	0
+ 430 0018 00       		.byte	0
+ 431 0019 00       		.byte	0
+ 432 001a 00000000 		.space	6
+ 432      0000
+ 433 0020 50C30000 		.word	50000
+ 434 0024 00       		.space	1
+ 435 0025 01       		.byte	1
+ 436 0026 00       		.byte	0
+ 437 0027 00       		.byte	0
+ 438 0028 00       		.byte	0
+ 439 0029 00       		.byte	0
+ 440 002a 00000000 		.space	6
+ 440      0000
+ 441              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc

@@ -1,0 +1,1312 @@
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"motor_app.c"
+  14              		.text
+  15              		.section	.text.motor_ramp_up_dwn,"ax",%progbits
+  16              		.align	1
+  17              		.arch armv7e-m
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu fpv4-sp-d16
+  23              	motor_ramp_up_dwn:
+  24              		@ args = 8, pretend = 0, frame = 0
+  25              		@ frame_needed = 0, uses_anonymous_args = 0
+  26              		@ link register save eliminated.
+  27 0000 70B4     		push	{r4, r5, r6}
+  28 0002 049D     		ldr	r5, [sp, #16]
+  29 0004 8842     		cmp	r0, r1
+  30 0006 28BF     		it	cs
+  31 0008 0846     		movcs	r0, r1
+  32 000a 2C88     		ldrh	r4, [r5]
+  33 000c 8442     		cmp	r4, r0
+  34 000e 01D3     		bcc	.L2
+  35 0010 3AD0     		beq	.L11
+  36 0012 1A46     		mov	r2, r3
+  37              	.L2:
+  38 0014 1AB1     		cbz	r2, .L4
+  39 0016 1E4B     		ldr	r3, .L14
+  40 0018 1B88     		ldrh	r3, [r3]
+  41 001a 9342     		cmp	r3, r2
+  42 001c 03D3     		bcc	.L5
+  43              	.L4:
+  44 001e 2880     		strh	r0, [r5]	@ movhi
+  45 0020 0120     		movs	r0, #1
+  46              	.L3:
+  47 0022 70BC     		pop	{r4, r5, r6}
+  48 0024 7047     		bx	lr
+  49              	.L5:
+  50 0026 01FB03F6 		mul	r6, r1, r3
+  51 002a B242     		cmp	r2, r6
+  52 002c 13D8     		bhi	.L6
+  53 002e B6FBF2F2 		udiv	r2, r6, r2
+  54 0032 92B2     		uxth	r2, r2
+  55 0034 A318     		adds	r3, r4, r2
+  56 0036 9842     		cmp	r0, r3
+  57 0038 02DB     		blt	.L7
+  58 003a 2B80     		strh	r3, [r5]	@ movhi
+  59 003c 0120     		movs	r0, #1
+  60 003e F0E7     		b	.L3
+  61              	.L7:
+  62 0040 A31A     		subs	r3, r4, r2
+  63 0042 9842     		cmp	r0, r3
+  64 0044 04DC     		bgt	.L8
+  65 0046 9442     		cmp	r4, r2
+  66 0048 02D3     		bcc	.L8
+  67 004a 2B80     		strh	r3, [r5]	@ movhi
+  68 004c 0120     		movs	r0, #1
+  69 004e E8E7     		b	.L3
+  70              	.L8:
+  71 0050 2880     		strh	r0, [r5]	@ movhi
+  72 0052 0120     		movs	r0, #1
+  73 0054 E5E7     		b	.L3
+  74              	.L6:
+  75 0056 039C     		ldr	r4, [sp, #12]
+  76 0058 2488     		ldrh	r4, [r4]
+  77 005a 0134     		adds	r4, r4, #1
+  78 005c A4B2     		uxth	r4, r4
+  79 005e 039E     		ldr	r6, [sp, #12]
+  80 0060 3480     		strh	r4, [r6]	@ movhi
+  81 0062 B2FBF1F2 		udiv	r2, r2, r1
+  82 0066 B2FBF3F2 		udiv	r2, r2, r3
+  83 006a 9442     		cmp	r4, r2
+  84 006c 0ED3     		bcc	.L12
+  85 006e 2B88     		ldrh	r3, [r5]
+  86 0070 8342     		cmp	r3, r0
+  87 0072 34BF     		ite	cc
+  88 0074 0133     		addcc	r3, r3, #1
+  89 0076 03F1FF33 		addcs	r3, r3, #-1
+  90 007a 9BB2     		uxth	r3, r3
+  91 007c 2B80     		strh	r3, [r5]	@ movhi
+  92 007e 0023     		movs	r3, #0
+  93 0080 039A     		ldr	r2, [sp, #12]
+  94 0082 1380     		strh	r3, [r2]	@ movhi
+  95 0084 0120     		movs	r0, #1
+  96 0086 CCE7     		b	.L3
+  97              	.L11:
+  98 0088 0020     		movs	r0, #0
+  99 008a CAE7     		b	.L3
+ 100              	.L12:
+ 101 008c 0120     		movs	r0, #1
+ 102 008e C8E7     		b	.L3
+ 103              	.L15:
+ 104              		.align	2
+ 105              	.L14:
+ 106 0090 00000000 		.word	ext_graph_cycle_time
+ 108              		.section	.text.motor_check_overcurrent,"ax",%progbits
+ 109              		.align	1
+ 110              		.syntax unified
+ 111              		.thumb
+ 112              		.thumb_func
+ 113              		.fpu fpv4-sp-d16
+ 115              	motor_check_overcurrent:
+ 116              		@ args = 0, pretend = 0, frame = 0
+ 117              		@ frame_needed = 0, uses_anonymous_args = 0
+ 118 0000 10B5     		push	{r4, lr}
+ 119 0002 0446     		mov	r4, r0
+ 120 0004 1046     		mov	r0, r2
+ 121 0006 226A     		ldr	r2, [r4, #32]
+ 122 0008 8A42     		cmp	r2, r1
+ 123 000a 0BD8     		bhi	.L17
+ 124 000c 226B     		ldr	r2, [r4, #48]
+ 125 000e 9142     		cmp	r1, r2
+ 126 0010 34BF     		ite	cc
+ 127 0012 0122     		movcc	r2, #1
+ 128 0014 0022     		movcs	r2, #0
+ 129 0016 84F84020 		strb	r2, [r4, #64]
+ 130 001a 06D3     		bcc	.L20
+ 131 001c 0321     		movs	r1, #3
+ 132 001e FFF7FEFF 		bl	user_set_timestamp
+ 133              	.L16:
+ 134 0022 10BD     		pop	{r4, pc}
+ 135              	.L17:
+ 136 0024 0122     		movs	r2, #1
+ 137 0026 84F84020 		strb	r2, [r4, #64]
+ 138              	.L20:
+ 139 002a 0322     		movs	r2, #3
+ 140 002c 1946     		mov	r1, r3
+ 141 002e 0068     		ldr	r0, [r0]
+ 142 0030 FFF7FEFF 		bl	user_time_past
+ 143 0034 0028     		cmp	r0, #0
+ 144 0036 F4D0     		beq	.L16
+ 145 0038 0023     		movs	r3, #0
+ 146 003a 84F84030 		strb	r3, [r4, #64]
+ 147 003e 0523     		movs	r3, #5
+ 148 0040 84F83830 		strb	r3, [r4, #56]
+ 149 0044 0923     		movs	r3, #9
+ 150 0046 2375     		strb	r3, [r4, #20]
+ 151 0048 EBE7     		b	.L16
+ 153              		.section	.text.motor_filter_current,"ax",%progbits
+ 154              		.align	1
+ 155              		.syntax unified
+ 156              		.thumb
+ 157              		.thumb_func
+ 158              		.fpu fpv4-sp-d16
+ 160              	motor_filter_current:
+ 161              		@ args = 4, pretend = 0, frame = 8
+ 162              		@ frame_needed = 0, uses_anonymous_args = 0
+ 163 0000 70B5     		push	{r4, r5, r6, lr}
+ 164 0002 82B0     		sub	sp, sp, #8
+ 165 0004 0446     		mov	r4, r0
+ 166 0006 1546     		mov	r5, r2
+ 167 0008 1E68     		ldr	r6, [r3]
+ 168 000a 0023     		movs	r3, #0
+ 169 000c 0193     		str	r3, [sp, #4]
+ 170 000e FFF7FEFF 		bl	user_ai_get_filtered
+ 171 0012 0190     		str	r0, [sp, #4]
+ 172 0014 04EB8404 		add	r4, r4, r4, lsl #2
+ 173 0018 0C4B     		ldr	r3, .L28
+ 174 001a 03EB8404 		add	r4, r3, r4, lsl #2
+ 175 001e 237C     		ldrb	r3, [r4, #16]	@ zero_extendqisi2
+ 176 0020 6BB9     		cbnz	r3, .L27
+ 177 0022 019B     		ldr	r3, [sp, #4]
+ 178 0024 9E42     		cmp	r6, r3
+ 179 0026 0ED2     		bcs	.L25
+ 180 0028 019B     		ldr	r3, [sp, #4]
+ 181 002a 9E1B     		subs	r6, r3, r6
+ 182 002c BDF81830 		ldrh	r3, [sp, #24]
+ 183 0030 03FB06F3 		mul	r3, r3, r6
+ 184 0034 064A     		ldr	r2, .L28+4
+ 185 0036 A2FB0323 		umull	r2, r3, r2, r3
+ 186 003a 5B09     		lsrs	r3, r3, #5
+ 187 003c 00E0     		b	.L24
+ 188              	.L27:
+ 189 003e 019B     		ldr	r3, [sp, #4]
+ 190              	.L24:
+ 191 0040 2B60     		str	r3, [r5]
+ 192 0042 02B0     		add	sp, sp, #8
+ 193              		@ sp needed
+ 194 0044 70BD     		pop	{r4, r5, r6, pc}
+ 195              	.L25:
+ 196 0046 0023     		movs	r3, #0
+ 197 0048 FAE7     		b	.L24
+ 198              	.L29:
+ 199 004a 00BF     		.align	2
+ 200              	.L28:
+ 201 004c 00000000 		.word	adc_config_tbl
+ 202 0050 1F85EB51 		.word	1374389535
+ 204              		.section	.text.motor_stop,"ax",%progbits
+ 205              		.align	1
+ 206              		.syntax unified
+ 207              		.thumb
+ 208              		.thumb_func
+ 209              		.fpu fpv4-sp-d16
+ 211              	motor_stop:
+ 212              		@ args = 0, pretend = 0, frame = 0
+ 213              		@ frame_needed = 0, uses_anonymous_args = 0
+ 214 0000 10B5     		push	{r4, lr}
+ 215 0002 0446     		mov	r4, r0
+ 216 0004 C36B     		ldr	r3, [r0, #60]
+ 217 0006 9A7C     		ldrb	r2, [r3, #18]	@ zero_extendqisi2
+ 218 0008 042A     		cmp	r2, #4
+ 219 000a 16D8     		bhi	.L30
+ 220 000c DFE802F0 		tbb	[pc, r2]
+ 221              	.L33:
+ 222 0010 51       		.byte	(.L37-.L33)/2
+ 223 0011 34       		.byte	(.L36-.L33)/2
+ 224 0012 42       		.byte	(.L35-.L33)/2
+ 225 0013 03       		.byte	(.L34-.L33)/2
+ 226 0014 16       		.byte	(.L32-.L33)/2
+ 227 0015 00       		.p2align 1
+ 228              	.L34:
+ 229 0016 5A69     		ldr	r2, [r3, #20]
+ 230 0018 7AB1     		cbz	r2, .L30
+ 231 001a 5988     		ldrh	r1, [r3, #2]
+ 232 001c D078     		ldrb	r0, [r2, #3]	@ zero_extendqisi2
+ 233 001e FFF7FEFF 		bl	user_pwm_set_freq
+ 234 0022 E36B     		ldr	r3, [r4, #60]
+ 235 0024 5B69     		ldr	r3, [r3, #20]
+ 236 0026 0021     		movs	r1, #0
+ 237 0028 9878     		ldrb	r0, [r3, #2]	@ zero_extendqisi2
+ 238 002a FFF7FEFF 		bl	user_pwm_set_duty
+ 239 002e E36B     		ldr	r3, [r4, #60]
+ 240 0030 5B69     		ldr	r3, [r3, #20]
+ 241 0032 0021     		movs	r1, #0
+ 242 0034 D878     		ldrb	r0, [r3, #3]	@ zero_extendqisi2
+ 243 0036 FFF7FEFF 		bl	user_pwm_set_duty
+ 244              	.L30:
+ 245 003a 10BD     		pop	{r4, pc}
+ 246              	.L32:
+ 247 003c 5869     		ldr	r0, [r3, #20]
+ 248 003e 0028     		cmp	r0, #0
+ 249 0040 FBD0     		beq	.L30
+ 250 0042 0022     		movs	r2, #0
+ 251 0044 5988     		ldrh	r1, [r3, #2]
+ 252 0046 0078     		ldrb	r0, [r0]	@ zero_extendqisi2
+ 253 0048 FFF7FEFF 		bl	user_pwm_set_pwm
+ 254 004c E36B     		ldr	r3, [r4, #60]
+ 255 004e 5869     		ldr	r0, [r3, #20]
+ 256 0050 0022     		movs	r2, #0
+ 257 0052 5988     		ldrh	r1, [r3, #2]
+ 258 0054 8078     		ldrb	r0, [r0, #2]	@ zero_extendqisi2
+ 259 0056 FFF7FEFF 		bl	user_pwm_set_pwm
+ 260 005a E36B     		ldr	r3, [r4, #60]
+ 261 005c 5869     		ldr	r0, [r3, #20]
+ 262 005e 0022     		movs	r2, #0
+ 263 0060 5988     		ldrh	r1, [r3, #2]
+ 264 0062 4078     		ldrb	r0, [r0, #1]	@ zero_extendqisi2
+ 265 0064 FFF7FEFF 		bl	user_pwm_set_pwm
+ 266 0068 E36B     		ldr	r3, [r4, #60]
+ 267 006a 5869     		ldr	r0, [r3, #20]
+ 268 006c 0022     		movs	r2, #0
+ 269 006e 5988     		ldrh	r1, [r3, #2]
+ 270 0070 C078     		ldrb	r0, [r0, #3]	@ zero_extendqisi2
+ 271 0072 FFF7FEFF 		bl	user_pwm_set_pwm
+ 272 0076 E0E7     		b	.L30
+ 273              	.L36:
+ 274 0078 5A69     		ldr	r2, [r3, #20]
+ 275 007a 002A     		cmp	r2, #0
+ 276 007c DDD0     		beq	.L30
+ 277 007e 5988     		ldrh	r1, [r3, #2]
+ 278 0080 5078     		ldrb	r0, [r2, #1]	@ zero_extendqisi2
+ 279 0082 FFF7FEFF 		bl	user_pwm_set_freq
+ 280 0086 E36B     		ldr	r3, [r4, #60]
+ 281 0088 5B69     		ldr	r3, [r3, #20]
+ 282 008a 0021     		movs	r1, #0
+ 283 008c 5878     		ldrb	r0, [r3, #1]	@ zero_extendqisi2
+ 284 008e FFF7FEFF 		bl	user_pwm_set_duty
+ 285 0092 D2E7     		b	.L30
+ 286              	.L35:
+ 287 0094 5A69     		ldr	r2, [r3, #20]
+ 288 0096 002A     		cmp	r2, #0
+ 289 0098 CFD0     		beq	.L30
+ 290 009a 5988     		ldrh	r1, [r3, #2]
+ 291 009c 5078     		ldrb	r0, [r2, #1]	@ zero_extendqisi2
+ 292 009e FFF7FEFF 		bl	user_pwm_set_freq
+ 293 00a2 E36B     		ldr	r3, [r4, #60]
+ 294 00a4 5B69     		ldr	r3, [r3, #20]
+ 295 00a6 4FF47A71 		mov	r1, #1000
+ 296 00aa 5878     		ldrb	r0, [r3, #1]	@ zero_extendqisi2
+ 297 00ac FFF7FEFF 		bl	user_pwm_set_duty
+ 298 00b0 C3E7     		b	.L30
+ 299              	.L37:
+ 300 00b2 5A69     		ldr	r2, [r3, #20]
+ 301 00b4 002A     		cmp	r2, #0
+ 302 00b6 C0D0     		beq	.L30
+ 303 00b8 5988     		ldrh	r1, [r3, #2]
+ 304 00ba 1078     		ldrb	r0, [r2]	@ zero_extendqisi2
+ 305 00bc FFF7FEFF 		bl	user_pwm_set_freq
+ 306 00c0 E36B     		ldr	r3, [r4, #60]
+ 307 00c2 5B69     		ldr	r3, [r3, #20]
+ 308 00c4 0021     		movs	r1, #0
+ 309 00c6 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 310 00c8 FFF7FEFF 		bl	user_pwm_set_duty
+ 311 00cc B5E7     		b	.L30
+ 313              		.section	.text.motor_control_inhibit,"ax",%progbits
+ 314              		.align	1
+ 315              		.syntax unified
+ 316              		.thumb
+ 317              		.thumb_func
+ 318              		.fpu fpv4-sp-d16
+ 320              	motor_control_inhibit:
+ 321              		@ args = 0, pretend = 0, frame = 0
+ 322              		@ frame_needed = 0, uses_anonymous_args = 0
+ 323 0000 38B5     		push	{r3, r4, r5, lr}
+ 324 0002 0446     		mov	r4, r0
+ 325 0004 0D46     		mov	r5, r1
+ 326 0006 C36B     		ldr	r3, [r0, #60]
+ 327 0008 9A7C     		ldrb	r2, [r3, #18]	@ zero_extendqisi2
+ 328 000a 032A     		cmp	r2, #3
+ 329 000c 13D0     		beq	.L47
+ 330 000e 042A     		cmp	r2, #4
+ 331 0010 26D1     		bne	.L48
+ 332 0012 5B69     		ldr	r3, [r3, #20]
+ 333 0014 53B3     		cbz	r3, .L39
+ 334 0016 9879     		ldrb	r0, [r3, #6]	@ zero_extendqisi2
+ 335 0018 FFF7FEFF 		bl	user_di_get
+ 336 001c 0128     		cmp	r0, #1
+ 337 001e 16D0     		beq	.L49
+ 338 0020 2843     		orrs	r0, r0, r5
+ 339 0022 10F0FF0F 		tst	r0, #255
+ 340 0026 21D1     		bne	.L39
+ 341 0028 E36B     		ldr	r3, [r4, #60]
+ 342 002a 5B69     		ldr	r3, [r3, #20]
+ 343 002c 0021     		movs	r1, #0
+ 344 002e D879     		ldrb	r0, [r3, #7]	@ zero_extendqisi2
+ 345 0030 FFF7FEFF 		bl	user_do_set
+ 346 0034 1AE0     		b	.L39
+ 347              	.L47:
+ 348 0036 5B69     		ldr	r3, [r3, #20]
+ 349 0038 C3B1     		cbz	r3, .L39
+ 350 003a 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 351 003c FFF7FEFF 		bl	user_do_set
+ 352 0040 E36B     		ldr	r3, [r4, #60]
+ 353 0042 5B69     		ldr	r3, [r3, #20]
+ 354 0044 2946     		mov	r1, r5
+ 355 0046 5878     		ldrb	r0, [r3, #1]	@ zero_extendqisi2
+ 356 0048 FFF7FEFF 		bl	user_do_set
+ 357 004c 0EE0     		b	.L39
+ 358              	.L49:
+ 359 004e 012D     		cmp	r5, #1
+ 360 0050 0CD1     		bne	.L39
+ 361 0052 E36B     		ldr	r3, [r4, #60]
+ 362 0054 5B69     		ldr	r3, [r3, #20]
+ 363 0056 0121     		movs	r1, #1
+ 364 0058 D879     		ldrb	r0, [r3, #7]	@ zero_extendqisi2
+ 365 005a FFF7FEFF 		bl	user_do_set
+ 366 005e 05E0     		b	.L39
+ 367              	.L48:
+ 368 0060 5B69     		ldr	r3, [r3, #20]
+ 369 0062 1BB1     		cbz	r3, .L39
+ 370 0064 2946     		mov	r1, r5
+ 371 0066 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 372 0068 FFF7FEFF 		bl	user_do_set
+ 373              	.L39:
+ 374 006c 38BD     		pop	{r3, r4, r5, pc}
+ 376              		.section	.text.motor_set_handle,"ax",%progbits
+ 377              		.align	1
+ 378              		.global	motor_set_handle
+ 379              		.syntax unified
+ 380              		.thumb
+ 381              		.thumb_func
+ 382              		.fpu fpv4-sp-d16
+ 384              	motor_set_handle:
+ 385              		@ args = 0, pretend = 0, frame = 0
+ 386              		@ frame_needed = 0, uses_anonymous_args = 0
+ 387              		@ link register save eliminated.
+ 388 0000 014B     		ldr	r3, .L51
+ 389 0002 1860     		str	r0, [r3]
+ 390 0004 7047     		bx	lr
+ 391              	.L52:
+ 392 0006 00BF     		.align	2
+ 393              	.L51:
+ 394 0008 00000000 		.word	.LANCHOR0
+ 396              		.section	.text.motor_set_hb_type,"ax",%progbits
+ 397              		.align	1
+ 398              		.global	motor_set_hb_type
+ 399              		.syntax unified
+ 400              		.thumb
+ 401              		.thumb_func
+ 402              		.fpu fpv4-sp-d16
+ 404              	motor_set_hb_type:
+ 405              		@ args = 0, pretend = 0, frame = 0
+ 406              		@ frame_needed = 0, uses_anonymous_args = 0
+ 407              		@ link register save eliminated.
+ 408 0000 034B     		ldr	r3, .L56
+ 409 0002 1B68     		ldr	r3, [r3]
+ 410 0004 002B     		cmp	r3, #0
+ 411 0006 0CBF     		ite	eq
+ 412 0008 0220     		moveq	r0, #2
+ 413 000a 0320     		movne	r0, #3
+ 414 000c 7047     		bx	lr
+ 415              	.L57:
+ 416 000e 00BF     		.align	2
+ 417              	.L56:
+ 418 0010 00000000 		.word	.LANCHOR0
+ 420              		.section	.text.motor_set_direction,"ax",%progbits
+ 421              		.align	1
+ 422              		.global	motor_set_direction
+ 423              		.syntax unified
+ 424              		.thumb
+ 425              		.thumb_func
+ 426              		.fpu fpv4-sp-d16
+ 428              	motor_set_direction:
+ 429              		@ args = 0, pretend = 0, frame = 0
+ 430              		@ frame_needed = 0, uses_anonymous_args = 0
+ 431              		@ link register save eliminated.
+ 432 0000 0C4B     		ldr	r3, .L64
+ 433 0002 1B68     		ldr	r3, [r3]
+ 434 0004 6BB1     		cbz	r3, .L60
+ 435 0006 1828     		cmp	r0, #24
+ 436 0008 0DD8     		bhi	.L61
+ 437 000a 0129     		cmp	r1, #1
+ 438 000c 0DD8     		bhi	.L62
+ 439 000e 5422     		movs	r2, #84
+ 440 0010 02FB0030 		mla	r0, r2, r0, r3
+ 441 0014 C36B     		ldr	r3, [r0, #60]
+ 442 0016 5A7B     		ldrb	r2, [r3, #13]	@ zero_extendqisi2
+ 443 0018 8A42     		cmp	r2, r1
+ 444 001a 08D0     		beq	.L63
+ 445 001c 5973     		strb	r1, [r3, #13]
+ 446 001e 0020     		movs	r0, #0
+ 447 0020 7047     		bx	lr
+ 448              	.L60:
+ 449 0022 0220     		movs	r0, #2
+ 450 0024 7047     		bx	lr
+ 451              	.L61:
+ 452 0026 0320     		movs	r0, #3
+ 453 0028 7047     		bx	lr
+ 454              	.L62:
+ 455 002a 0520     		movs	r0, #5
+ 456 002c 7047     		bx	lr
+ 457              	.L63:
+ 458 002e 0020     		movs	r0, #0
+ 459 0030 7047     		bx	lr
+ 460              	.L65:
+ 461 0032 00BF     		.align	2
+ 462              	.L64:
+ 463 0034 00000000 		.word	.LANCHOR0
+ 465              		.section	.text.motor_ramp_up,"ax",%progbits
+ 466              		.align	1
+ 467              		.global	motor_ramp_up
+ 468              		.syntax unified
+ 469              		.thumb
+ 470              		.thumb_func
+ 471              		.fpu fpv4-sp-d16
+ 473              	motor_ramp_up:
+ 474              		@ args = 0, pretend = 0, frame = 0
+ 475              		@ frame_needed = 0, uses_anonymous_args = 0
+ 476              		@ link register save eliminated.
+ 477 0000 0E4B     		ldr	r3, .L74
+ 478 0002 1B68     		ldr	r3, [r3]
+ 479 0004 B3B1     		cbz	r3, .L68
+ 480 0006 1828     		cmp	r0, #24
+ 481 0008 16D8     		bhi	.L69
+ 482 000a 10B4     		push	{r4}
+ 483 000c 5424     		movs	r4, #84
+ 484 000e 04FB0030 		mla	r0, r4, r0, r3
+ 485 0012 C36B     		ldr	r3, [r0, #60]
+ 486 0014 B1F57A7F 		cmp	r1, #1000
+ 487 0018 28BF     		it	cs
+ 488 001a 4FF47A71 		movcs	r1, #1000
+ 489 001e 9980     		strh	r1, [r3, #4]	@ movhi
+ 490 0020 C36B     		ldr	r3, [r0, #60]
+ 491 0022 4FF47A71 		mov	r1, #1000
+ 492 0026 D980     		strh	r1, [r3, #6]	@ movhi
+ 493 0028 C36B     		ldr	r3, [r0, #60]
+ 494 002a 1A81     		strh	r2, [r3, #8]	@ movhi
+ 495 002c 0020     		movs	r0, #0
+ 496 002e 5DF8044B 		ldr	r4, [sp], #4
+ 497 0032 7047     		bx	lr
+ 498              	.L68:
+ 499 0034 0220     		movs	r0, #2
+ 500 0036 7047     		bx	lr
+ 501              	.L69:
+ 502 0038 0320     		movs	r0, #3
+ 503 003a 7047     		bx	lr
+ 504              	.L75:
+ 505              		.align	2
+ 506              	.L74:
+ 507 003c 00000000 		.word	.LANCHOR0
+ 509              		.section	.text.motor_ramp_down,"ax",%progbits
+ 510              		.align	1
+ 511              		.global	motor_ramp_down
+ 512              		.syntax unified
+ 513              		.thumb
+ 514              		.thumb_func
+ 515              		.fpu fpv4-sp-d16
+ 517              	motor_ramp_down:
+ 518              		@ args = 0, pretend = 0, frame = 0
+ 519              		@ frame_needed = 0, uses_anonymous_args = 0
+ 520              		@ link register save eliminated.
+ 521 0000 0E4B     		ldr	r3, .L84
+ 522 0002 1B68     		ldr	r3, [r3]
+ 523 0004 B3B1     		cbz	r3, .L78
+ 524 0006 1828     		cmp	r0, #24
+ 525 0008 16D8     		bhi	.L79
+ 526 000a 10B4     		push	{r4}
+ 527 000c 5424     		movs	r4, #84
+ 528 000e 04FB0030 		mla	r0, r4, r0, r3
+ 529 0012 C36B     		ldr	r3, [r0, #60]
+ 530 0014 B1F57A7F 		cmp	r1, #1000
+ 531 0018 28BF     		it	cs
+ 532 001a 4FF47A71 		movcs	r1, #1000
+ 533 001e 9980     		strh	r1, [r3, #4]	@ movhi
+ 534 0020 C36B     		ldr	r3, [r0, #60]
+ 535 0022 4FF47A71 		mov	r1, #1000
+ 536 0026 D980     		strh	r1, [r3, #6]	@ movhi
+ 537 0028 C36B     		ldr	r3, [r0, #60]
+ 538 002a 5A81     		strh	r2, [r3, #10]	@ movhi
+ 539 002c 0020     		movs	r0, #0
+ 540 002e 5DF8044B 		ldr	r4, [sp], #4
+ 541 0032 7047     		bx	lr
+ 542              	.L78:
+ 543 0034 0220     		movs	r0, #2
+ 544 0036 7047     		bx	lr
+ 545              	.L79:
+ 546 0038 0320     		movs	r0, #3
+ 547 003a 7047     		bx	lr
+ 548              	.L85:
+ 549              		.align	2
+ 550              	.L84:
+ 551 003c 00000000 		.word	.LANCHOR0
+ 553              		.section	.text.motor_set_frequency,"ax",%progbits
+ 554              		.align	1
+ 555              		.global	motor_set_frequency
+ 556              		.syntax unified
+ 557              		.thumb
+ 558              		.thumb_func
+ 559              		.fpu fpv4-sp-d16
+ 561              	motor_set_frequency:
+ 562              		@ args = 0, pretend = 0, frame = 0
+ 563              		@ frame_needed = 0, uses_anonymous_args = 0
+ 564              		@ link register save eliminated.
+ 565 0000 0A4B     		ldr	r3, .L91
+ 566 0002 1B68     		ldr	r3, [r3]
+ 567 0004 5BB1     		cbz	r3, .L88
+ 568 0006 1828     		cmp	r0, #24
+ 569 0008 0BD8     		bhi	.L89
+ 570 000a 5422     		movs	r2, #84
+ 571 000c 02FB0030 		mla	r0, r2, r0, r3
+ 572 0010 C36B     		ldr	r3, [r0, #60]
+ 573 0012 1A88     		ldrh	r2, [r3]
+ 574 0014 8A42     		cmp	r2, r1
+ 575 0016 06D3     		bcc	.L90
+ 576 0018 5980     		strh	r1, [r3, #2]	@ movhi
+ 577 001a 0020     		movs	r0, #0
+ 578 001c 7047     		bx	lr
+ 579              	.L88:
+ 580 001e 0220     		movs	r0, #2
+ 581 0020 7047     		bx	lr
+ 582              	.L89:
+ 583 0022 0320     		movs	r0, #3
+ 584 0024 7047     		bx	lr
+ 585              	.L90:
+ 586 0026 0620     		movs	r0, #6
+ 587 0028 7047     		bx	lr
+ 588              	.L92:
+ 589 002a 00BF     		.align	2
+ 590              	.L91:
+ 591 002c 00000000 		.word	.LANCHOR0
+ 593              		.section	.text.motor_set_duty_cycle,"ax",%progbits
+ 594              		.align	1
+ 595              		.global	motor_set_duty_cycle
+ 596              		.syntax unified
+ 597              		.thumb
+ 598              		.thumb_func
+ 599              		.fpu fpv4-sp-d16
+ 601              	motor_set_duty_cycle:
+ 602              		@ args = 0, pretend = 0, frame = 0
+ 603              		@ frame_needed = 0, uses_anonymous_args = 0
+ 604              		@ link register save eliminated.
+ 605 0000 0A4B     		ldr	r3, .L98
+ 606 0002 1B68     		ldr	r3, [r3]
+ 607 0004 5BB1     		cbz	r3, .L95
+ 608 0006 1828     		cmp	r0, #24
+ 609 0008 0BD8     		bhi	.L96
+ 610 000a B1F57A7F 		cmp	r1, #1000
+ 611 000e 0AD8     		bhi	.L97
+ 612 0010 5422     		movs	r2, #84
+ 613 0012 02FB0030 		mla	r0, r2, r0, r3
+ 614 0016 C36B     		ldr	r3, [r0, #60]
+ 615 0018 9980     		strh	r1, [r3, #4]	@ movhi
+ 616 001a 0020     		movs	r0, #0
+ 617 001c 7047     		bx	lr
+ 618              	.L95:
+ 619 001e 0220     		movs	r0, #2
+ 620 0020 7047     		bx	lr
+ 621              	.L96:
+ 622 0022 0320     		movs	r0, #3
+ 623 0024 7047     		bx	lr
+ 624              	.L97:
+ 625 0026 0620     		movs	r0, #6
+ 626 0028 7047     		bx	lr
+ 627              	.L99:
+ 628 002a 00BF     		.align	2
+ 629              	.L98:
+ 630 002c 00000000 		.word	.LANCHOR0
+ 632              		.section	.text.motor_cyclic,"ax",%progbits
+ 633              		.align	1
+ 634              		.global	motor_cyclic
+ 635              		.syntax unified
+ 636              		.thumb
+ 637              		.thumb_func
+ 638              		.fpu fpv4-sp-d16
+ 640              	motor_cyclic:
+ 641              		@ args = 20, pretend = 0, frame = 0
+ 642              		@ frame_needed = 0, uses_anonymous_args = 0
+ 643 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 644 0004 83B0     		sub	sp, sp, #12
+ 645 0006 9DF83870 		ldrb	r7, [sp, #56]	@ zero_extendqisi2
+ 646 000a A94C     		ldr	r4, .L186
+ 647 000c 2568     		ldr	r5, [r4]
+ 648 000e 002D     		cmp	r5, #0
+ 649 0010 00F0AE82 		beq	.L157
+ 650 0014 1828     		cmp	r0, #24
+ 651 0016 00F2AD82 		bhi	.L158
+ 652 001a 5426     		movs	r6, #84
+ 653 001c 06FB00F6 		mul	r6, r6, r0
+ 654 0020 AC19     		adds	r4, r5, r6
+ 655 0022 E06B     		ldr	r0, [r4, #60]
+ 656 0024 B0F800C0 		ldrh	ip, [r0]
+ 657 0028 8C45     		cmp	ip, r1
+ 658 002a C0F0A782 		bcc	.L159
+ 659 002e 012F     		cmp	r7, #1
+ 660 0030 00F2A682 		bhi	.L160
+ 661 0034 4180     		strh	r1, [r0, #2]	@ movhi
+ 662 0036 E16B     		ldr	r1, [r4, #60]
+ 663 0038 B2F57A7F 		cmp	r2, #1000
+ 664 003c 28BF     		it	cs
+ 665 003e 4FF47A72 		movcs	r2, #1000
+ 666 0042 8A80     		strh	r2, [r1, #4]	@ movhi
+ 667 0044 E26B     		ldr	r2, [r4, #60]
+ 668 0046 D380     		strh	r3, [r2, #6]	@ movhi
+ 669 0048 E36B     		ldr	r3, [r4, #60]
+ 670 004a BDF83020 		ldrh	r2, [sp, #48]
+ 671 004e 1A81     		strh	r2, [r3, #8]	@ movhi
+ 672 0050 E36B     		ldr	r3, [r4, #60]
+ 673 0052 BDF83420 		ldrh	r2, [sp, #52]
+ 674 0056 5A81     		strh	r2, [r3, #10]	@ movhi
+ 675 0058 E36B     		ldr	r3, [r4, #60]
+ 676 005a 5F73     		strb	r7, [r3, #13]
+ 677 005c E36B     		ldr	r3, [r4, #60]
+ 678 005e 9DF83C20 		ldrb	r2, [sp, #60]	@ zero_extendqisi2
+ 679 0062 1A73     		strb	r2, [r3, #12]
+ 680 0064 E36B     		ldr	r3, [r4, #60]
+ 681 0066 987C     		ldrb	r0, [r3, #18]	@ zero_extendqisi2
+ 682 0068 0428     		cmp	r0, #4
+ 683 006a 00F28B82 		bhi	.L161
+ 684 006e DFE800F0 		tbb	[pc, r0]
+ 685              	.L103:
+ 686 0072 45       		.byte	(.L107-.L103)/2
+ 687 0073 2A       		.byte	(.L106-.L103)/2
+ 688 0074 37       		.byte	(.L105-.L103)/2
+ 689 0075 03       		.byte	(.L104-.L103)/2
+ 690 0076 1D       		.byte	(.L102-.L103)/2
+ 691 0077 00       		.p2align 1
+ 692              	.L104:
+ 693 0078 5A69     		ldr	r2, [r3, #20]
+ 694 007a 002A     		cmp	r2, #0
+ 695 007c 00F07B82 		beq	.L101
+ 696 0080 04F11809 		add	r9, r4, #24
+ 697 0084 04F12808 		add	r8, r4, #40
+ 698 0088 5779     		ldrb	r7, [r2, #5]	@ zero_extendqisi2
+ 699 008a 92F806B0 		ldrb	fp, [r2, #6]	@ zero_extendqisi2
+ 700 008e 92F804A0 		ldrb	r10, [r2, #4]	@ zero_extendqisi2
+ 701              	.L113:
+ 702 0092 94F83820 		ldrb	r2, [r4, #56]	@ zero_extendqisi2
+ 703 0096 052A     		cmp	r2, #5
+ 704 0098 00F25982 		bhi	.L114
+ 705 009c DFE812F0 		tbh	[pc, r2, lsl #1]
+ 706              	.L116:
+ 707 00a0 4400     		.2byte	(.L119-.L116)/2
+ 708 00a2 5702     		.2byte	(.L114-.L116)/2
+ 709 00a4 5702     		.2byte	(.L114-.L116)/2
+ 710 00a6 A100     		.2byte	(.L118-.L116)/2
+ 711 00a8 7700     		.2byte	(.L117-.L116)/2
+ 712 00aa 1202     		.2byte	(.L115-.L116)/2
+ 713              		.p2align 1
+ 714              	.L102:
+ 715 00ac 5A69     		ldr	r2, [r3, #20]
+ 716 00ae 002A     		cmp	r2, #0
+ 717 00b0 00F06A82 		beq	.L176
+ 718 00b4 04F11809 		add	r9, r4, #24
+ 719 00b8 04F12808 		add	r8, r4, #40
+ 720 00bc 5779     		ldrb	r7, [r2, #5]	@ zero_extendqisi2
+ 721 00be 92F804A0 		ldrb	r10, [r2, #4]	@ zero_extendqisi2
+ 722 00c2 BB46     		mov	fp, r7
+ 723 00c4 E5E7     		b	.L113
+ 724              	.L106:
+ 725 00c6 5A69     		ldr	r2, [r3, #20]
+ 726 00c8 002A     		cmp	r2, #0
+ 727 00ca 00F05F82 		beq	.L177
+ 728 00ce 04F11809 		add	r9, r4, #24
+ 729 00d2 9778     		ldrb	r7, [r2, #2]	@ zero_extendqisi2
+ 730 00d4 4FF00008 		mov	r8, #0
+ 731 00d8 4FF0280A 		mov	r10, #40
+ 732 00dc D346     		mov	fp, r10
+ 733 00de D8E7     		b	.L113
+ 734              	.L105:
+ 735 00e0 5A69     		ldr	r2, [r3, #20]
+ 736 00e2 002A     		cmp	r2, #0
+ 737 00e4 00F05482 		beq	.L178
+ 738 00e8 04F12808 		add	r8, r4, #40
+ 739 00ec 92F802B0 		ldrb	fp, [r2, #2]	@ zero_extendqisi2
+ 740 00f0 4FF00009 		mov	r9, #0
+ 741 00f4 4FF0280A 		mov	r10, #40
+ 742 00f8 5746     		mov	r7, r10
+ 743 00fa CAE7     		b	.L113
+ 744              	.L107:
+ 745 00fc 5A69     		ldr	r2, [r3, #20]
+ 746 00fe 002A     		cmp	r2, #0
+ 747 0100 00F04882 		beq	.L179
+ 748 0104 04F11809 		add	r9, r4, #24
+ 749 0108 9778     		ldrb	r7, [r2, #2]	@ zero_extendqisi2
+ 750 010a 282F     		cmp	r7, #40
+ 751 010c 05D0     		beq	.L180
+ 752 010e 4FF00008 		mov	r8, #0
+ 753 0112 4FF0280A 		mov	r10, #40
+ 754 0116 D346     		mov	fp, r10
+ 755 0118 BBE7     		b	.L113
+ 756              	.L180:
+ 757 011a BB46     		mov	fp, r7
+ 758 011c 5778     		ldrb	r7, [r2, #1]	@ zero_extendqisi2
+ 759 011e 4FF00008 		mov	r8, #0
+ 760 0122 4FF0280A 		mov	r10, #40
+ 761 0126 B4E7     		b	.L113
+ 762              	.L119:
+ 763 0128 0121     		movs	r1, #1
+ 764 012a 2046     		mov	r0, r4
+ 765 012c FFF7FEFF 		bl	motor_control_inhibit
+ 766 0130 2046     		mov	r0, r4
+ 767 0132 FFF7FEFF 		bl	motor_stop
+ 768 0136 0023     		movs	r3, #0
+ 769 0138 2375     		strb	r3, [r4, #20]
+ 770 013a 2361     		str	r3, [r4, #16]
+ 771 013c AB53     		strh	r3, [r5, r6]	@ movhi
+ 772 013e 0322     		movs	r2, #3
+ 773 0140 4FF4FA71 		mov	r1, #500
+ 774 0144 A068     		ldr	r0, [r4, #8]
+ 775 0146 FFF7FEFF 		bl	user_time_past
+ 776 014a E0B1     		cbz	r0, .L120
+ 777 014c B9F1000F 		cmp	r9, #0
+ 778 0150 04D0     		beq	.L121
+ 779 0152 3846     		mov	r0, r7
+ 780 0154 FFF7FEFF 		bl	user_ai_get
+ 781 0158 C9F80C00 		str	r0, [r9, #12]
+ 782              	.L121:
+ 783 015c B8F1000F 		cmp	r8, #0
+ 784 0160 04D0     		beq	.L122
+ 785 0162 5846     		mov	r0, fp
+ 786 0164 FFF7FEFF 		bl	user_ai_get
+ 787 0168 C8F80C00 		str	r0, [r8, #12]
+ 788              	.L122:
+ 789 016c 0021     		movs	r1, #0
+ 790 016e 2046     		mov	r0, r4
+ 791 0170 FFF7FEFF 		bl	motor_control_inhibit
+ 792 0174 0321     		movs	r1, #3
+ 793 0176 04F10800 		add	r0, r4, #8
+ 794 017a FFF7FEFF 		bl	user_set_timestamp
+ 795 017e 0423     		movs	r3, #4
+ 796 0180 84F83830 		strb	r3, [r4, #56]
+ 797 0184 EDE1     		b	.L123
+ 798              	.L120:
+ 799 0186 0023     		movs	r3, #0
+ 800 0188 84F83830 		strb	r3, [r4, #56]
+ 801 018c E9E1     		b	.L123
+ 802              	.L117:
+ 803 018e 0328     		cmp	r0, #3
+ 804 0190 03D0     		beq	.L124
+ 805 0192 0323     		movs	r3, #3
+ 806 0194 84F83830 		strb	r3, [r4, #56]
+ 807 0198 E3E1     		b	.L123
+ 808              	.L124:
+ 809 019a 2046     		mov	r0, r4
+ 810 019c FFF7FEFF 		bl	motor_stop
+ 811 01a0 0023     		movs	r3, #0
+ 812 01a2 2375     		strb	r3, [r4, #20]
+ 813 01a4 2361     		str	r3, [r4, #16]
+ 814 01a6 0322     		movs	r2, #3
+ 815 01a8 6421     		movs	r1, #100
+ 816 01aa A068     		ldr	r0, [r4, #8]
+ 817 01ac FFF7FEFF 		bl	user_time_past
+ 818 01b0 0128     		cmp	r0, #1
+ 819 01b2 0AD0     		beq	.L181
+ 820 01b4 0423     		movs	r3, #4
+ 821 01b6 84F83830 		strb	r3, [r4, #56]
+ 822              	.L127:
+ 823 01ba E36B     		ldr	r3, [r4, #60]
+ 824 01bc 5B7B     		ldrb	r3, [r3, #13]	@ zero_extendqisi2
+ 825 01be A278     		ldrb	r2, [r4, #2]	@ zero_extendqisi2
+ 826 01c0 9A42     		cmp	r2, r3
+ 827 01c2 00F0CE81 		beq	.L123
+ 828 01c6 A370     		strb	r3, [r4, #2]
+ 829 01c8 CBE1     		b	.L123
+ 830              	.L181:
+ 831 01ca 5046     		mov	r0, r10
+ 832 01cc FFF7FEFF 		bl	user_ai_get_mv
+ 833 01d0 0928     		cmp	r0, #9
+ 834 01d2 8FBF     		iteee	hi
+ 835 01d4 0323     		movhi	r3, #3
+ 836 01d6 0823     		movls	r3, #8
+ 837 01d8 2375     		strbls	r3, [r4, #20]
+ 838 01da 0523     		movls	r3, #5
+ 839 01dc 84F83830 		strb	r3, [r4, #56]
+ 840 01e0 EBE7     		b	.L127
+ 841              	.L118:
+ 842 01e2 B9F1000F 		cmp	r9, #0
+ 843 01e6 0AD0     		beq	.L128
+ 844 01e8 DB8B     		ldrh	r3, [r3, #30]
+ 845 01ea 0093     		str	r3, [sp]
+ 846 01ec 09F10C03 		add	r3, r9, #12
+ 847 01f0 09F10802 		add	r2, r9, #8
+ 848 01f4 09F10401 		add	r1, r9, #4
+ 849 01f8 3846     		mov	r0, r7
+ 850 01fa FFF7FEFF 		bl	motor_filter_current
+ 851              	.L128:
+ 852 01fe B8F1000F 		cmp	r8, #0
+ 853 0202 0BD0     		beq	.L129
+ 854 0204 E36B     		ldr	r3, [r4, #60]
+ 855 0206 DB8B     		ldrh	r3, [r3, #30]
+ 856 0208 0093     		str	r3, [sp]
+ 857 020a 08F10C03 		add	r3, r8, #12
+ 858 020e 08F10802 		add	r2, r8, #8
+ 859 0212 08F10401 		add	r1, r8, #4
+ 860 0216 5846     		mov	r0, fp
+ 861 0218 FFF7FEFF 		bl	motor_filter_current
+ 862              	.L129:
+ 863 021c 04F14409 		add	r9, r4, #68
+ 864 0220 E16B     		ldr	r1, [r4, #60]
+ 865 0222 4FF4FA63 		mov	r3, #2000
+ 866 0226 4A46     		mov	r2, r9
+ 867 0228 098B     		ldrh	r1, [r1, #24]
+ 868 022a 2046     		mov	r0, r4
+ 869 022c FFF7FEFF 		bl	motor_check_overcurrent
+ 870 0230 04F14808 		add	r8, r4, #72
+ 871 0234 E16B     		ldr	r1, [r4, #60]
+ 872 0236 41F28833 		movw	r3, #5000
+ 873 023a 4246     		mov	r2, r8
+ 874 023c 498B     		ldrh	r1, [r1, #26]
+ 875 023e 2046     		mov	r0, r4
+ 876 0240 FFF7FEFF 		bl	motor_check_overcurrent
+ 877 0244 04F14C07 		add	r7, r4, #76
+ 878 0248 E16B     		ldr	r1, [r4, #60]
+ 879 024a 47F23053 		movw	r3, #30000
+ 880 024e 3A46     		mov	r2, r7
+ 881 0250 898B     		ldrh	r1, [r1, #28]
+ 882 0252 2046     		mov	r0, r4
+ 883 0254 FFF7FEFF 		bl	motor_check_overcurrent
+ 884 0258 E36B     		ldr	r3, [r4, #60]
+ 885 025a 0322     		movs	r2, #3
+ 886 025c 998B     		ldrh	r1, [r3, #28]
+ 887 025e 206D     		ldr	r0, [r4, #80]
+ 888 0260 FFF7FEFF 		bl	user_time_past
+ 889 0264 10B1     		cbz	r0, .L130
+ 890 0266 94F84030 		ldrb	r3, [r4, #64]	@ zero_extendqisi2
+ 891 026a BBB1     		cbz	r3, .L182
+ 892              	.L130:
+ 893 026c E36B     		ldr	r3, [r4, #60]
+ 894 026e 9B88     		ldrh	r3, [r3, #4]
+ 895 0270 002B     		cmp	r3, #0
+ 896 0272 41D1     		bne	.L131
+ 897 0274 AB5B     		ldrh	r3, [r5, r6]
+ 898 0276 EBB1     		cbz	r3, .L183
+ 899              	.L132:
+ 900 0278 E06B     		ldr	r0, [r4, #60]
+ 901 027a C188     		ldrh	r1, [r0, #6]
+ 902 027c 0029     		cmp	r1, #0
+ 903 027e 40D1     		bne	.L133
+ 904 0280 8388     		ldrh	r3, [r0, #4]
+ 905 0282 AB53     		strh	r3, [r5, r6]	@ movhi
+ 906              	.L134:
+ 907 0284 E16B     		ldr	r1, [r4, #60]
+ 908 0286 8B7C     		ldrb	r3, [r1, #18]	@ zero_extendqisi2
+ 909 0288 042B     		cmp	r3, #4
+ 910 028a 00F2CE80 		bhi	.L136
+ 911 028e DFE813F0 		tbh	[pc, r3, lsl #1]
+ 912              	.L138:
+ 913 0292 F000     		.2byte	(.L142-.L138)/2
+ 914 0294 B700     		.2byte	(.L141-.L138)/2
+ 915 0296 D400     		.2byte	(.L140-.L138)/2
+ 916 0298 5400     		.2byte	(.L139-.L138)/2
+ 917 029a 7B00     		.2byte	(.L137-.L138)/2
+ 918              		.p2align 1
+ 919              	.L182:
+ 920 029c 0321     		movs	r1, #3
+ 921 029e 3846     		mov	r0, r7
+ 922 02a0 FFF7FEFF 		bl	user_set_timestamp
+ 923 02a4 0321     		movs	r1, #3
+ 924 02a6 04F15000 		add	r0, r4, #80
+ 925 02aa FFF7FEFF 		bl	user_set_timestamp
+ 926 02ae DDE7     		b	.L130
+ 927              	.L187:
+ 928              		.align	2
+ 929              	.L186:
+ 930 02b0 00000000 		.word	.LANCHOR0
+ 931              	.L183:
+ 932 02b4 0321     		movs	r1, #3
+ 933 02b6 4846     		mov	r0, r9
+ 934 02b8 FFF7FEFF 		bl	user_set_timestamp
+ 935 02bc 0321     		movs	r1, #3
+ 936 02be 4046     		mov	r0, r8
+ 937 02c0 FFF7FEFF 		bl	user_set_timestamp
+ 938 02c4 0321     		movs	r1, #3
+ 939 02c6 3846     		mov	r0, r7
+ 940 02c8 FFF7FEFF 		bl	user_set_timestamp
+ 941 02cc 0321     		movs	r1, #3
+ 942 02ce 04F15000 		add	r0, r4, #80
+ 943 02d2 FFF7FEFF 		bl	user_set_timestamp
+ 944 02d6 0021     		movs	r1, #0
+ 945 02d8 2046     		mov	r0, r4
+ 946 02da FFF7FEFF 		bl	motor_control_inhibit
+ 947 02de E36B     		ldr	r3, [r4, #60]
+ 948 02e0 1B7B     		ldrb	r3, [r3, #12]	@ zero_extendqisi2
+ 949 02e2 012B     		cmp	r3, #1
+ 950 02e4 C8D1     		bne	.L132
+ 951 02e6 0321     		movs	r1, #3
+ 952 02e8 04F10800 		add	r0, r4, #8
+ 953 02ec FFF7FEFF 		bl	user_set_timestamp
+ 954 02f0 0423     		movs	r3, #4
+ 955 02f2 84F83830 		strb	r3, [r4, #56]
+ 956 02f6 34E1     		b	.L123
+ 957              	.L131:
+ 958 02f8 0121     		movs	r1, #1
+ 959 02fa 2046     		mov	r0, r4
+ 960 02fc FFF7FEFF 		bl	motor_control_inhibit
+ 961 0300 BAE7     		b	.L132
+ 962              	.L133:
+ 963 0302 427B     		ldrb	r2, [r0, #13]	@ zero_extendqisi2
+ 964 0304 A378     		ldrb	r3, [r4, #2]	@ zero_extendqisi2
+ 965 0306 9A42     		cmp	r2, r3
+ 966 0308 0ED0     		beq	.L135
+ 967 030a 4389     		ldrh	r3, [r0, #10]
+ 968 030c 0289     		ldrh	r2, [r0, #8]
+ 969 030e 0194     		str	r4, [sp, #4]
+ 970 0310 201D     		adds	r0, r4, #4
+ 971 0312 0090     		str	r0, [sp]
+ 972 0314 0020     		movs	r0, #0
+ 973 0316 FFF7FEFF 		bl	motor_ramp_up_dwn
+ 974 031a AB5B     		ldrh	r3, [r5, r6]
+ 975 031c 002B     		cmp	r3, #0
+ 976 031e B1D1     		bne	.L134
+ 977 0320 E36B     		ldr	r3, [r4, #60]
+ 978 0322 5B7B     		ldrb	r3, [r3, #13]	@ zero_extendqisi2
+ 979 0324 A370     		strb	r3, [r4, #2]
+ 980 0326 ADE7     		b	.L134
+ 981              	.L135:
+ 982 0328 4389     		ldrh	r3, [r0, #10]
+ 983 032a 0289     		ldrh	r2, [r0, #8]
+ 984 032c 8088     		ldrh	r0, [r0, #4]
+ 985 032e 0194     		str	r4, [sp, #4]
+ 986 0330 271D     		adds	r7, r4, #4
+ 987 0332 0097     		str	r7, [sp]
+ 988 0334 FFF7FEFF 		bl	motor_ramp_up_dwn
+ 989 0338 A4E7     		b	.L134
+ 990              	.L139:
+ 991 033a 4B69     		ldr	r3, [r1, #20]
+ 992 033c 002B     		cmp	r3, #0
+ 993 033e 74D0     		beq	.L136
+ 994 0340 A278     		ldrb	r2, [r4, #2]	@ zero_extendqisi2
+ 995 0342 82B9     		cbnz	r2, .L143
+ 996 0344 4988     		ldrh	r1, [r1, #2]
+ 997 0346 9878     		ldrb	r0, [r3, #2]	@ zero_extendqisi2
+ 998 0348 FFF7FEFF 		bl	user_pwm_set_freq
+ 999 034c E36B     		ldr	r3, [r4, #60]
+ 1000 034e 5B69     		ldr	r3, [r3, #20]
+ 1001 0350 A95B     		ldrh	r1, [r5, r6]
+ 1002 0352 9878     		ldrb	r0, [r3, #2]	@ zero_extendqisi2
+ 1003 0354 FFF7FEFF 		bl	user_pwm_set_duty
+ 1004 0358 E36B     		ldr	r3, [r4, #60]
+ 1005 035a 5B69     		ldr	r3, [r3, #20]
+ 1006 035c 0021     		movs	r1, #0
+ 1007 035e D878     		ldrb	r0, [r3, #3]	@ zero_extendqisi2
+ 1008 0360 FFF7FEFF 		bl	user_pwm_set_duty
+ 1009 0364 61E0     		b	.L136
+ 1010              	.L143:
+ 1011 0366 4988     		ldrh	r1, [r1, #2]
+ 1012 0368 D878     		ldrb	r0, [r3, #3]	@ zero_extendqisi2
+ 1013 036a FFF7FEFF 		bl	user_pwm_set_freq
+ 1014 036e E36B     		ldr	r3, [r4, #60]
+ 1015 0370 5B69     		ldr	r3, [r3, #20]
+ 1016 0372 A95B     		ldrh	r1, [r5, r6]
+ 1017 0374 D878     		ldrb	r0, [r3, #3]	@ zero_extendqisi2
+ 1018 0376 FFF7FEFF 		bl	user_pwm_set_duty
+ 1019 037a E36B     		ldr	r3, [r4, #60]
+ 1020 037c 5B69     		ldr	r3, [r3, #20]
+ 1021 037e 0021     		movs	r1, #0
+ 1022 0380 9878     		ldrb	r0, [r3, #2]	@ zero_extendqisi2
+ 1023 0382 FFF7FEFF 		bl	user_pwm_set_duty
+ 1024 0386 50E0     		b	.L136
+ 1025              	.L137:
+ 1026 0388 4B69     		ldr	r3, [r1, #20]
+ 1027 038a 002B     		cmp	r3, #0
+ 1028 038c 4DD0     		beq	.L136
+ 1029 038e A278     		ldrb	r2, [r4, #2]	@ zero_extendqisi2
+ 1030 0390 D2B9     		cbnz	r2, .L144
+ 1031 0392 4988     		ldrh	r1, [r1, #2]
+ 1032 0394 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 1033 0396 FFF7FEFF 		bl	user_pwm_set_pwm
+ 1034 039a E36B     		ldr	r3, [r4, #60]
+ 1035 039c 5869     		ldr	r0, [r3, #20]
+ 1036 039e 4FF47A72 		mov	r2, #1000
+ 1037 03a2 5988     		ldrh	r1, [r3, #2]
+ 1038 03a4 8078     		ldrb	r0, [r0, #2]	@ zero_extendqisi2
+ 1039 03a6 FFF7FEFF 		bl	user_pwm_set_pwm
+ 1040 03aa E36B     		ldr	r3, [r4, #60]
+ 1041 03ac 5869     		ldr	r0, [r3, #20]
+ 1042 03ae AA5B     		ldrh	r2, [r5, r6]
+ 1043 03b0 5988     		ldrh	r1, [r3, #2]
+ 1044 03b2 4078     		ldrb	r0, [r0, #1]	@ zero_extendqisi2
+ 1045 03b4 FFF7FEFF 		bl	user_pwm_set_pwm
+ 1046 03b8 E36B     		ldr	r3, [r4, #60]
+ 1047 03ba 5869     		ldr	r0, [r3, #20]
+ 1048 03bc 0022     		movs	r2, #0
+ 1049 03be 5988     		ldrh	r1, [r3, #2]
+ 1050 03c0 C078     		ldrb	r0, [r0, #3]	@ zero_extendqisi2
+ 1051 03c2 FFF7FEFF 		bl	user_pwm_set_pwm
+ 1052 03c6 30E0     		b	.L136
+ 1053              	.L144:
+ 1054 03c8 4FF47A72 		mov	r2, #1000
+ 1055 03cc 4988     		ldrh	r1, [r1, #2]
+ 1056 03ce 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 1057 03d0 FFF7FEFF 		bl	user_pwm_set_pwm
+ 1058 03d4 E36B     		ldr	r3, [r4, #60]
+ 1059 03d6 5869     		ldr	r0, [r3, #20]
+ 1060 03d8 0022     		movs	r2, #0
+ 1061 03da 5988     		ldrh	r1, [r3, #2]
+ 1062 03dc 8078     		ldrb	r0, [r0, #2]	@ zero_extendqisi2
+ 1063 03de FFF7FEFF 		bl	user_pwm_set_pwm
+ 1064 03e2 E36B     		ldr	r3, [r4, #60]
+ 1065 03e4 5869     		ldr	r0, [r3, #20]
+ 1066 03e6 0022     		movs	r2, #0
+ 1067 03e8 5988     		ldrh	r1, [r3, #2]
+ 1068 03ea 4078     		ldrb	r0, [r0, #1]	@ zero_extendqisi2
+ 1069 03ec FFF7FEFF 		bl	user_pwm_set_pwm
+ 1070 03f0 E36B     		ldr	r3, [r4, #60]
+ 1071 03f2 5869     		ldr	r0, [r3, #20]
+ 1072 03f4 AA5B     		ldrh	r2, [r5, r6]
+ 1073 03f6 5988     		ldrh	r1, [r3, #2]
+ 1074 03f8 C078     		ldrb	r0, [r0, #3]	@ zero_extendqisi2
+ 1075 03fa FFF7FEFF 		bl	user_pwm_set_pwm
+ 1076 03fe 14E0     		b	.L136
+ 1077              	.L141:
+ 1078 0400 4B69     		ldr	r3, [r1, #20]
+ 1079 0402 93B1     		cbz	r3, .L136
+ 1080 0404 A278     		ldrb	r2, [r4, #2]	@ zero_extendqisi2
+ 1081 0406 B2B9     		cbnz	r2, .L167
+ 1082 0408 AD5B     		ldrh	r5, [r5, r6]
+ 1083              	.L145:
+ 1084 040a 0121     		movs	r1, #1
+ 1085 040c 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 1086 040e FFF7FEFF 		bl	user_do_set
+ 1087 0412 E36B     		ldr	r3, [r4, #60]
+ 1088 0414 5A69     		ldr	r2, [r3, #20]
+ 1089 0416 5988     		ldrh	r1, [r3, #2]
+ 1090 0418 5078     		ldrb	r0, [r2, #1]	@ zero_extendqisi2
+ 1091 041a FFF7FEFF 		bl	user_pwm_set_freq
+ 1092 041e E36B     		ldr	r3, [r4, #60]
+ 1093 0420 5B69     		ldr	r3, [r3, #20]
+ 1094 0422 2946     		mov	r1, r5
+ 1095 0424 5878     		ldrb	r0, [r3, #1]	@ zero_extendqisi2
+ 1096 0426 FFF7FEFF 		bl	user_pwm_set_duty
+ 1097              	.L136:
+ 1098 042a A378     		ldrb	r3, [r4, #2]	@ zero_extendqisi2
+ 1099 042c 002B     		cmp	r3, #0
+ 1100 042e 33D1     		bne	.L148
+ 1101 0430 236A     		ldr	r3, [r4, #32]
+ 1102 0432 2361     		str	r3, [r4, #16]
+ 1103 0434 95E0     		b	.L123
+ 1104              	.L167:
+ 1105 0436 0025     		movs	r5, #0
+ 1106 0438 E7E7     		b	.L145
+ 1107              	.L140:
+ 1108 043a 4B69     		ldr	r3, [r1, #20]
+ 1109 043c 002B     		cmp	r3, #0
+ 1110 043e F4D0     		beq	.L136
+ 1111 0440 A278     		ldrb	r2, [r4, #2]	@ zero_extendqisi2
+ 1112 0442 A2B9     		cbnz	r2, .L168
+ 1113 0444 AD5B     		ldrh	r5, [r5, r6]
+ 1114 0446 C5F57A75 		rsb	r5, r5, #1000
+ 1115 044a ADB2     		uxth	r5, r5
+ 1116              	.L146:
+ 1117 044c 0121     		movs	r1, #1
+ 1118 044e 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 1119 0450 FFF7FEFF 		bl	user_do_set
+ 1120 0454 E36B     		ldr	r3, [r4, #60]
+ 1121 0456 5A69     		ldr	r2, [r3, #20]
+ 1122 0458 5988     		ldrh	r1, [r3, #2]
+ 1123 045a 5078     		ldrb	r0, [r2, #1]	@ zero_extendqisi2
+ 1124 045c FFF7FEFF 		bl	user_pwm_set_freq
+ 1125 0460 E36B     		ldr	r3, [r4, #60]
+ 1126 0462 5B69     		ldr	r3, [r3, #20]
+ 1127 0464 2946     		mov	r1, r5
+ 1128 0466 5878     		ldrb	r0, [r3, #1]	@ zero_extendqisi2
+ 1129 0468 FFF7FEFF 		bl	user_pwm_set_duty
+ 1130 046c DDE7     		b	.L136
+ 1131              	.L168:
+ 1132 046e 0025     		movs	r5, #0
+ 1133 0470 ECE7     		b	.L146
+ 1134              	.L142:
+ 1135 0472 4B69     		ldr	r3, [r1, #20]
+ 1136 0474 002B     		cmp	r3, #0
+ 1137 0476 D8D0     		beq	.L136
+ 1138 0478 A278     		ldrb	r2, [r4, #2]	@ zero_extendqisi2
+ 1139 047a 5AB9     		cbnz	r2, .L169
+ 1140 047c AD5B     		ldrh	r5, [r5, r6]
+ 1141              	.L147:
+ 1142 047e 4988     		ldrh	r1, [r1, #2]
+ 1143 0480 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 1144 0482 FFF7FEFF 		bl	user_pwm_set_freq
+ 1145 0486 E36B     		ldr	r3, [r4, #60]
+ 1146 0488 5B69     		ldr	r3, [r3, #20]
+ 1147 048a 2946     		mov	r1, r5
+ 1148 048c 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 1149 048e FFF7FEFF 		bl	user_pwm_set_duty
+ 1150 0492 CAE7     		b	.L136
+ 1151              	.L169:
+ 1152 0494 0025     		movs	r5, #0
+ 1153 0496 F2E7     		b	.L147
+ 1154              	.L148:
+ 1155 0498 012B     		cmp	r3, #1
+ 1156 049a 05D0     		beq	.L184
+ 1157 049c E26B     		ldr	r2, [r4, #60]
+ 1158 049e 527B     		ldrb	r2, [r2, #13]	@ zero_extendqisi2
+ 1159 04a0 9342     		cmp	r3, r2
+ 1160 04a2 04D0     		beq	.L150
+ 1161 04a4 A270     		strb	r2, [r4, #2]
+ 1162 04a6 5CE0     		b	.L123
+ 1163              	.L184:
+ 1164 04a8 236B     		ldr	r3, [r4, #48]
+ 1165 04aa 2361     		str	r3, [r4, #16]
+ 1166 04ac 59E0     		b	.L123
+ 1167              	.L150:
+ 1168 04ae 0523     		movs	r3, #5
+ 1169 04b0 84F83830 		strb	r3, [r4, #56]
+ 1170 04b4 0A23     		movs	r3, #10
+ 1171 04b6 2375     		strb	r3, [r4, #20]
+ 1172 04b8 2046     		mov	r0, r4
+ 1173 04ba FFF7FEFF 		bl	motor_stop
+ 1174 04be 0023     		movs	r3, #0
+ 1175 04c0 2361     		str	r3, [r4, #16]
+ 1176 04c2 4EE0     		b	.L123
+ 1177              	.L115:
+ 1178 04c4 0321     		movs	r1, #3
+ 1179 04c6 04F14400 		add	r0, r4, #68
+ 1180 04ca FFF7FEFF 		bl	user_set_timestamp
+ 1181 04ce 0321     		movs	r1, #3
+ 1182 04d0 04F14800 		add	r0, r4, #72
+ 1183 04d4 FFF7FEFF 		bl	user_set_timestamp
+ 1184 04d8 0321     		movs	r1, #3
+ 1185 04da 04F14C00 		add	r0, r4, #76
+ 1186 04de FFF7FEFF 		bl	user_set_timestamp
+ 1187 04e2 0321     		movs	r1, #3
+ 1188 04e4 04F15000 		add	r0, r4, #80
+ 1189 04e8 FFF7FEFF 		bl	user_set_timestamp
+ 1190 04ec 2046     		mov	r0, r4
+ 1191 04ee FFF7FEFF 		bl	motor_stop
+ 1192 04f2 0021     		movs	r1, #0
+ 1193 04f4 2046     		mov	r0, r4
+ 1194 04f6 FFF7FEFF 		bl	motor_control_inhibit
+ 1195 04fa 0023     		movs	r3, #0
+ 1196 04fc 2361     		str	r3, [r4, #16]
+ 1197 04fe AB53     		strh	r3, [r5, r6]	@ movhi
+ 1198 0500 2362     		str	r3, [r4, #32]
+ 1199 0502 2363     		str	r3, [r4, #48]
+ 1200 0504 E36B     		ldr	r3, [r4, #60]
+ 1201 0506 5A7B     		ldrb	r2, [r3, #13]	@ zero_extendqisi2
+ 1202 0508 A178     		ldrb	r1, [r4, #2]	@ zero_extendqisi2
+ 1203 050a 9142     		cmp	r1, r2
+ 1204 050c 18BF     		it	ne
+ 1205 050e A270     		strbne	r2, [r4, #2]
+ 1206 0510 227B     		ldrb	r2, [r4, #12]	@ zero_extendqisi2
+ 1207 0512 82B9     		cbnz	r2, .L152
+ 1208 0514 9A88     		ldrh	r2, [r3, #4]
+ 1209 0516 22BB     		cbnz	r2, .L123
+ 1210 0518 0122     		movs	r2, #1
+ 1211 051a 2273     		strb	r2, [r4, #12]
+ 1212              	.L153:
+ 1213 051c 9A88     		ldrh	r2, [r3, #4]
+ 1214 051e 02B3     		cbz	r2, .L123
+ 1215 0520 0022     		movs	r2, #0
+ 1216 0522 2273     		strb	r2, [r4, #12]
+ 1217 0524 1B7B     		ldrb	r3, [r3, #12]	@ zero_extendqisi2
+ 1218 0526 012B     		cmp	r3, #1
+ 1219 0528 08D0     		beq	.L185
+ 1220 052a 0323     		movs	r3, #3
+ 1221 052c 84F83830 		strb	r3, [r4, #56]
+ 1222              	.L155:
+ 1223 0530 0023     		movs	r3, #0
+ 1224 0532 2375     		strb	r3, [r4, #20]
+ 1225 0534 15E0     		b	.L123
+ 1226              	.L152:
+ 1227 0536 012A     		cmp	r2, #1
+ 1228 0538 13D1     		bne	.L123
+ 1229 053a EFE7     		b	.L153
+ 1230              	.L185:
+ 1231 053c 0321     		movs	r1, #3
+ 1232 053e 04F10800 		add	r0, r4, #8
+ 1233 0542 FFF7FEFF 		bl	user_set_timestamp
+ 1234 0546 0423     		movs	r3, #4
+ 1235 0548 84F83830 		strb	r3, [r4, #56]
+ 1236 054c F0E7     		b	.L155
+ 1237              	.L114:
+ 1238 054e 0523     		movs	r3, #5
+ 1239 0550 84F83830 		strb	r3, [r4, #56]
+ 1240 0554 0A23     		movs	r3, #10
+ 1241 0556 2375     		strb	r3, [r4, #20]
+ 1242 0558 2046     		mov	r0, r4
+ 1243 055a FFF7FEFF 		bl	motor_stop
+ 1244 055e 0023     		movs	r3, #0
+ 1245 0560 AB53     		strh	r3, [r5, r6]	@ movhi
+ 1246              	.L123:
+ 1247 0562 109B     		ldr	r3, [sp, #64]
+ 1248 0564 13B1     		cbz	r3, .L156
+ 1249 0566 2369     		ldr	r3, [r4, #16]
+ 1250 0568 109A     		ldr	r2, [sp, #64]
+ 1251 056a 1360     		str	r3, [r2]
+ 1252              	.L156:
+ 1253 056c 207D     		ldrb	r0, [r4, #20]	@ zero_extendqisi2
+ 1254 056e 02E0     		b	.L101
+ 1255              	.L157:
+ 1256 0570 0220     		movs	r0, #2
+ 1257 0572 00E0     		b	.L101
+ 1258              	.L158:
+ 1259 0574 0320     		movs	r0, #3
+ 1260              	.L101:
+ 1261 0576 03B0     		add	sp, sp, #12
+ 1262              		@ sp needed
+ 1263 0578 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 1264              	.L159:
+ 1265 057c 0620     		movs	r0, #6
+ 1266 057e FAE7     		b	.L101
+ 1267              	.L160:
+ 1268 0580 0520     		movs	r0, #5
+ 1269 0582 F8E7     		b	.L101
+ 1270              	.L161:
+ 1271 0584 0420     		movs	r0, #4
+ 1272 0586 F6E7     		b	.L101
+ 1273              	.L176:
+ 1274 0588 0320     		movs	r0, #3
+ 1275 058a F4E7     		b	.L101
+ 1276              	.L177:
+ 1277 058c 0320     		movs	r0, #3
+ 1278 058e F2E7     		b	.L101
+ 1279              	.L178:
+ 1280 0590 0320     		movs	r0, #3
+ 1281 0592 F0E7     		b	.L101
+ 1282              	.L179:
+ 1283 0594 0320     		movs	r0, #3
+ 1284 0596 EEE7     		b	.L101
+ 1286              		.section	.text.motor_update,"ax",%progbits
+ 1287              		.align	1
+ 1288              		.global	motor_update
+ 1289              		.syntax unified
+ 1290              		.thumb
+ 1291              		.thumb_func
+ 1292              		.fpu fpv4-sp-d16
+ 1294              	motor_update:
+ 1295              		@ args = 0, pretend = 0, frame = 0
+ 1296              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1297 0000 0F4B     		ldr	r3, .L197
+ 1298 0002 1B68     		ldr	r3, [r3]
+ 1299 0004 D3B1     		cbz	r3, .L190
+ 1300 0006 1828     		cmp	r0, #24
+ 1301 0008 01D9     		bls	.L196
+ 1302 000a 0320     		movs	r0, #3
+ 1303 000c 7047     		bx	lr
+ 1304              	.L196:
+ 1305 000e 30B5     		push	{r4, r5, lr}
+ 1306 0010 87B0     		sub	sp, sp, #28
+ 1307 0012 0D46     		mov	r5, r1
+ 1308 0014 5422     		movs	r2, #84
+ 1309 0016 02FB0033 		mla	r3, r2, r0, r3
+ 1310 001a DC6B     		ldr	r4, [r3, #60]
+ 1311 001c E388     		ldrh	r3, [r4, #6]
+ 1312 001e A288     		ldrh	r2, [r4, #4]
+ 1313 0020 6188     		ldrh	r1, [r4, #2]
+ 1314 0022 0495     		str	r5, [sp, #16]
+ 1315 0024 257B     		ldrb	r5, [r4, #12]	@ zero_extendqisi2
+ 1316 0026 0395     		str	r5, [sp, #12]
+ 1317 0028 657B     		ldrb	r5, [r4, #13]	@ zero_extendqisi2
+ 1318 002a 0295     		str	r5, [sp, #8]
+ 1319 002c 6589     		ldrh	r5, [r4, #10]
+ 1320 002e 0195     		str	r5, [sp, #4]
+ 1321 0030 2489     		ldrh	r4, [r4, #8]
+ 1322 0032 0094     		str	r4, [sp]
+ 1323 0034 FFF7FEFF 		bl	motor_cyclic
+ 1324 0038 07B0     		add	sp, sp, #28
+ 1325              		@ sp needed
+ 1326 003a 30BD     		pop	{r4, r5, pc}
+ 1327              	.L190:
+ 1328 003c 0220     		movs	r0, #2
+ 1329 003e 7047     		bx	lr
+ 1330              	.L198:
+ 1331              		.align	2
+ 1332              	.L197:
+ 1333 0040 00000000 		.word	.LANCHOR0
+ 1335              		.section	.bss.motor_handles_ptr,"aw",%nobits
+ 1336              		.align	2
+ 1337              		.set	.LANCHOR0,. + 0
+ 1340              	motor_handles_ptr:
+ 1341 0000 00000000 		.space	4
+ 1342              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc

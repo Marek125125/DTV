@@ -1,0 +1,505 @@
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"modulhardwarecode.c"
+  14              		.text
+  15              		.section	.text.modulhardwarecode_adc_get_vrefh2,"ax",%progbits
+  16              		.align	1
+  17              		.global	modulhardwarecode_adc_get_vrefh2
+  18              		.arch armv7e-m
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv4-sp-d16
+  24              	modulhardwarecode_adc_get_vrefh2:
+  25              		@ args = 0, pretend = 0, frame = 0
+  26              		@ frame_needed = 0, uses_anonymous_args = 0
+  27 0000 38B5     		push	{r3, r4, r5, lr}
+  28 0002 0D46     		mov	r5, r1
+  29 0004 2728     		cmp	r0, #39
+  30 0006 08D8     		bhi	.L2
+  31 0008 0446     		mov	r4, r0
+  32 000a 00EB4003 		add	r3, r0, r0, lsl #1
+  33 000e 094A     		ldr	r2, .L5
+  34 0010 02EB8303 		add	r3, r2, r3, lsl #2
+  35 0014 187A     		ldrb	r0, [r3, #8]	@ zero_extendqisi2
+  36 0016 5828     		cmp	r0, #88
+  37 0018 01D9     		bls	.L4
+  38              	.L2:
+  39 001a 2846     		mov	r0, r5
+  40 001c 38BD     		pop	{r3, r4, r5, pc}
+  41              	.L4:
+  42 001e FFF7FEFF 		bl	user_do_readback
+  43 0022 0028     		cmp	r0, #0
+  44 0024 F9D0     		beq	.L2
+  45 0026 04EB4404 		add	r4, r4, r4, lsl #1
+  46 002a 024B     		ldr	r3, .L5
+  47 002c 03EB8404 		add	r4, r3, r4, lsl #2
+  48 0030 6568     		ldr	r5, [r4, #4]
+  49 0032 F2E7     		b	.L2
+  50              	.L6:
+  51              		.align	2
+  52              	.L5:
+  53 0034 00000000 		.word	.LANCHOR0
+  55              		.section	.text.modulhardwarecode_adc_get_range_switch,"ax",%progbits
+  56              		.align	1
+  57              		.global	modulhardwarecode_adc_get_range_switch
+  58              		.syntax unified
+  59              		.thumb
+  60              		.thumb_func
+  61              		.fpu fpv4-sp-d16
+  63              	modulhardwarecode_adc_get_range_switch:
+  64              		@ args = 0, pretend = 0, frame = 0
+  65              		@ frame_needed = 0, uses_anonymous_args = 0
+  66              		@ link register save eliminated.
+  67 0000 2728     		cmp	r0, #39
+  68 0002 06D8     		bhi	.L9
+  69 0004 00EB4000 		add	r0, r0, r0, lsl #1
+  70 0008 034B     		ldr	r3, .L10
+  71 000a 03EB8000 		add	r0, r3, r0, lsl #2
+  72 000e 007A     		ldrb	r0, [r0, #8]	@ zero_extendqisi2
+  73 0010 7047     		bx	lr
+  74              	.L9:
+  75 0012 5920     		movs	r0, #89
+  76 0014 7047     		bx	lr
+  77              	.L11:
+  78 0016 00BF     		.align	2
+  79              	.L10:
+  80 0018 00000000 		.word	.LANCHOR0
+  82              		.section	.text.modulhardwarecode_adc_set_measurement_range,"ax",%progbits
+  83              		.align	1
+  84              		.global	modulhardwarecode_adc_set_measurement_range
+  85              		.syntax unified
+  86              		.thumb
+  87              		.thumb_func
+  88              		.fpu fpv4-sp-d16
+  90              	modulhardwarecode_adc_set_measurement_range:
+  91              		@ args = 0, pretend = 0, frame = 0
+  92              		@ frame_needed = 0, uses_anonymous_args = 0
+  93 0000 2728     		cmp	r0, #39
+  94 0002 1DD8     		bhi	.L19
+  95 0004 08B5     		push	{r3, lr}
+  96 0006 00EB4003 		add	r3, r0, r0, lsl #1
+  97 000a 0E4A     		ldr	r2, .L22
+  98 000c 02EB8303 		add	r3, r2, r3, lsl #2
+  99 0010 5B68     		ldr	r3, [r3, #4]
+ 100 0012 83B1     		cbz	r3, .L12
+ 101 0014 00EB4000 		add	r0, r0, r0, lsl #1
+ 102 0018 02EB8000 		add	r0, r2, r0, lsl #2
+ 103 001c 007A     		ldrb	r0, [r0, #8]	@ zero_extendqisi2
+ 104 001e 5828     		cmp	r0, #88
+ 105 0020 09D8     		bhi	.L12
+ 106 0022 29B1     		cbz	r1, .L14
+ 107 0024 0129     		cmp	r1, #1
+ 108 0026 07D0     		beq	.L15
+ 109 0028 0021     		movs	r1, #0
+ 110 002a FFF7FEFF 		bl	user_do_set
+ 111 002e 02E0     		b	.L12
+ 112              	.L14:
+ 113 0030 0021     		movs	r1, #0
+ 114 0032 FFF7FEFF 		bl	user_do_set
+ 115              	.L12:
+ 116 0036 08BD     		pop	{r3, pc}
+ 117              	.L15:
+ 118 0038 0121     		movs	r1, #1
+ 119 003a FFF7FEFF 		bl	user_do_set
+ 120 003e FAE7     		b	.L12
+ 121              	.L19:
+ 122 0040 7047     		bx	lr
+ 123              	.L23:
+ 124 0042 00BF     		.align	2
+ 125              	.L22:
+ 126 0044 00000000 		.word	.LANCHOR0
+ 128              		.section	.text.modulhardwarecode_init,"ax",%progbits
+ 129              		.align	1
+ 130              		.global	modulhardwarecode_init
+ 131              		.syntax unified
+ 132              		.thumb
+ 133              		.thumb_func
+ 134              		.fpu fpv4-sp-d16
+ 136              	modulhardwarecode_init:
+ 137              		@ args = 0, pretend = 0, frame = 0
+ 138              		@ frame_needed = 0, uses_anonymous_args = 0
+ 139 0000 08B5     		push	{r3, lr}
+ 140 0002 0120     		movs	r0, #1
+ 141 0004 FFF7FEFF 		bl	hal_watchdog_mask
+ 142 0008 5321     		movs	r1, #83
+ 143 000a 0120     		movs	r0, #1
+ 144 000c FFF7FEFF 		bl	hal_watchdog_start
+ 145 0010 0B48     		ldr	r0, .L26
+ 146 0012 FFF7FEFF 		bl	user_can_init
+ 147 0016 0220     		movs	r0, #2
+ 148 0018 FFF7FEFF 		bl	sci_init
+ 149 001c 0121     		movs	r1, #1
+ 150 001e 5820     		movs	r0, #88
+ 151 0020 FFF7FEFF 		bl	hal_io_do_set
+ 152 0024 0121     		movs	r1, #1
+ 153 0026 3720     		movs	r0, #55
+ 154 0028 FFF7FEFF 		bl	hal_io_do_set
+ 155 002c 0021     		movs	r1, #0
+ 156 002e 5720     		movs	r0, #87
+ 157 0030 FFF7FEFF 		bl	hal_io_do_set
+ 158 0034 0121     		movs	r1, #1
+ 159 0036 5120     		movs	r0, #81
+ 160 0038 FFF7FEFF 		bl	hal_io_do_set
+ 161 003c 08BD     		pop	{r3, pc}
+ 162              	.L27:
+ 163 003e 00BF     		.align	2
+ 164              	.L26:
+ 165 0040 00000000 		.word	.LANCHOR1
+ 167              		.section	.text.modulhardwarecode_sleep,"ax",%progbits
+ 168              		.align	1
+ 169              		.global	modulhardwarecode_sleep
+ 170              		.syntax unified
+ 171              		.thumb
+ 172              		.thumb_func
+ 173              		.fpu fpv4-sp-d16
+ 175              	modulhardwarecode_sleep:
+ 176              		@ args = 0, pretend = 0, frame = 0
+ 177              		@ frame_needed = 0, uses_anonymous_args = 0
+ 178 0000 08B5     		push	{r3, lr}
+ 179              		.syntax unified
+ 180              	@ 150 "src/ds//module/modulhardwarecode.c" 1
+ 181 0002 72B6     		cpsid i
+ 182              	@ 0 "" 2
+ 183              		.thumb
+ 184              		.syntax unified
+ 185 0004 0021     		movs	r1, #0
+ 186 0006 4920     		movs	r0, #73
+ 187 0008 FFF7FEFF 		bl	hal_io_do_set
+ 188 000c 0021     		movs	r1, #0
+ 189 000e 4B20     		movs	r0, #75
+ 190 0010 FFF7FEFF 		bl	hal_io_do_set
+ 191 0014 44F62163 		movw	r3, #20001
+ 192              	.L29:
+ 193 0018 013B     		subs	r3, r3, #1
+ 194 001a FDD1     		bne	.L29
+ 195 001c 0021     		movs	r1, #0
+ 196 001e 0B20     		movs	r0, #11
+ 197 0020 FFF7FEFF 		bl	hal_io_do_set
+ 198 0024 0021     		movs	r1, #0
+ 199 0026 5420     		movs	r0, #84
+ 200 0028 FFF7FEFF 		bl	hal_io_do_set
+ 201 002c 0021     		movs	r1, #0
+ 202 002e 5120     		movs	r0, #81
+ 203 0030 FFF7FEFF 		bl	hal_io_do_set
+ 204 0034 0021     		movs	r1, #0
+ 205 0036 4520     		movs	r0, #69
+ 206 0038 FFF7FEFF 		bl	hal_io_do_set
+ 207 003c 0E4B     		ldr	r3, .L34
+ 208              	.L30:
+ 209 003e 013B     		subs	r3, r3, #1
+ 210 0040 FDD1     		bne	.L30
+ 211 0042 0121     		movs	r1, #1
+ 212 0044 4520     		movs	r0, #69
+ 213 0046 FFF7FEFF 		bl	hal_io_do_set
+ 214 004a 0121     		movs	r1, #1
+ 215 004c 0B20     		movs	r0, #11
+ 216 004e FFF7FEFF 		bl	hal_io_do_set
+ 217 0052 0121     		movs	r1, #1
+ 218 0054 4920     		movs	r0, #73
+ 219 0056 FFF7FEFF 		bl	hal_io_do_set
+ 220 005a 0121     		movs	r1, #1
+ 221 005c 5420     		movs	r0, #84
+ 222 005e FFF7FEFF 		bl	hal_io_do_set
+ 223 0062 0121     		movs	r1, #1
+ 224 0064 4B20     		movs	r0, #75
+ 225 0066 FFF7FEFF 		bl	hal_io_do_set
+ 226 006a 0121     		movs	r1, #1
+ 227 006c 5120     		movs	r0, #81
+ 228 006e FFF7FEFF 		bl	hal_io_do_set
+ 229              		.syntax unified
+ 230              	@ 179 "src/ds//module/modulhardwarecode.c" 1
+ 231 0072 62B6     		cpsie i
+ 232              	@ 0 "" 2
+ 233              		.thumb
+ 234              		.syntax unified
+ 235 0074 08BD     		pop	{r3, pc}
+ 236              	.L35:
+ 237 0076 00BF     		.align	2
+ 238              	.L34:
+ 239 0078 56581400 		.word	1333334
+ 241              		.section	.text.modulhardwarecode_timer,"ax",%progbits
+ 242              		.align	1
+ 243              		.global	modulhardwarecode_timer
+ 244              		.syntax unified
+ 245              		.thumb
+ 246              		.thumb_func
+ 247              		.fpu fpv4-sp-d16
+ 249              	modulhardwarecode_timer:
+ 250              		@ args = 0, pretend = 0, frame = 0
+ 251              		@ frame_needed = 0, uses_anonymous_args = 0
+ 252              		@ link register save eliminated.
+ 253 0000 7047     		bx	lr
+ 255              		.section	.text.modulhardwarecode_adc_multiplex,"ax",%progbits
+ 256              		.align	1
+ 257              		.global	modulhardwarecode_adc_multiplex
+ 258              		.syntax unified
+ 259              		.thumb
+ 260              		.thumb_func
+ 261              		.fpu fpv4-sp-d16
+ 263              	modulhardwarecode_adc_multiplex:
+ 264              		@ args = 0, pretend = 0, frame = 0
+ 265              		@ frame_needed = 0, uses_anonymous_args = 0
+ 266 0000 08B5     		push	{r3, lr}
+ 267 0002 50B1     		cbz	r0, .L38
+ 268 0004 0128     		cmp	r0, #1
+ 269 0006 11D0     		beq	.L39
+ 270 0008 0121     		movs	r1, #1
+ 271 000a 4720     		movs	r0, #71
+ 272 000c FFF7FEFF 		bl	hal_io_do_set
+ 273 0010 0121     		movs	r1, #1
+ 274 0012 4120     		movs	r0, #65
+ 275 0014 FFF7FEFF 		bl	hal_io_do_set
+ 276 0018 07E0     		b	.L37
+ 277              	.L38:
+ 278 001a 0021     		movs	r1, #0
+ 279 001c 4720     		movs	r0, #71
+ 280 001e FFF7FEFF 		bl	hal_io_do_set
+ 281 0022 0121     		movs	r1, #1
+ 282 0024 4120     		movs	r0, #65
+ 283 0026 FFF7FEFF 		bl	hal_io_do_set
+ 284              	.L37:
+ 285 002a 08BD     		pop	{r3, pc}
+ 286              	.L39:
+ 287 002c 0121     		movs	r1, #1
+ 288 002e 4720     		movs	r0, #71
+ 289 0030 FFF7FEFF 		bl	hal_io_do_set
+ 290 0034 0021     		movs	r1, #0
+ 291 0036 4120     		movs	r0, #65
+ 292 0038 FFF7FEFF 		bl	hal_io_do_set
+ 293 003c F5E7     		b	.L37
+ 295              		.section	.text.modulhardwarecode_cyclic,"ax",%progbits
+ 296              		.align	1
+ 297              		.global	modulhardwarecode_cyclic
+ 298              		.syntax unified
+ 299              		.thumb
+ 300              		.thumb_func
+ 301              		.fpu fpv4-sp-d16
+ 303              	modulhardwarecode_cyclic:
+ 304              		@ args = 0, pretend = 0, frame = 0
+ 305              		@ frame_needed = 0, uses_anonymous_args = 0
+ 306 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 307 0004 0021     		movs	r1, #0
+ 308 0006 3720     		movs	r0, #55
+ 309 0008 FFF7FEFF 		bl	hal_io_do_set
+ 310 000c 0F4C     		ldr	r4, .L48
+ 311 000e 04F11C08 		add	r8, r4, #28
+ 312 0012 0027     		movs	r7, #0
+ 313 0014 3625     		movs	r5, #54
+ 314 0016 3C26     		movs	r6, #60
+ 315              	.L45:
+ 316 0018 3946     		mov	r1, r7
+ 317 001a 2846     		mov	r0, r5
+ 318 001c FFF7FEFF 		bl	hal_io_do_set
+ 319 0020 6178     		ldrb	r1, [r4, #1]	@ zero_extendqisi2
+ 320 0022 3046     		mov	r0, r6
+ 321 0024 FFF7FEFF 		bl	hal_io_do_set
+ 322 0028 0121     		movs	r1, #1
+ 323 002a 2846     		mov	r0, r5
+ 324 002c FFF7FEFF 		bl	hal_io_do_set
+ 325 0030 0234     		adds	r4, r4, #2
+ 326 0032 4445     		cmp	r4, r8
+ 327 0034 F0D1     		bne	.L45
+ 328 0036 0121     		movs	r1, #1
+ 329 0038 3720     		movs	r0, #55
+ 330 003a FFF7FEFF 		bl	hal_io_do_set
+ 331 003e 0021     		movs	r1, #0
+ 332 0040 5720     		movs	r0, #87
+ 333 0042 FFF7FEFF 		bl	hal_io_do_set
+ 334 0046 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 335              	.L49:
+ 336 004a 00BF     		.align	2
+ 337              	.L48:
+ 338 004c 00000000 		.word	virtual_pin
+ 340              		.global	mgl_adc_vref_values
+ 341              		.global	can_pin_list
+ 342              		.section	.data.mgl_adc_vref_values,"aw"
+ 343              		.align	2
+ 344              		.set	.LANCHOR0,. + 0
+ 347              	mgl_adc_vref_values:
+ 348 0000 00       		.byte	0
+ 349 0001 000000   		.space	3
+ 350 0004 FA7D0000 		.word	32250
+ 351 0008 2D       		.byte	45
+ 352 0009 000000   		.space	3
+ 353 000c 01       		.byte	1
+ 354 000d 000000   		.space	3
+ 355 0010 FA7D0000 		.word	32250
+ 356 0014 4F       		.byte	79
+ 357 0015 000000   		.space	3
+ 358 0018 02       		.byte	2
+ 359 0019 000000   		.space	3
+ 360 001c FA7D0000 		.word	32250
+ 361 0020 1A       		.byte	26
+ 362 0021 000000   		.space	3
+ 363 0024 03       		.byte	3
+ 364 0025 000000   		.space	3
+ 365 0028 FA7D0000 		.word	32250
+ 366 002c 2C       		.byte	44
+ 367 002d 000000   		.space	3
+ 368 0030 04       		.byte	4
+ 369 0031 000000   		.space	3
+ 370 0034 FA7D0000 		.word	32250
+ 371 0038 1D       		.byte	29
+ 372 0039 000000   		.space	3
+ 373 003c 05       		.byte	5
+ 374 003d 000000   		.space	3
+ 375 0040 FA7D0000 		.word	32250
+ 376 0044 23       		.byte	35
+ 377 0045 000000   		.space	3
+ 378 0048 06       		.byte	6
+ 379 0049 000000   		.space	3
+ 380 004c 00000000 		.word	0
+ 381 0050 59       		.byte	89
+ 382 0051 000000   		.space	3
+ 383 0054 07       		.byte	7
+ 384 0055 000000   		.space	3
+ 385 0058 00000000 		.word	0
+ 386 005c 59       		.byte	89
+ 387 005d 000000   		.space	3
+ 388 0060 08       		.byte	8
+ 389 0061 000000   		.space	3
+ 390 0064 00000000 		.word	0
+ 391 0068 59       		.byte	89
+ 392 0069 000000   		.space	3
+ 393 006c 09       		.byte	9
+ 394 006d 000000   		.space	3
+ 395 0070 00000000 		.word	0
+ 396 0074 59       		.byte	89
+ 397 0075 000000   		.space	3
+ 398 0078 0A       		.byte	10
+ 399 0079 000000   		.space	3
+ 400 007c 00000000 		.word	0
+ 401 0080 59       		.byte	89
+ 402 0081 000000   		.space	3
+ 403 0084 0B       		.byte	11
+ 404 0085 000000   		.space	3
+ 405 0088 00000000 		.word	0
+ 406 008c 59       		.byte	89
+ 407 008d 000000   		.space	3
+ 408 0090 0C       		.byte	12
+ 409 0091 000000   		.space	3
+ 410 0094 00000000 		.word	0
+ 411 0098 59       		.byte	89
+ 412 0099 000000   		.space	3
+ 413 009c 0D       		.byte	13
+ 414 009d 000000   		.space	3
+ 415 00a0 00000000 		.word	0
+ 416 00a4 59       		.byte	89
+ 417 00a5 000000   		.space	3
+ 418 00a8 0E       		.byte	14
+ 419 00a9 000000   		.space	3
+ 420 00ac 00000000 		.word	0
+ 421 00b0 59       		.byte	89
+ 422 00b1 000000   		.space	3
+ 423 00b4 0F       		.byte	15
+ 424 00b5 000000   		.space	3
+ 425 00b8 00000000 		.word	0
+ 426 00bc 59       		.byte	89
+ 427 00bd 000000   		.space	3
+ 428 00c0 10       		.byte	16
+ 429 00c1 000000   		.space	3
+ 430 00c4 00000000 		.word	0
+ 431 00c8 59       		.byte	89
+ 432 00c9 000000   		.space	3
+ 433 00cc 11       		.byte	17
+ 434 00cd 000000   		.space	3
+ 435 00d0 00000000 		.word	0
+ 436 00d4 59       		.byte	89
+ 437 00d5 000000   		.space	3
+ 438 00d8 12       		.byte	18
+ 439 00d9 000000   		.space	3
+ 440 00dc 00000000 		.word	0
+ 441 00e0 59       		.byte	89
+ 442 00e1 000000   		.space	3
+ 443 00e4 13       		.byte	19
+ 444 00e5 000000   		.space	3
+ 445 00e8 00000000 		.word	0
+ 446 00ec 59       		.byte	89
+ 447 00ed 000000   		.space	3
+ 448 00f0 14       		.byte	20
+ 449 00f1 000000   		.space	3
+ 450 00f4 00000000 		.word	0
+ 451 00f8 59       		.byte	89
+ 452 00f9 000000   		.space	3
+ 453 00fc 15       		.byte	21
+ 454 00fd 000000   		.space	3
+ 455 0100 00000000 		.word	0
+ 456 0104 59       		.byte	89
+ 457 0105 000000   		.space	3
+ 458 0108 16       		.byte	22
+ 459 0109 000000   		.space	3
+ 460 010c 00000000 		.word	0
+ 461 0110 59       		.byte	89
+ 462 0111 000000   		.space	3
+ 463 0114 17       		.byte	23
+ 464 0115 000000   		.space	3
+ 465 0118 00000000 		.word	0
+ 466 011c 59       		.byte	89
+ 467 011d 000000   		.space	3
+ 468 0120 18       		.byte	24
+ 469 0121 000000   		.space	3
+ 470 0124 00000000 		.word	0
+ 471 0128 59       		.byte	89
+ 472 0129 000000   		.space	3
+ 473 012c 24       		.byte	36
+ 474 012d 000000   		.space	3
+ 475 0130 00000000 		.word	0
+ 476 0134 59       		.byte	89
+ 477 0135 000000   		.space	3
+ 478 0138 25       		.byte	37
+ 479 0139 000000   		.space	3
+ 480 013c 00000000 		.word	0
+ 481 0140 59       		.byte	89
+ 482 0141 000000   		.space	3
+ 483 0144 26       		.byte	38
+ 484 0145 000000   		.space	3
+ 485 0148 00000000 		.word	0
+ 486 014c 59       		.byte	89
+ 487 014d 000000   		.space	3
+ 488 0150 27       		.byte	39
+ 489 0151 000000   		.space	3
+ 490 0154 00000000 		.word	0
+ 491 0158 59       		.byte	89
+ 492 0159 000000   		.space	3
+ 493 015c 22       		.byte	34
+ 494 015d 000000   		.space	3
+ 495 0160 00000000 		.word	0
+ 496 0164 59       		.byte	89
+ 497 0165 000000   		.space	3
+ 498 0168 23       		.byte	35
+ 499 0169 000000   		.space	3
+ 500 016c 00000000 		.word	0
+ 501 0170 59       		.byte	89
+ 502 0171 000000   		.space	3
+ 503 0174 28       		.byte	40
+ 504 0175 000000   		.space	3
+ 505 0178 00000000 		.word	0
+ 506 017c 59       		.byte	89
+ 507 017d 000000   		.space	3
+ 508 0180 00000000 		.space	108
+ 508      00000000 
+ 508      00000000 
+ 508      00000000 
+ 508      00000000 
+ 509              		.section	.rodata.can_pin_list,"a"
+ 510              		.align	2
+ 511              		.set	.LANCHOR1,. + 0
+ 514              	can_pin_list:
+ 515 0000 0B00     		.short	11
+ 516 0002 4900     		.short	73
+ 517 0004 5400     		.short	84
+ 518 0006 4B00     		.short	75
+ 519 0008 5900     		.short	89
+ 520 000a 5900     		.short	89
+ 521              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc
