@@ -1431,6 +1431,7 @@ void user_can_receive_msg_callback(uint8_t bus_id, bios_can_msg_typ* msg)
 	(void)bus_id;
 	(void)msg;
 
+	data_struct *pin_input_data;
 
 	if(msg->id==RECIEVED_ID)
 	{
@@ -1454,7 +1455,8 @@ void user_can_receive_msg_callback(uint8_t bus_id, bios_can_msg_typ* msg)
 	}
 
 	
-
+	Fill_lookup_tables(void);
+	Get_input_data(pin_input_data);
 
 
 
