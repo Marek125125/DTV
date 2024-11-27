@@ -1,0 +1,791 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DeveloperStudioExchange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <AditionalGPLibraryPaths />
+  <BSWVersion>4.14.0</BSWVersion>
+  <CanData />
+  <CodeFilesPath>C:\Users\tomas\OneDrive\Plocha\DTV\PROJEKT\src\ds\gp</CodeFilesPath>
+  <DeveloperStudioVersion>4.15.1</DeveloperStudioVersion>
+  <ExecuteCommand>0</ExecuteCommand>
+  <HardwareDrawingNumber>1.154.</HardwareDrawingNumber>
+  <HardwareFlags>
+    <HWFlag>IsGeneral</HWFlag>
+    <HWFlag>S32K</HWFlag>
+  </HardwareFlags>
+  <HardwareName>HW_CC16WP</HardwareName>
+  <HardwareNumber>1.154.302.00</HardwareNumber>
+  <IsMRSEmployee>false</IsMRSEmployee>
+  <LibrariesPath>C:\Users\tomas\AppData\Local\ApplicsStudio\app-4.15.1\Data\GraphicalProgrammingLibrarys</LibrariesPath>
+  <LogPath>C:\Users\tomas\AppData\Local\ApplicsStudio\app-4.15.1\Logs</LogPath>
+  <Ports>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>d940f5af-c068-4442-b414-3a9c39caf903</IdentityGuid>
+      <PortConnectorPin>Pin B6</PortConnectorPin>
+      <PortName>DI_AI_A_IN0</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>24f1ac36-4ebf-4eee-9efd-e872c94410cc</IdentityGuid>
+      <PortConnectorPin>Pin A6</PortConnectorPin>
+      <PortName>DI_AI_A_IN1</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>665d5ebd-bc0c-4e61-875d-5a581c5c8105</IdentityGuid>
+      <PortConnectorPin>Pin A5</PortConnectorPin>
+      <PortName>DI_AI_A_IN2</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>fec84c1b-5633-4089-af4b-572380ad6a01</IdentityGuid>
+      <PortConnectorPin>Pin C4</PortConnectorPin>
+      <PortName>DI_AI_A_IN3</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>0075f1fb-53b7-4b7f-8137-4f2fb263a420</IdentityGuid>
+      <PortConnectorPin>Pin A4</PortConnectorPin>
+      <PortName>DI_AI_A_IN4</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>b7dbece2-7eee-4f82-afb6-42a4eb52a658</IdentityGuid>
+      <PortConnectorPin>Pin A3</PortConnectorPin>
+      <PortName>DI_AI_A_IN5</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>2f8ccc3a-551d-4812-8a11-31d172d6a4d8</IdentityGuid>
+      <PortConnectorPin>Pin B3</PortConnectorPin>
+      <PortName>DI_AI_ID</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>eba68907-8870-44a9-b0db-b9e3193b8bd1</IdentityGuid>
+      <PortConnectorPin>Pin A8</PortConnectorPin>
+      <PortName>DI_AI_KL30_1</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>aee09424-32a0-43c6-b970-ee09920cdb22</IdentityGuid>
+      <PortConnectorPin>Pin A1</PortConnectorPin>
+      <PortName>DI_AI_KL30_2</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>38e7a5f3-b88c-4512-9659-2a6372ef65d9</IdentityGuid>
+      <PortConnectorPin>Pin C3</PortConnectorPin>
+      <PortName>DI_AI_OUT0</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>242736df-5c49-4a43-97a8-f6977eac65d1</IdentityGuid>
+      <PortConnectorPin>Pin C2</PortConnectorPin>
+      <PortName>DI_AI_OUT1</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>5fdf0679-1931-443c-a687-8fe30c75999f</IdentityGuid>
+      <PortConnectorPin>Pin C1</PortConnectorPin>
+      <PortName>DI_AI_OUT2</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>904746c0-af68-4e46-bc08-4dfbc2a1c44b</IdentityGuid>
+      <PortConnectorPin>Pin B1</PortConnectorPin>
+      <PortName>DI_AI_OUT3</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>53e90920-a6a6-4578-a39d-fc0682882d28</IdentityGuid>
+      <PortConnectorPin>Pin B8</PortConnectorPin>
+      <PortName>DI_AI_OUT4</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>657c2083-e832-480e-8236-cc1b8a080448</IdentityGuid>
+      <PortConnectorPin>Pin C8</PortConnectorPin>
+      <PortName>DI_AI_OUT5</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>a3056d8b-5232-4dc3-a02b-e7d2d709b604</IdentityGuid>
+      <PortConnectorPin>Pin C7</PortConnectorPin>
+      <PortName>DI_AI_OUT6</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>bed17c68-efa9-4102-b909-2dbfd5750e76</IdentityGuid>
+      <PortConnectorPin>Pin C6</PortConnectorPin>
+      <PortName>DI_AI_OUT7</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>315a66df-9f2b-4638-9b9c-589f3d0b95ae</IdentityGuid>
+      <PortConnectorPin>Pin A7</PortConnectorPin>
+      <PortName>DI_AI_VREF</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>9ed32a7f-9276-4423-845b-8a80626e1b74</IdentityGuid>
+      <PortConnectorPin>Pin B5</PortConnectorPin>
+      <PortName>DI_KL15</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>d594e209-947e-4ebe-b829-8a5a7e598081</IdentityGuid>
+      <PortName>DI_PGD</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>73c781e0-bf84-4183-b13c-2986ea37087a</IdentityGuid>
+      <PortConnectorPin>Pin C3</PortConnectorPin>
+      <PortName>DO_HSD1_OUT0</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>dd500d47-e342-4b51-8004-748c8c9d96db</IdentityGuid>
+      <PortConnectorPin>Pin C2</PortConnectorPin>
+      <PortName>DO_HSD1_OUT1</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>8fe824c7-9627-4c7f-99e6-706466f559bb</IdentityGuid>
+      <PortConnectorPin>Pin C1</PortConnectorPin>
+      <PortName>DO_HSD1_OUT2</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>72ff9f48-4a90-40bb-ac0c-dce5ebf14885</IdentityGuid>
+      <PortConnectorPin>Pin B1</PortConnectorPin>
+      <PortName>DO_HSD1_OUT3</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>f1b5b938-4c4e-4956-ad14-ed37fe8a941f</IdentityGuid>
+      <PortConnectorPin>Pin B8</PortConnectorPin>
+      <PortName>DO_HSD2_OUT4</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>336e2f05-ae88-40ef-846c-f067686ff7f3</IdentityGuid>
+      <PortConnectorPin>Pin C8</PortConnectorPin>
+      <PortName>DO_HSD2_OUT5</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>3bfc38de-98f6-4e99-896e-95d61ff2d052</IdentityGuid>
+      <PortConnectorPin>Pin C7</PortConnectorPin>
+      <PortName>DO_HSD2_OUT6</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>23f3dd84-f0cc-4365-aefa-9c3dc17da738</IdentityGuid>
+      <PortConnectorPin>Pin C6</PortConnectorPin>
+      <PortName>DO_HSD2_OUT7</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>4c5f523b-9ae5-462a-8b84-59443f517f99</IdentityGuid>
+      <PortName>DO_POWER</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>f4ac14d1-34d8-4c10-84b4-f2984ac875b7</IdentityGuid>
+      <PortName>DO_RS0</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>c605669c-2199-4d42-91aa-47e1b4f21e46</IdentityGuid>
+      <PortName>DO_RS1</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>f60e17c1-dd8d-4f89-b6cd-881ed4bd4ed5</IdentityGuid>
+      <PortName>DO_RS2</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>36348b31-3572-41ae-9858-cf184d4c236e</IdentityGuid>
+      <PortName>DO_RS3</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>f49ebe5b-61b8-4b66-bd0e-7f96012499c7</IdentityGuid>
+      <PortName>DO_RS4</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>f8f96d14-589b-4e51-9ab5-5f76a35c504d</IdentityGuid>
+      <PortName>DO_RS5</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>5b0eae14-8ac5-4283-878d-88e799da9dc3</IdentityGuid>
+      <PortName>DO_VREF_EN</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>8fd04260-e0b6-43dc-9f2e-335bb2ab433d</IdentityGuid>
+      <PortName>DCDC_8V5</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>5d47a315-14c8-4080-a530-17038a2f7b1b</IdentityGuid>
+      <PortName>DCDC_10V</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>6532e278-50e9-4311-b215-d506c4a5de2c</IdentityGuid>
+      <PortName>PD_A_IN5</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>6ddfaec0-cb2a-43c6-93f7-09554a089b46</IdentityGuid>
+      <PortName>PD_A_IN4</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>1211727a-0d4d-43e9-93c5-670bd4ee7ef1</IdentityGuid>
+      <PortName>PD_A_IN3</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>77f98a4f-cd30-48cb-bb9f-5a93b08f9c2d</IdentityGuid>
+      <PortName>PD_A_IN2</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>9115bc74-061d-4d30-8984-9f52a927c8e3</IdentityGuid>
+      <PortName>PD_A_IN1</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>f4504339-9ca9-4491-b0b2-a2a17e591c08</IdentityGuid>
+      <PortName>PD_A_IN0</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>dd0f4067-2e8e-4886-9a7e-ffe245ccdca9</IdentityGuid>
+      <PortName>PU_A_IN5</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>1162c80e-7130-4a6e-9d28-4f7c3cf4d38c</IdentityGuid>
+      <PortName>PU_A_IN4</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>3aa9cea2-87a0-4edf-baa2-7862f78552a6</IdentityGuid>
+      <PortName>PU_A_IN3</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>79c60655-e4bb-47a3-a228-22e529ea3a0d</IdentityGuid>
+      <PortName>PU_A_IN2</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>e190401c-37bb-48df-8e23-1a036dc51e0b</IdentityGuid>
+      <PortName>PU_A_IN1</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>DoSet</string>
+      </FunctionTypes>
+      <IdentityGuid>411d2432-d719-49a8-9a60-5327fa563876</IdentityGuid>
+      <PortName>PU_A_IN0</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>3f0331d0-3638-4cc2-9340-8af8a32c9da8</IdentityGuid>
+      <PortConnectorPin>Pin B6</PortConnectorPin>
+      <PortName>AI_A_IN0</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>b4cb631f-ca40-4ec6-a28f-7b8c7fb71772</IdentityGuid>
+      <PortConnectorPin>Pin A6</PortConnectorPin>
+      <PortName>AI_A_IN1</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>e7a4d9e2-db35-49d6-a681-4daaa652ae34</IdentityGuid>
+      <PortConnectorPin>Pin A5</PortConnectorPin>
+      <PortName>AI_A_IN2</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>551ecb9b-44c2-46d4-8527-83ec2c0f4c6f</IdentityGuid>
+      <PortConnectorPin>Pin C4</PortConnectorPin>
+      <PortName>AI_A_IN3</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>8c2cb5e6-ec4c-469a-beda-fff20016dc4b</IdentityGuid>
+      <PortConnectorPin>Pin A4</PortConnectorPin>
+      <PortName>AI_A_IN4</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>072169d6-43d4-4c03-9f0d-9b2cd7e6f14a</IdentityGuid>
+      <PortConnectorPin>Pin A3</PortConnectorPin>
+      <PortName>AI_A_IN5</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>c9ddf6b7-6d40-4246-8af5-69c4690fd58f</IdentityGuid>
+      <PortConnectorPin>Pin B3</PortConnectorPin>
+      <PortName>AI_ID</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>6555c933-0e8a-4bea-a898-726b359dd152</IdentityGuid>
+      <PortConnectorPin>Pin C3</PortConnectorPin>
+      <PortName>AI_INA_OUT0</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>dc7bcbc7-e952-41f9-82d1-b3cdb4956174</IdentityGuid>
+      <PortConnectorPin>Pin C2</PortConnectorPin>
+      <PortName>AI_INA_OUT1</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>07215e2c-7842-4792-8469-82e30b1af86c</IdentityGuid>
+      <PortConnectorPin>Pin C1</PortConnectorPin>
+      <PortName>AI_INA_OUT2</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>e1946b97-ee2d-48a4-8d75-0ea115b2369a</IdentityGuid>
+      <PortConnectorPin>Pin B1</PortConnectorPin>
+      <PortName>AI_INA_OUT3</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>5fa79aca-8f34-43c9-9777-f153d9d5e65a</IdentityGuid>
+      <PortConnectorPin>Pin B8</PortConnectorPin>
+      <PortName>AI_INA_OUT4</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>e5950546-8c95-4ae0-84c4-c6c850f00c36</IdentityGuid>
+      <PortConnectorPin>Pin C8</PortConnectorPin>
+      <PortName>AI_INA_OUT5</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>69208e75-4165-4789-a918-b12cc9a7f80e</IdentityGuid>
+      <PortConnectorPin>Pin C7</PortConnectorPin>
+      <PortName>AI_INA_OUT6</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>4066f59b-e563-4fba-8064-3b584d37a2b3</IdentityGuid>
+      <PortConnectorPin>Pin C6</PortConnectorPin>
+      <PortName>AI_INA_OUT7</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>ba67449c-26e6-4729-9d72-9cb7221fb523</IdentityGuid>
+      <PortConnectorPin>Pin A8</PortConnectorPin>
+      <PortName>AI_KL30_1</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>df9da19d-fd3d-4c57-9090-da91fb1bdea7</IdentityGuid>
+      <PortConnectorPin>Pin A1</PortConnectorPin>
+      <PortName>AI_KL30_2</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>4e0eea00-2677-4e52-a0c7-2cd5f425c69f</IdentityGuid>
+      <PortConnectorPin>Pin C3</PortConnectorPin>
+      <PortName>AI_OUT0</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>98c91ef0-5454-4d0b-b2a7-b963cfb6d681</IdentityGuid>
+      <PortConnectorPin>Pin C2</PortConnectorPin>
+      <PortName>AI_OUT1</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>ef67b4cc-280b-4e5e-96d9-de498527f7ec</IdentityGuid>
+      <PortConnectorPin>Pin C1</PortConnectorPin>
+      <PortName>AI_OUT2</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>eaa69ee7-8d8a-4d15-8c2d-731ddcdb6ba6</IdentityGuid>
+      <PortConnectorPin>Pin B1</PortConnectorPin>
+      <PortName>AI_OUT3</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>338d1320-25ee-4c0f-948a-47ab6f2ac202</IdentityGuid>
+      <PortConnectorPin>Pin B8</PortConnectorPin>
+      <PortName>AI_OUT4</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>952ede49-1dd3-405b-b3c9-3d36181df25b</IdentityGuid>
+      <PortConnectorPin>Pin C8</PortConnectorPin>
+      <PortName>AI_OUT5</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>cd6d6502-35b7-4b65-bf2a-755a9d2ab1a1</IdentityGuid>
+      <PortConnectorPin>Pin C7</PortConnectorPin>
+      <PortName>AI_OUT6</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>7e2c1988-84e9-4a44-b4de-06935f1f24d9</IdentityGuid>
+      <PortConnectorPin>Pin C6</PortConnectorPin>
+      <PortName>AI_OUT7</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>b15a804f-5951-4db4-a566-32f44231f91f</IdentityGuid>
+      <PortConnectorPin>Pin B1</PortConnectorPin>
+      <PortName>AI_HSD1_CUR3</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>651e49bc-5118-4aa1-ae1a-c3ef80589b09</IdentityGuid>
+      <PortConnectorPin>Pin C1</PortConnectorPin>
+      <PortName>AI_HSD1_CUR2</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>0fc1ea58-eefc-4ea2-b508-8ea2248b8556</IdentityGuid>
+      <PortConnectorPin>Pin C2</PortConnectorPin>
+      <PortName>AI_HSD1_CUR1</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>f3cda23b-e127-4cac-8aee-0dc407d9ec08</IdentityGuid>
+      <PortConnectorPin>Pin C3</PortConnectorPin>
+      <PortName>AI_HSD1_CUR0</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>93e10b92-f455-4e9d-bb07-44a8b1f8019e</IdentityGuid>
+      <PortConnectorPin>Pin C6</PortConnectorPin>
+      <PortName>AI_HSD2_CUR7</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>23ee9dce-31c1-40c6-8705-048ce3d46d9a</IdentityGuid>
+      <PortConnectorPin>Pin C7</PortConnectorPin>
+      <PortName>AI_HSD2_CUR6</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>80e2d937-f10e-46c8-b260-b840154b17d1</IdentityGuid>
+      <PortConnectorPin>Pin C8</PortConnectorPin>
+      <PortName>AI_HSD2_CUR5</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>ceb8d0e7-3715-4772-91aa-918f4723a4b3</IdentityGuid>
+      <PortConnectorPin>Pin B8</PortConnectorPin>
+      <PortName>AI_HSD2_CUR4</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>5bf5a217-3070-42f3-8039-b537e4eaa132</IdentityGuid>
+      <PortName>AI_VARIANTE</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>AiGet</string>
+      </FunctionTypes>
+      <IdentityGuid>5545f6d4-3d18-46af-a5bb-dc88a914ade4</IdentityGuid>
+      <PortConnectorPin>Pin A7</PortConnectorPin>
+      <PortName>AI_VREF</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>PWMSet</string>
+      </FunctionTypes>
+      <IdentityGuid>49a7adf3-b135-45f5-8c6a-f6284b882eff</IdentityGuid>
+      <PortConnectorPin>Pin B6</PortConnectorPin>
+      <PortName>FREQ_A_IN0</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>PWMSet</string>
+      </FunctionTypes>
+      <IdentityGuid>2e9eedb0-a778-47fd-83f7-8b19c610ddd7</IdentityGuid>
+      <PortConnectorPin>Pin A6</PortConnectorPin>
+      <PortName>FREQ_A_IN1</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>PWMSet</string>
+      </FunctionTypes>
+      <IdentityGuid>72d29065-1615-456a-87c9-aef4737aa9a6</IdentityGuid>
+      <PortConnectorPin>Pin A5</PortConnectorPin>
+      <PortName>FREQ_A_IN2</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>PWMSet</string>
+      </FunctionTypes>
+      <IdentityGuid>177972a8-621f-40ff-a8ce-f58064795557</IdentityGuid>
+      <PortConnectorPin>Pin C4</PortConnectorPin>
+      <PortName>FREQ_A_IN3</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>PWMSet</string>
+      </FunctionTypes>
+      <IdentityGuid>c73530da-c451-4f3c-a4e7-5028881f484e</IdentityGuid>
+      <PortConnectorPin>Pin A4</PortConnectorPin>
+      <PortName>FREQ_A_IN4</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>PWMSet</string>
+      </FunctionTypes>
+      <IdentityGuid>f8d76e00-6079-4ecf-a165-771b9968f8b4</IdentityGuid>
+      <PortConnectorPin>Pin A3</PortConnectorPin>
+      <PortName>FREQ_A_IN5</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>PWMGet</string>
+      </FunctionTypes>
+      <IdentityGuid>b10b344b-3c25-42a4-8ba8-5a700f3c1149</IdentityGuid>
+      <PortConnectorPin>Pin C3</PortConnectorPin>
+      <PortName>PWM_HSD1_OUT0</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>PWMGet</string>
+      </FunctionTypes>
+      <IdentityGuid>14b19160-9dbf-4b4e-8381-f7f767089249</IdentityGuid>
+      <PortConnectorPin>Pin C2</PortConnectorPin>
+      <PortName>PWM_HSD1_OUT1</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>PWMGet</string>
+      </FunctionTypes>
+      <IdentityGuid>7180372c-10e9-4c3b-bd76-cb22103620a8</IdentityGuid>
+      <PortConnectorPin>Pin C1</PortConnectorPin>
+      <PortName>PWM_HSD1_OUT2</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>PWMGet</string>
+      </FunctionTypes>
+      <IdentityGuid>729ff018-a2c0-4930-a233-c9ff4d2ec996</IdentityGuid>
+      <PortConnectorPin>Pin B1</PortConnectorPin>
+      <PortName>PWM_HSD1_OUT3</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>PWMGet</string>
+      </FunctionTypes>
+      <IdentityGuid>cf1631c0-e3da-488c-b952-ccf413e9b60c</IdentityGuid>
+      <PortConnectorPin>Pin B8</PortConnectorPin>
+      <PortName>PWM_HSD2_OUT4</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>PWMGet</string>
+      </FunctionTypes>
+      <IdentityGuid>dad85766-2846-4f79-8aa2-1b728d24cafe</IdentityGuid>
+      <PortConnectorPin>Pin C8</PortConnectorPin>
+      <PortName>PWM_HSD2_OUT5</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>PWMGet</string>
+      </FunctionTypes>
+      <IdentityGuid>25553475-51b9-48b1-9f63-6873a33402a6</IdentityGuid>
+      <PortConnectorPin>Pin C7</PortConnectorPin>
+      <PortName>PWM_HSD2_OUT6</PortName>
+    </Port>
+    <Port>
+      <FunctionTypes>
+        <string>PWMGet</string>
+      </FunctionTypes>
+      <IdentityGuid>19ed535b-5837-4a29-9e61-ebb355eeec22</IdentityGuid>
+      <PortConnectorPin>Pin C6</PortConnectorPin>
+      <PortName>PWM_HSD2_OUT7</PortName>
+    </Port>
+  </Ports>
+  <ProjectPath>C:\Users\tomas\OneDrive\Plocha\DTV\PROJEKT\CC16WP_C_DTV.sch</ProjectPath>
+  <UserVariables />
+</DeveloperStudioExchange>

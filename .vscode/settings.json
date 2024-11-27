@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "diag.h": "c",
+        "user_api_util.h": "c",
+        "io_tables.h": "c",
+        "user_api_ai.h": "c"
+    }
+}

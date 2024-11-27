@@ -1,0 +1,763 @@
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"diag.c"
+  14              		.text
+  15              		.section	.text.DecToHexStr,"ax",%progbits
+  16              		.align	1
+  17              		.global	DecToHexStr
+  18              		.arch armv7e-m
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu fpv4-sp-d16
+  24              	DecToHexStr:
+  25              		@ args = 0, pretend = 0, frame = 0
+  26              		@ frame_needed = 0, uses_anonymous_args = 0
+  27 0000 08B5     		push	{r3, lr}
+  28 0002 0B46     		mov	r3, r1
+  29 0004 0246     		mov	r2, r0
+  30 0006 0249     		ldr	r1, .L3
+  31 0008 1846     		mov	r0, r3
+  32 000a FFF7FEFF 		bl	sprintf
+  33 000e 08BD     		pop	{r3, pc}
+  34              	.L4:
+  35              		.align	2
+  36              	.L3:
+  37 0010 00000000 		.word	.LC0
+  39              		.section	.text.diag_start_request,"ax",%progbits
+  40              		.align	1
+  41              		.global	diag_start_request
+  42              		.syntax unified
+  43              		.thumb
+  44              		.thumb_func
+  45              		.fpu fpv4-sp-d16
+  47              	diag_start_request:
+  48              		@ args = 0, pretend = 0, frame = 0
+  49              		@ frame_needed = 0, uses_anonymous_args = 0
+  50 0000 10B5     		push	{r4, lr}
+  51 0002 88B0     		sub	sp, sp, #32
+  52 0004 5523     		movs	r3, #85
+  53 0006 0793     		str	r3, [sp, #28]
+  54 0008 E023     		movs	r3, #224
+  55 000a 0693     		str	r3, [sp, #24]
+  56 000c 0123     		movs	r3, #1
+  57 000e 0593     		str	r3, [sp, #20]
+  58 0010 1E23     		movs	r3, #30
+  59 0012 0493     		str	r3, [sp, #16]
+  60 0014 0024     		movs	r4, #0
+  61 0016 0394     		str	r4, [sp, #12]
+  62 0018 C37A     		ldrb	r3, [r0, #11]	@ zero_extendqisi2
+  63 001a 0293     		str	r3, [sp, #8]
+  64 001c 5023     		movs	r3, #80
+  65 001e 0193     		str	r3, [sp, #4]
+  66 0020 0623     		movs	r3, #6
+  67 0022 0093     		str	r3, [sp]
+  68 0024 0823     		movs	r3, #8
+  69 0026 2246     		mov	r2, r4
+  70 0028 4FF4FD61 		mov	r1, #2024
+  71 002c 2046     		mov	r0, r4
+  72 002e FFF7FEFF 		bl	user_can_msg_send
+  73 0032 08B0     		add	sp, sp, #32
+  74              		@ sp needed
+  75 0034 10BD     		pop	{r4, pc}
+  77              		.section	.text.read_data_request,"ax",%progbits
+  78              		.align	1
+  79              		.global	read_data_request
+  80              		.syntax unified
+  81              		.thumb
+  82              		.thumb_func
+  83              		.fpu fpv4-sp-d16
+  85              	read_data_request:
+  86              		@ args = 0, pretend = 0, frame = 8
+  87              		@ frame_needed = 0, uses_anonymous_args = 0
+  88 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  89 0002 8BB0     		sub	sp, sp, #44
+  90 0004 0546     		mov	r5, r0
+  91 0006 0A46     		mov	r2, r1
+  92 0008 C37A     		ldrb	r3, [r0, #11]	@ zero_extendqisi2
+  93 000a 112B     		cmp	r3, #17
+  94 000c 2BD0     		beq	.L23
+  95 000e F42B     		cmp	r3, #244
+  96 0010 6ED0     		beq	.L24
+  97 0012 062B     		cmp	r3, #6
+  98 0014 00F08A80 		beq	.L25
+  99 0018 F12B     		cmp	r3, #241
+ 100 001a 27D1     		bne	.L9
+ 101 001c 037B     		ldrb	r3, [r0, #12]	@ zero_extendqisi2
+ 102 001e 873B     		subs	r3, r3, #135
+ 103 0020 1E2B     		cmp	r3, #30
+ 104 0022 46D8     		bhi	.L7
+ 105 0024 DFE813F0 		tbh	[pc, r3, lsl #1]
+ 106              	.L14:
+ 107 0028 D200     		.2byte	(.L21-.L14)/2
+ 108 002a 4500     		.2byte	(.L7-.L14)/2
+ 109 002c EC00     		.2byte	(.L20-.L14)/2
+ 110 002e 4500     		.2byte	(.L7-.L14)/2
+ 111 0030 4500     		.2byte	(.L7-.L14)/2
+ 112 0032 4500     		.2byte	(.L7-.L14)/2
+ 113 0034 4500     		.2byte	(.L7-.L14)/2
+ 114 0036 4500     		.2byte	(.L7-.L14)/2
+ 115 0038 4500     		.2byte	(.L7-.L14)/2
+ 116 003a 4500     		.2byte	(.L7-.L14)/2
+ 117 003c 0401     		.2byte	(.L19-.L14)/2
+ 118 003e 4500     		.2byte	(.L7-.L14)/2
+ 119 0040 4500     		.2byte	(.L7-.L14)/2
+ 120 0042 4500     		.2byte	(.L7-.L14)/2
+ 121 0044 4500     		.2byte	(.L7-.L14)/2
+ 122 0046 4500     		.2byte	(.L7-.L14)/2
+ 123 0048 1E01     		.2byte	(.L18-.L14)/2
+ 124 004a 4500     		.2byte	(.L7-.L14)/2
+ 125 004c 4500     		.2byte	(.L7-.L14)/2
+ 126 004e 4500     		.2byte	(.L7-.L14)/2
+ 127 0050 4500     		.2byte	(.L7-.L14)/2
+ 128 0052 4500     		.2byte	(.L7-.L14)/2
+ 129 0054 4500     		.2byte	(.L7-.L14)/2
+ 130 0056 9F00     		.2byte	(.L17-.L14)/2
+ 131 0058 4500     		.2byte	(.L7-.L14)/2
+ 132 005a 4500     		.2byte	(.L7-.L14)/2
+ 133 005c 4500     		.2byte	(.L7-.L14)/2
+ 134 005e B900     		.2byte	(.L16-.L14)/2
+ 135 0060 3701     		.2byte	(.L15-.L14)/2
+ 136 0062 4500     		.2byte	(.L7-.L14)/2
+ 137 0064 4F01     		.2byte	(.L13-.L14)/2
+ 138              		.p2align 1
+ 139              	.L23:
+ 140 0066 037B     		ldrb	r3, [r0, #12]	@ zero_extendqisi2
+ 141 0068 F02B     		cmp	r3, #240
+ 142 006a 24D0     		beq	.L26
+ 143              	.L9:
+ 144 006c 5524     		movs	r4, #85
+ 145 006e 0794     		str	r4, [sp, #28]
+ 146 0070 0694     		str	r4, [sp, #24]
+ 147 0072 0594     		str	r4, [sp, #20]
+ 148 0074 0494     		str	r4, [sp, #16]
+ 149 0076 0394     		str	r4, [sp, #12]
+ 150 0078 AB7A     		ldrb	r3, [r5, #10]	@ zero_extendqisi2
+ 151 007a 0293     		str	r3, [sp, #8]
+ 152 007c 7F27     		movs	r7, #127
+ 153 007e 0197     		str	r7, [sp, #4]
+ 154 0080 0326     		movs	r6, #3
+ 155 0082 0096     		str	r6, [sp]
+ 156 0084 0823     		movs	r3, #8
+ 157 0086 0022     		movs	r2, #0
+ 158 0088 4FF4FD61 		mov	r1, #2024
+ 159 008c 1046     		mov	r0, r2
+ 160 008e FFF7FEFF 		bl	user_can_msg_send
+ 161 0092 0794     		str	r4, [sp, #28]
+ 162 0094 0694     		str	r4, [sp, #24]
+ 163 0096 0594     		str	r4, [sp, #20]
+ 164 0098 0494     		str	r4, [sp, #16]
+ 165 009a 0394     		str	r4, [sp, #12]
+ 166 009c AB7A     		ldrb	r3, [r5, #10]	@ zero_extendqisi2
+ 167 009e 0293     		str	r3, [sp, #8]
+ 168 00a0 0197     		str	r7, [sp, #4]
+ 169 00a2 0096     		str	r6, [sp]
+ 170 00a4 0823     		movs	r3, #8
+ 171 00a6 0022     		movs	r2, #0
+ 172 00a8 4FF4FD61 		mov	r1, #2024
+ 173 00ac 1046     		mov	r0, r2
+ 174 00ae FFF7FEFF 		bl	user_can_msg_send
+ 175              	.L7:
+ 176 00b2 0BB0     		add	sp, sp, #44
+ 177              		@ sp needed
+ 178 00b4 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 179              	.L26:
+ 180 00b6 09A9     		add	r1, sp, #36
+ 181 00b8 5068     		ldr	r0, [r2, #4]
+ 182 00ba FFF7FEFF 		bl	DecToHexStr
+ 183 00be 5523     		movs	r3, #85
+ 184 00c0 0793     		str	r3, [sp, #28]
+ 185 00c2 0693     		str	r3, [sp, #24]
+ 186 00c4 9DF82530 		ldrb	r3, [sp, #37]	@ zero_extendqisi2
+ 187 00c8 0593     		str	r3, [sp, #20]
+ 188 00ca 9DF82430 		ldrb	r3, [sp, #36]	@ zero_extendqisi2
+ 189 00ce 0493     		str	r3, [sp, #16]
+ 190 00d0 F023     		movs	r3, #240
+ 191 00d2 0393     		str	r3, [sp, #12]
+ 192 00d4 1123     		movs	r3, #17
+ 193 00d6 0293     		str	r3, [sp, #8]
+ 194 00d8 6223     		movs	r3, #98
+ 195 00da 0193     		str	r3, [sp, #4]
+ 196 00dc 0523     		movs	r3, #5
+ 197 00de 0093     		str	r3, [sp]
+ 198 00e0 0823     		movs	r3, #8
+ 199 00e2 0022     		movs	r2, #0
+ 200 00e4 4FF4FD61 		mov	r1, #2024
+ 201 00e8 1046     		mov	r0, r2
+ 202 00ea FFF7FEFF 		bl	user_can_msg_send
+ 203 00ee E0E7     		b	.L7
+ 204              	.L24:
+ 205 00f0 037B     		ldrb	r3, [r0, #12]	@ zero_extendqisi2
+ 206 00f2 492B     		cmp	r3, #73
+ 207 00f4 BAD1     		bne	.L9
+ 208 00f6 09A9     		add	r1, sp, #36
+ 209 00f8 9068     		ldr	r0, [r2, #8]
+ 210 00fa FFF7FEFF 		bl	DecToHexStr
+ 211 00fe 5523     		movs	r3, #85
+ 212 0100 0793     		str	r3, [sp, #28]
+ 213 0102 0693     		str	r3, [sp, #24]
+ 214 0104 0593     		str	r3, [sp, #20]
+ 215 0106 9DF82430 		ldrb	r3, [sp, #36]	@ zero_extendqisi2
+ 216 010a 0493     		str	r3, [sp, #16]
+ 217 010c 4923     		movs	r3, #73
+ 218 010e 0393     		str	r3, [sp, #12]
+ 219 0110 F423     		movs	r3, #244
+ 220 0112 0293     		str	r3, [sp, #8]
+ 221 0114 6223     		movs	r3, #98
+ 222 0116 0193     		str	r3, [sp, #4]
+ 223 0118 0423     		movs	r3, #4
+ 224 011a 0093     		str	r3, [sp]
+ 225 011c 0823     		movs	r3, #8
+ 226 011e 0022     		movs	r2, #0
+ 227 0120 4FF4FD61 		mov	r1, #2024
+ 228 0124 1046     		mov	r0, r2
+ 229 0126 FFF7FEFF 		bl	user_can_msg_send
+ 230 012a C2E7     		b	.L7
+ 231              	.L25:
+ 232 012c 037B     		ldrb	r3, [r0, #12]	@ zero_extendqisi2
+ 233 012e 002B     		cmp	r3, #0
+ 234 0130 9CD1     		bne	.L9
+ 235 0132 4023     		movs	r3, #64
+ 236 0134 0793     		str	r3, [sp, #28]
+ 237 0136 1D23     		movs	r3, #29
+ 238 0138 0693     		str	r3, [sp, #24]
+ 239 013a 0123     		movs	r3, #1
+ 240 013c 0593     		str	r3, [sp, #20]
+ 241 013e 0024     		movs	r4, #0
+ 242 0140 0494     		str	r4, [sp, #16]
+ 243 0142 0623     		movs	r3, #6
+ 244 0144 0393     		str	r3, [sp, #12]
+ 245 0146 6223     		movs	r3, #98
+ 246 0148 0293     		str	r3, [sp, #8]
+ 247 014a 0D23     		movs	r3, #13
+ 248 014c 0193     		str	r3, [sp, #4]
+ 249 014e 1023     		movs	r3, #16
+ 250 0150 0093     		str	r3, [sp]
+ 251 0152 0823     		movs	r3, #8
+ 252 0154 2246     		mov	r2, r4
+ 253 0156 4FF4FD61 		mov	r1, #2024
+ 254 015a 2046     		mov	r0, r4
+ 255 015c FFF7FEFF 		bl	user_can_msg_send
+ 256 0160 654B     		ldr	r3, .L27
+ 257 0162 1C80     		strh	r4, [r3]	@ movhi
+ 258 0164 A5E7     		b	.L7
+ 259              	.L17:
+ 260 0166 5F23     		movs	r3, #95
+ 261 0168 0793     		str	r3, [sp, #28]
+ 262 016a 5623     		movs	r3, #86
+ 263 016c 0693     		str	r3, [sp, #24]
+ 264 016e 4523     		movs	r3, #69
+ 265 0170 0593     		str	r3, [sp, #20]
+ 266 0172 9E24     		movs	r4, #158
+ 267 0174 0494     		str	r4, [sp, #16]
+ 268 0176 F123     		movs	r3, #241
+ 269 0178 0393     		str	r3, [sp, #12]
+ 270 017a 6223     		movs	r3, #98
+ 271 017c 0293     		str	r3, [sp, #8]
+ 272 017e 1D23     		movs	r3, #29
+ 273 0180 0193     		str	r3, [sp, #4]
+ 274 0182 1023     		movs	r3, #16
+ 275 0184 0093     		str	r3, [sp]
+ 276 0186 0823     		movs	r3, #8
+ 277 0188 0022     		movs	r2, #0
+ 278 018a 4FF4FD61 		mov	r1, #2024
+ 279 018e 1046     		mov	r0, r2
+ 280 0190 FFF7FEFF 		bl	user_can_msg_send
+ 281 0194 584B     		ldr	r3, .L27
+ 282 0196 1C80     		strh	r4, [r3]	@ movhi
+ 283 0198 8BE7     		b	.L7
+ 284              	.L16:
+ 285 019a 3223     		movs	r3, #50
+ 286 019c 0793     		str	r3, [sp, #28]
+ 287 019e 3023     		movs	r3, #48
+ 288 01a0 0693     		str	r3, [sp, #24]
+ 289 01a2 0593     		str	r3, [sp, #20]
+ 290 01a4 A224     		movs	r4, #162
+ 291 01a6 0494     		str	r4, [sp, #16]
+ 292 01a8 F123     		movs	r3, #241
+ 293 01aa 0393     		str	r3, [sp, #12]
+ 294 01ac 6223     		movs	r3, #98
+ 295 01ae 0293     		str	r3, [sp, #8]
+ 296 01b0 0923     		movs	r3, #9
+ 297 01b2 0193     		str	r3, [sp, #4]
+ 298 01b4 1023     		movs	r3, #16
+ 299 01b6 0093     		str	r3, [sp]
+ 300 01b8 0823     		movs	r3, #8
+ 301 01ba 0022     		movs	r2, #0
+ 302 01bc 4FF4FD61 		mov	r1, #2024
+ 303 01c0 1046     		mov	r0, r2
+ 304 01c2 FFF7FEFF 		bl	user_can_msg_send
+ 305 01c6 4C4B     		ldr	r3, .L27
+ 306 01c8 1C80     		strh	r4, [r3]	@ movhi
+ 307 01ca 72E7     		b	.L7
+ 308              	.L21:
+ 309 01cc 4523     		movs	r3, #69
+ 310 01ce 0793     		str	r3, [sp, #28]
+ 311 01d0 3423     		movs	r3, #52
+ 312 01d2 0693     		str	r3, [sp, #24]
+ 313 01d4 3023     		movs	r3, #48
+ 314 01d6 0593     		str	r3, [sp, #20]
+ 315 01d8 8724     		movs	r4, #135
+ 316 01da 0494     		str	r4, [sp, #16]
+ 317 01dc F123     		movs	r3, #241
+ 318 01de 0393     		str	r3, [sp, #12]
+ 319 01e0 6223     		movs	r3, #98
+ 320 01e2 0293     		str	r3, [sp, #8]
+ 321 01e4 0E23     		movs	r3, #14
+ 322 01e6 0193     		str	r3, [sp, #4]
+ 323 01e8 1023     		movs	r3, #16
+ 324 01ea 0093     		str	r3, [sp]
+ 325 01ec 0823     		movs	r3, #8
+ 326 01ee 0022     		movs	r2, #0
+ 327 01f0 4FF4FD61 		mov	r1, #2024
+ 328 01f4 1046     		mov	r0, r2
+ 329 01f6 FFF7FEFF 		bl	user_can_msg_send
+ 330 01fa 3F4B     		ldr	r3, .L27
+ 331 01fc 1C80     		strh	r4, [r3]	@ movhi
+ 332 01fe 58E7     		b	.L7
+ 333              	.L20:
+ 334 0200 3023     		movs	r3, #48
+ 335 0202 0793     		str	r3, [sp, #28]
+ 336 0204 3223     		movs	r3, #50
+ 337 0206 0693     		str	r3, [sp, #24]
+ 338 0208 3823     		movs	r3, #56
+ 339 020a 0593     		str	r3, [sp, #20]
+ 340 020c 3923     		movs	r3, #57
+ 341 020e 0493     		str	r3, [sp, #16]
+ 342 0210 8923     		movs	r3, #137
+ 343 0212 0393     		str	r3, [sp, #12]
+ 344 0214 F123     		movs	r3, #241
+ 345 0216 0293     		str	r3, [sp, #8]
+ 346 0218 6223     		movs	r3, #98
+ 347 021a 0193     		str	r3, [sp, #4]
+ 348 021c 0323     		movs	r3, #3
+ 349 021e 0093     		str	r3, [sp]
+ 350 0220 0823     		movs	r3, #8
+ 351 0222 0022     		movs	r2, #0
+ 352 0224 4FF4FD61 		mov	r1, #2024
+ 353 0228 1046     		mov	r0, r2
+ 354 022a FFF7FEFF 		bl	user_can_msg_send
+ 355 022e 40E7     		b	.L7
+ 356              	.L19:
+ 357 0230 4523     		movs	r3, #69
+ 358 0232 0793     		str	r3, [sp, #28]
+ 359 0234 3423     		movs	r3, #52
+ 360 0236 0693     		str	r3, [sp, #24]
+ 361 0238 3023     		movs	r3, #48
+ 362 023a 0593     		str	r3, [sp, #20]
+ 363 023c 9124     		movs	r4, #145
+ 364 023e 0494     		str	r4, [sp, #16]
+ 365 0240 F123     		movs	r3, #241
+ 366 0242 0393     		str	r3, [sp, #12]
+ 367 0244 6223     		movs	r3, #98
+ 368 0246 0293     		str	r3, [sp, #8]
+ 369 0248 0E23     		movs	r3, #14
+ 370 024a 0193     		str	r3, [sp, #4]
+ 371 024c 1023     		movs	r3, #16
+ 372 024e 0093     		str	r3, [sp]
+ 373 0250 0823     		movs	r3, #8
+ 374 0252 0022     		movs	r2, #0
+ 375 0254 4FF4FD61 		mov	r1, #2024
+ 376 0258 1046     		mov	r0, r2
+ 377 025a FFF7FEFF 		bl	user_can_msg_send
+ 378 025e 264B     		ldr	r3, .L27
+ 379 0260 1C80     		strh	r4, [r3]	@ movhi
+ 380 0262 26E7     		b	.L7
+ 381              	.L18:
+ 382 0264 3423     		movs	r3, #52
+ 383 0266 0793     		str	r3, [sp, #28]
+ 384 0268 2E23     		movs	r3, #46
+ 385 026a 0693     		str	r3, [sp, #24]
+ 386 026c 3123     		movs	r3, #49
+ 387 026e 0593     		str	r3, [sp, #20]
+ 388 0270 9724     		movs	r4, #151
+ 389 0272 0494     		str	r4, [sp, #16]
+ 390 0274 F123     		movs	r3, #241
+ 391 0276 0393     		str	r3, [sp, #12]
+ 392 0278 6223     		movs	r3, #98
+ 393 027a 0293     		str	r3, [sp, #8]
+ 394 027c 1023     		movs	r3, #16
+ 395 027e 0193     		str	r3, [sp, #4]
+ 396 0280 0093     		str	r3, [sp]
+ 397 0282 0823     		movs	r3, #8
+ 398 0284 0022     		movs	r2, #0
+ 399 0286 4FF4FD61 		mov	r1, #2024
+ 400 028a 1046     		mov	r0, r2
+ 401 028c FFF7FEFF 		bl	user_can_msg_send
+ 402 0290 194B     		ldr	r3, .L27
+ 403 0292 1C80     		strh	r4, [r3]	@ movhi
+ 404 0294 0DE7     		b	.L7
+ 405              	.L15:
+ 406 0296 5523     		movs	r3, #85
+ 407 0298 0793     		str	r3, [sp, #28]
+ 408 029a 3023     		movs	r3, #48
+ 409 029c 0693     		str	r3, [sp, #24]
+ 410 029e 3223     		movs	r3, #50
+ 411 02a0 0593     		str	r3, [sp, #20]
+ 412 02a2 4823     		movs	r3, #72
+ 413 02a4 0493     		str	r3, [sp, #16]
+ 414 02a6 A323     		movs	r3, #163
+ 415 02a8 0393     		str	r3, [sp, #12]
+ 416 02aa F123     		movs	r3, #241
+ 417 02ac 0293     		str	r3, [sp, #8]
+ 418 02ae 6223     		movs	r3, #98
+ 419 02b0 0193     		str	r3, [sp, #4]
+ 420 02b2 0623     		movs	r3, #6
+ 421 02b4 0093     		str	r3, [sp]
+ 422 02b6 0823     		movs	r3, #8
+ 423 02b8 0022     		movs	r2, #0
+ 424 02ba 4FF4FD61 		mov	r1, #2024
+ 425 02be 1046     		mov	r0, r2
+ 426 02c0 FFF7FEFF 		bl	user_can_msg_send
+ 427 02c4 F5E6     		b	.L7
+ 428              	.L13:
+ 429 02c6 0020     		movs	r0, #0
+ 430 02c8 0790     		str	r0, [sp, #28]
+ 431 02ca 0690     		str	r0, [sp, #24]
+ 432 02cc 8023     		movs	r3, #128
+ 433 02ce 0593     		str	r3, [sp, #20]
+ 434 02d0 A524     		movs	r4, #165
+ 435 02d2 0494     		str	r4, [sp, #16]
+ 436 02d4 F123     		movs	r3, #241
+ 437 02d6 0393     		str	r3, [sp, #12]
+ 438 02d8 6223     		movs	r3, #98
+ 439 02da 0293     		str	r3, [sp, #8]
+ 440 02dc 0923     		movs	r3, #9
+ 441 02de 0193     		str	r3, [sp, #4]
+ 442 02e0 1023     		movs	r3, #16
+ 443 02e2 0093     		str	r3, [sp]
+ 444 02e4 0823     		movs	r3, #8
+ 445 02e6 0246     		mov	r2, r0
+ 446 02e8 4FF4FD61 		mov	r1, #2024
+ 447 02ec FFF7FEFF 		bl	user_can_msg_send
+ 448 02f0 014B     		ldr	r3, .L27
+ 449 02f2 1C80     		strh	r4, [r3]	@ movhi
+ 450 02f4 DDE6     		b	.L7
+ 451              	.L28:
+ 452 02f6 00BF     		.align	2
+ 453              	.L27:
+ 454 02f8 00000000 		.word	.LANCHOR0
+ 456              		.section	.text.consecutive_frame_sending,"ax",%progbits
+ 457              		.align	1
+ 458              		.global	consecutive_frame_sending
+ 459              		.syntax unified
+ 460              		.thumb
+ 461              		.thumb_func
+ 462              		.fpu fpv4-sp-d16
+ 464              	consecutive_frame_sending:
+ 465              		@ args = 0, pretend = 0, frame = 0
+ 466              		@ frame_needed = 0, uses_anonymous_args = 0
+ 467 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 468 0002 89B0     		sub	sp, sp, #36
+ 469 0004 994B     		ldr	r3, .L40
+ 470 0006 1B88     		ldrh	r3, [r3]
+ 471 0008 972B     		cmp	r3, #151
+ 472 000a 00F0EA80 		beq	.L30
+ 473 000e 09D8     		bhi	.L31
+ 474 0010 872B     		cmp	r3, #135
+ 475 0012 77D0     		beq	.L32
+ 476 0014 912B     		cmp	r3, #145
+ 477 0016 00F0A180 		beq	.L33
+ 478 001a 002B     		cmp	r3, #0
+ 479 001c 00F00D81 		beq	.L39
+ 480              	.L29:
+ 481 0020 09B0     		add	sp, sp, #36
+ 482              		@ sp needed
+ 483 0022 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 484              	.L31:
+ 485 0024 A22B     		cmp	r3, #162
+ 486 0026 56D0     		beq	.L36
+ 487 0028 A52B     		cmp	r3, #165
+ 488 002a 00F0C280 		beq	.L37
+ 489 002e 9E2B     		cmp	r3, #158
+ 490 0030 F6D1     		bne	.L29
+ 491 0032 4623     		movs	r3, #70
+ 492 0034 0793     		str	r3, [sp, #28]
+ 493 0036 5423     		movs	r3, #84
+ 494 0038 0693     		str	r3, [sp, #24]
+ 495 003a 3426     		movs	r6, #52
+ 496 003c 0596     		str	r6, [sp, #20]
+ 497 003e 3127     		movs	r7, #49
+ 498 0040 0497     		str	r7, [sp, #16]
+ 499 0042 4D23     		movs	r3, #77
+ 500 0044 0393     		str	r3, [sp, #12]
+ 501 0046 4323     		movs	r3, #67
+ 502 0048 0293     		str	r3, [sp, #8]
+ 503 004a 4525     		movs	r5, #69
+ 504 004c 0195     		str	r5, [sp, #4]
+ 505 004e 2123     		movs	r3, #33
+ 506 0050 0093     		str	r3, [sp]
+ 507 0052 0823     		movs	r3, #8
+ 508 0054 0022     		movs	r2, #0
+ 509 0056 4FF4FD61 		mov	r1, #2024
+ 510 005a 1046     		mov	r0, r2
+ 511 005c FFF7FEFF 		bl	user_can_msg_send
+ 512 0060 0795     		str	r5, [sp, #28]
+ 513 0062 0696     		str	r6, [sp, #24]
+ 514 0064 3024     		movs	r4, #48
+ 515 0066 0594     		str	r4, [sp, #20]
+ 516 0068 0497     		str	r7, [sp, #16]
+ 517 006a 0397     		str	r7, [sp, #12]
+ 518 006c 0294     		str	r4, [sp, #8]
+ 519 006e 5323     		movs	r3, #83
+ 520 0070 0193     		str	r3, [sp, #4]
+ 521 0072 2223     		movs	r3, #34
+ 522 0074 0093     		str	r3, [sp]
+ 523 0076 0823     		movs	r3, #8
+ 524 0078 0022     		movs	r2, #0
+ 525 007a 4FF4FD61 		mov	r1, #2024
+ 526 007e 1046     		mov	r0, r2
+ 527 0080 FFF7FEFF 		bl	user_can_msg_send
+ 528 0084 4123     		movs	r3, #65
+ 529 0086 0793     		str	r3, [sp, #28]
+ 530 0088 0696     		str	r6, [sp, #24]
+ 531 008a 3223     		movs	r3, #50
+ 532 008c 0593     		str	r3, [sp, #20]
+ 533 008e 0494     		str	r4, [sp, #16]
+ 534 0090 3623     		movs	r3, #54
+ 535 0092 0393     		str	r3, [sp, #12]
+ 536 0094 0294     		str	r4, [sp, #8]
+ 537 0096 3923     		movs	r3, #57
+ 538 0098 0193     		str	r3, [sp, #4]
+ 539 009a 2323     		movs	r3, #35
+ 540 009c 0093     		str	r3, [sp]
+ 541 009e 0823     		movs	r3, #8
+ 542 00a0 0022     		movs	r2, #0
+ 543 00a2 4FF4FD61 		mov	r1, #2024
+ 544 00a6 1046     		mov	r0, r2
+ 545 00a8 FFF7FEFF 		bl	user_can_msg_send
+ 546 00ac 5523     		movs	r3, #85
+ 547 00ae 0793     		str	r3, [sp, #28]
+ 548 00b0 0693     		str	r3, [sp, #24]
+ 549 00b2 0593     		str	r3, [sp, #20]
+ 550 00b4 0493     		str	r3, [sp, #16]
+ 551 00b6 0393     		str	r3, [sp, #12]
+ 552 00b8 0024     		movs	r4, #0
+ 553 00ba 0294     		str	r4, [sp, #8]
+ 554 00bc 0195     		str	r5, [sp, #4]
+ 555 00be 2423     		movs	r3, #36
+ 556 00c0 0093     		str	r3, [sp]
+ 557 00c2 0823     		movs	r3, #8
+ 558 00c4 2246     		mov	r2, r4
+ 559 00c6 4FF4FD61 		mov	r1, #2024
+ 560 00ca 2046     		mov	r0, r4
+ 561 00cc FFF7FEFF 		bl	user_can_msg_send
+ 562 00d0 664B     		ldr	r3, .L40
+ 563 00d2 1C80     		strh	r4, [r3]	@ movhi
+ 564 00d4 A4E7     		b	.L29
+ 565              	.L36:
+ 566 00d6 5523     		movs	r3, #85
+ 567 00d8 0793     		str	r3, [sp, #28]
+ 568 00da 0693     		str	r3, [sp, #24]
+ 569 00dc 0593     		str	r3, [sp, #20]
+ 570 00de 0493     		str	r3, [sp, #16]
+ 571 00e0 3423     		movs	r3, #52
+ 572 00e2 0393     		str	r3, [sp, #12]
+ 573 00e4 3023     		movs	r3, #48
+ 574 00e6 0293     		str	r3, [sp, #8]
+ 575 00e8 0193     		str	r3, [sp, #4]
+ 576 00ea 2123     		movs	r3, #33
+ 577 00ec 0093     		str	r3, [sp]
+ 578 00ee 0823     		movs	r3, #8
+ 579 00f0 0022     		movs	r2, #0
+ 580 00f2 4FF4FD61 		mov	r1, #2024
+ 581 00f6 1046     		mov	r0, r2
+ 582 00f8 FFF7FEFF 		bl	user_can_msg_send
+ 583 00fc 5B4B     		ldr	r3, .L40
+ 584 00fe 0022     		movs	r2, #0
+ 585 0100 1A80     		strh	r2, [r3]	@ movhi
+ 586 0102 8DE7     		b	.L29
+ 587              	.L32:
+ 588 0104 4123     		movs	r3, #65
+ 589 0106 0793     		str	r3, [sp, #28]
+ 590 0108 3423     		movs	r3, #52
+ 591 010a 0693     		str	r3, [sp, #24]
+ 592 010c 3223     		movs	r3, #50
+ 593 010e 0593     		str	r3, [sp, #20]
+ 594 0110 3023     		movs	r3, #48
+ 595 0112 0493     		str	r3, [sp, #16]
+ 596 0114 3622     		movs	r2, #54
+ 597 0116 0392     		str	r2, [sp, #12]
+ 598 0118 0293     		str	r3, [sp, #8]
+ 599 011a 3923     		movs	r3, #57
+ 600 011c 0193     		str	r3, [sp, #4]
+ 601 011e 2123     		movs	r3, #33
+ 602 0120 0093     		str	r3, [sp]
+ 603 0122 0823     		movs	r3, #8
+ 604 0124 0022     		movs	r2, #0
+ 605 0126 4FF4FD61 		mov	r1, #2024
+ 606 012a 1046     		mov	r0, r2
+ 607 012c FFF7FEFF 		bl	user_can_msg_send
+ 608 0130 5523     		movs	r3, #85
+ 609 0132 0793     		str	r3, [sp, #28]
+ 610 0134 0693     		str	r3, [sp, #24]
+ 611 0136 0593     		str	r3, [sp, #20]
+ 612 0138 0493     		str	r3, [sp, #16]
+ 613 013a 0393     		str	r3, [sp, #12]
+ 614 013c 0293     		str	r3, [sp, #8]
+ 615 013e 4523     		movs	r3, #69
+ 616 0140 0193     		str	r3, [sp, #4]
+ 617 0142 2223     		movs	r3, #34
+ 618 0144 0093     		str	r3, [sp]
+ 619 0146 0823     		movs	r3, #8
+ 620 0148 0022     		movs	r2, #0
+ 621 014a 4FF4FD61 		mov	r1, #2024
+ 622 014e 1046     		mov	r0, r2
+ 623 0150 FFF7FEFF 		bl	user_can_msg_send
+ 624 0154 454B     		ldr	r3, .L40
+ 625 0156 0022     		movs	r2, #0
+ 626 0158 1A80     		strh	r2, [r3]	@ movhi
+ 627 015a 61E7     		b	.L29
+ 628              	.L33:
+ 629 015c 4323     		movs	r3, #67
+ 630 015e 0793     		str	r3, [sp, #28]
+ 631 0160 3923     		movs	r3, #57
+ 632 0162 0693     		str	r3, [sp, #24]
+ 633 0164 3022     		movs	r2, #48
+ 634 0166 0592     		str	r2, [sp, #20]
+ 635 0168 3321     		movs	r1, #51
+ 636 016a 0491     		str	r1, [sp, #16]
+ 637 016c 3721     		movs	r1, #55
+ 638 016e 0391     		str	r1, [sp, #12]
+ 639 0170 0292     		str	r2, [sp, #8]
+ 640 0172 0193     		str	r3, [sp, #4]
+ 641 0174 2123     		movs	r3, #33
+ 642 0176 0093     		str	r3, [sp]
+ 643 0178 0823     		movs	r3, #8
+ 644 017a 0022     		movs	r2, #0
+ 645 017c 4FF4FD61 		mov	r1, #2024
+ 646 0180 1046     		mov	r0, r2
+ 647 0182 FFF7FEFF 		bl	user_can_msg_send
+ 648 0186 5523     		movs	r3, #85
+ 649 0188 0793     		str	r3, [sp, #28]
+ 650 018a 0693     		str	r3, [sp, #24]
+ 651 018c 0593     		str	r3, [sp, #20]
+ 652 018e 0493     		str	r3, [sp, #16]
+ 653 0190 0393     		str	r3, [sp, #12]
+ 654 0192 0293     		str	r3, [sp, #8]
+ 655 0194 4723     		movs	r3, #71
+ 656 0196 0193     		str	r3, [sp, #4]
+ 657 0198 2223     		movs	r3, #34
+ 658 019a 0093     		str	r3, [sp]
+ 659 019c 0823     		movs	r3, #8
+ 660 019e 0022     		movs	r2, #0
+ 661 01a0 4FF4FD61 		mov	r1, #2024
+ 662 01a4 1046     		mov	r0, r2
+ 663 01a6 FFF7FEFF 		bl	user_can_msg_send
+ 664 01aa 304B     		ldr	r3, .L40
+ 665 01ac 0022     		movs	r2, #0
+ 666 01ae 1A80     		strh	r2, [r3]	@ movhi
+ 667 01b0 36E7     		b	.L29
+ 668              	.L37:
+ 669 01b2 5523     		movs	r3, #85
+ 670 01b4 0793     		str	r3, [sp, #28]
+ 671 01b6 0693     		str	r3, [sp, #24]
+ 672 01b8 0593     		str	r3, [sp, #20]
+ 673 01ba 0493     		str	r3, [sp, #16]
+ 674 01bc 6223     		movs	r3, #98
+ 675 01be 0393     		str	r3, [sp, #12]
+ 676 01c0 EF23     		movs	r3, #239
+ 677 01c2 0293     		str	r3, [sp, #8]
+ 678 01c4 0623     		movs	r3, #6
+ 679 01c6 0193     		str	r3, [sp, #4]
+ 680 01c8 2123     		movs	r3, #33
+ 681 01ca 0093     		str	r3, [sp]
+ 682 01cc 0823     		movs	r3, #8
+ 683 01ce 0022     		movs	r2, #0
+ 684 01d0 4FF4FD61 		mov	r1, #2024
+ 685 01d4 1046     		mov	r0, r2
+ 686 01d6 FFF7FEFF 		bl	user_can_msg_send
+ 687 01da 244B     		ldr	r3, .L40
+ 688 01dc 0022     		movs	r2, #0
+ 689 01de 1A80     		strh	r2, [r3]	@ movhi
+ 690 01e0 1EE7     		b	.L29
+ 691              	.L30:
+ 692 01e2 6823     		movs	r3, #104
+ 693 01e4 0793     		str	r3, [sp, #28]
+ 694 01e6 2024     		movs	r4, #32
+ 695 01e8 0694     		str	r4, [sp, #24]
+ 696 01ea 4923     		movs	r3, #73
+ 697 01ec 0593     		str	r3, [sp, #20]
+ 698 01ee 5323     		movs	r3, #83
+ 699 01f0 0493     		str	r3, [sp, #16]
+ 700 01f2 4623     		movs	r3, #70
+ 701 01f4 0393     		str	r3, [sp, #12]
+ 702 01f6 5423     		movs	r3, #84
+ 703 01f8 0293     		str	r3, [sp, #8]
+ 704 01fa 0194     		str	r4, [sp, #4]
+ 705 01fc 2123     		movs	r3, #33
+ 706 01fe 0093     		str	r3, [sp]
+ 707 0200 0823     		movs	r3, #8
+ 708 0202 0022     		movs	r2, #0
+ 709 0204 4FF4FD61 		mov	r1, #2024
+ 710 0208 1046     		mov	r0, r2
+ 711 020a FFF7FEFF 		bl	user_can_msg_send
+ 712 020e 5523     		movs	r3, #85
+ 713 0210 0793     		str	r3, [sp, #28]
+ 714 0212 0693     		str	r3, [sp, #24]
+ 715 0214 0593     		str	r3, [sp, #20]
+ 716 0216 0493     		str	r3, [sp, #16]
+ 717 0218 0394     		str	r4, [sp, #12]
+ 718 021a 0294     		str	r4, [sp, #8]
+ 719 021c 7923     		movs	r3, #121
+ 720 021e 0193     		str	r3, [sp, #4]
+ 721 0220 2223     		movs	r3, #34
+ 722 0222 0093     		str	r3, [sp]
+ 723 0224 0823     		movs	r3, #8
+ 724 0226 0022     		movs	r2, #0
+ 725 0228 4FF4FD61 		mov	r1, #2024
+ 726 022c 1046     		mov	r0, r2
+ 727 022e FFF7FEFF 		bl	user_can_msg_send
+ 728 0232 0E4B     		ldr	r3, .L40
+ 729 0234 0022     		movs	r2, #0
+ 730 0236 1A80     		strh	r2, [r3]	@ movhi
+ 731 0238 F2E6     		b	.L29
+ 732              	.L39:
+ 733 023a 0823     		movs	r3, #8
+ 734 023c 0793     		str	r3, [sp, #28]
+ 735 023e 3022     		movs	r2, #48
+ 736 0240 0692     		str	r2, [sp, #24]
+ 737 0242 0593     		str	r3, [sp, #20]
+ 738 0244 0522     		movs	r2, #5
+ 739 0246 0492     		str	r2, [sp, #16]
+ 740 0248 6422     		movs	r2, #100
+ 741 024a 0392     		str	r2, [sp, #12]
+ 742 024c 6322     		movs	r2, #99
+ 743 024e 0292     		str	r2, [sp, #8]
+ 744 0250 1222     		movs	r2, #18
+ 745 0252 0192     		str	r2, [sp, #4]
+ 746 0254 2122     		movs	r2, #33
+ 747 0256 0092     		str	r2, [sp]
+ 748 0258 0022     		movs	r2, #0
+ 749 025a 4FF4FD61 		mov	r1, #2024
+ 750 025e 1046     		mov	r0, r2
+ 751 0260 FFF7FEFF 		bl	user_can_msg_send
+ 752 0264 014B     		ldr	r3, .L40
+ 753 0266 0022     		movs	r2, #0
+ 754 0268 1A80     		strh	r2, [r3]	@ movhi
+ 755 026a D9E6     		b	.L29
+ 756              	.L41:
+ 757              		.align	2
+ 758              	.L40:
+ 759 026c 00000000 		.word	.LANCHOR0
+ 761              		.global	first_frame_sent
+ 762              		.section	.bss.first_frame_sent,"aw",%nobits
+ 763              		.align	1
+ 764              		.set	.LANCHOR0,. + 0
+ 767              	first_frame_sent:
+ 768 0000 0000     		.space	2
+ 769              		.section	.rodata.DecToHexStr.str1.4,"aMS",%progbits,1
+ 770              		.align	2
+ 771              	.LC0:
+ 772 0000 255800   		.ascii	"%X\000"
+ 773              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc
