@@ -13,7 +13,7 @@ typedef struct
 }data_struct;
 
 /** One dimensional lookup table. */
-typedef const struct
+typedef struct
 {
   /** Number of elements in the table.  This must be at least 2. */
   uint16_t ncols;

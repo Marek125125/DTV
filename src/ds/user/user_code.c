@@ -19,15 +19,16 @@
  *
  * \test STATUS: *** UNTESTED ***
  */
-
+data_struct pin_input_data;
 void usercode_init(void)
 {
     // User defined initializations
     // write app name and version to EEPROM (defined in dsl_cfg.h via Applics Studio)
     //user_eeprom_write_app_info((const uint8_t*)APPL_MODULE_NAME, (const uint8_t*)APPL_SW_VERSION);
+	Fill_lookup_tables();
 }
 
-data_struct *Tdata;
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -44,6 +45,8 @@ void usercode(void)
 	// Refer to examples bellow and https://applics.dev/3_C_Programming/User_API/Documentation.html for API documentation
 
 	//Get_input_data(Tdata);
+	
+	Get_input_data(&pin_input_data);
 
 }
 
@@ -1431,7 +1434,7 @@ void user_can_receive_msg_callback(uint8_t bus_id, bios_can_msg_typ* msg)
 	(void)bus_id;
 	(void)msg;
 
-	data_struct *pin_input_data;
+
 
 	if(msg->id==RECIEVED_ID)
 	{
@@ -1446,7 +1449,7 @@ void user_can_receive_msg_callback(uint8_t bus_id, bios_can_msg_typ* msg)
 			diag_start_request(msg);
 			break;
 			case SID_READ_DATA:
-			read_data_request(msg,Tdata);
+			read_data_request(msg,&pin_input_data);
 			break;
 
 		}
@@ -1455,8 +1458,6 @@ void user_can_receive_msg_callback(uint8_t bus_id, bios_can_msg_typ* msg)
 	}
 
 	
-	Fill_lookup_tables(void);
-	Get_input_data(pin_input_data);
 
 
 

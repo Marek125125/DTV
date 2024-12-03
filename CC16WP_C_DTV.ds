@@ -52,7 +52,9 @@
       <FDActive>false</FDActive>
     </CanSetting>
   </CanSettings>
-  <CompilerPath>C:\Users\tomas\AppData\Local\ApplicsStudio\app-4.15.1\Tools\GNUArmEmbedded\bin\</CompilerPath>
+  <CompilerPath>C:\Users\tomas\AppData\Local\ApplicsStudio\app-4.16.0\Tools\GNUArmEmbedded\bin\</CompilerPath>
+  <DiagnosticRxBufferSizeJ1939>200</DiagnosticRxBufferSizeJ1939>
+  <DiagnosticTxBufferSizeJ1939>200</DiagnosticTxBufferSizeJ1939>
   <FileGenerationPreferences>
     <FileGenerationPreference>
       <Option>AutoGenerate</Option>
@@ -81,25 +83,23 @@
   </FileGenerationPreferences>
   <FlashPageSettings>
     <InterfaceExtra />
-    <SelectedBaudrate>Automatic</SelectedBaudrate>
+    <SelectedBaudrate>500 kBit</SelectedBaudrate>
     <SelectedCanBus>CAN_BUS_0: 500 kBit</SelectedCanBus>
-    <SelectedHardwareInterface>Vector</SelectedHardwareInterface>
+    <SelectedHardwareInterface>Vector      (8 - Vector XL Driver Library - vxlapi_NET.dll)</SelectedHardwareInterface>
   </FlashPageSettings>
   <HardwareDrawingNumber>1.154.302.00</HardwareDrawingNumber>
   <HardwareRevision>C</HardwareRevision>
   <IgnoreProjectUpdate>NEVER</IgnoreProjectUpdate>
+  <IsImportedDSProject>false</IsImportedDSProject>
   <J1939Model>
     <PGNs />
     <SPNs />
   </J1939Model>
+  <J1939Settings />
   <J1939StandardPgnDB>
     <PgnList />
   </J1939StandardPgnDB>
-  <J1939Settings />
-  <DiagnosticTxBufferSizeJ1939>200</DiagnosticTxBufferSizeJ1939>
-  <DiagnosticRxBufferSizeJ1939>200</DiagnosticRxBufferSizeJ1939>
-  <IsImportedDSProject>false</IsImportedDSProject>
-  <LastBuild>2024-11-21T14:38:51.4506563+01:00</LastBuild>
+  <LastBuild>2024-11-28T14:19:34.9467402+01:00</LastBuild>
   <LibraryVersion />
   <ModuleName>CC16WP Application</ModuleName>
   <PartNumber>401081</PartNumber>

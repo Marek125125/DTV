@@ -2,8 +2,8 @@
 <DSInterface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <AvailableSCIBuses />
   <Buses />
-  <OutputDirectory>C:\Users\tomas\OneDrive\Plocha\DTV\PROJEKT\src\ds\lin</OutputDirectory>
-  <ProjectDirectory>C:\Users\tomas\OneDrive\Plocha\DTV\PROJEKT</ProjectDirectory>
+  <OutputDirectory>C:\Users\tomas\OneDrive\Plocha\DTV\PROJEKT_GIT\DTV\src\ds\lin</OutputDirectory>
+  <ProjectDirectory>C:\Users\tomas\OneDrive\Plocha\DTV\PROJEKT_GIT\DTV</ProjectDirectory>
   <SCIBusToEnums />
   <TakenSCIBuses />
   <Target>S32K</Target>
