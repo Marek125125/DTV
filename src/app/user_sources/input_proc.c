@@ -3,6 +3,9 @@
 
 #include "user_api_util.h"
 #include "user_api_ai.h"
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
 
 // TEMPERATURE sensor lookup table values 
 static  int16_t temp_arr_x_1d[16] = {455, 652, 833, 1000, 1154, 1296, 1429, 1552, 1667, 1774, 1875, 1970, 2059, 2143, 2222, 2500}; // mV
@@ -19,11 +22,8 @@ static  int16_t throttle_arr_x_1d[8] = {500, 1000, 1500, 2000, 2500, 3000, 3500,
 static  int16_t throttle_arr_y_1d[8] = {1000, 936, 769, 590, 430, 250, 92, 0}; // position in % *10
 static  uint16_t throttle_lookup_count = 8;
 
-//1D Table pro teplotu
-Table1d temp_table;
-Table1d preassure_table;
-Table1d throttle_table;
-void Fill_lookup_tables(void)
+
+/*void Fill_lookup_tables(void)
 {
     //lookup table struktura pro temp
     
@@ -52,78 +52,34 @@ throttle_table.table = throttle_arr_y_1d;
     temp= user_ai_get_mv(AI_A_IN2);
     var->throttle = user_util_get_lookup_value_1D_16(throttle_arr_x_1d, throttle_arr_y_1d, throttle_lookup_count,  (int16_t)temp, LUT_MODE_EXTRAPOLATION);
 } */
-
-/**
- * 1-D table lookup.
- *
- * This function performs a 1-D table lookup with interpolation.  The output
- * value is clamped to either of the table end values when the input value is
- * out of bounds.
- *
- * @param[in]   t      table data structure
- * @param[in]   ix     input (X-axis) value
- * @param[out]  o      output data
- *
- * @retval      true   if the lookup result is suspect due to clipping
- * @retval      false  on successful lookup
- */
+*/
 
 
-bool lookup1d (Table1d *t, int16_t ix, int16_t *o)
-{
-  uint16_t i;
-  
-  /* ------------------------------------------------------------------------ */
-  /* Off the end of the table */
-  if (ix > t->columns[t->ncols - 1])
-  {
-    *o = t->table[t->ncols - 1];
-    return true;
-  }
-  
-  /* Off beginning of the table */
-  else if (ix < t->columns[0])
-  {
-    *o = t->table[0];
-    return true;
-  }
-
-  /* Within the bounds of the table */
-  for (i = 0; i < t->ncols - 1; ++i)
-  {
-    if (   ix >= t->columns[i]
-        && ix <= t->columns[i + 1])
-    {
-      /* Output (table) low value */
-      int o_low   = t->table[i];
-      /* Input (X-axis) low value */
-      int i_low   = t->columns[i];
-      /* Spead between the two adjacent input values */
-      int i_delta = t->columns[i + 1] - t->columns[i];
-      /* Spread between the two adjacent table output values */
-      int o_delta = t->table[i + 1]   - t->table[i];
-      
-      /* Prevent division by zero.  We could get here if two consecutive
-         input values in the table are the same. */
-      if (o_delta == 0)
-      {
-        *o = o_low;
-        return true;
-      }
-      
-      *o = o_low + ((ix - i_low) * (long)o_delta) / i_delta;
-      return false;
+int16_t lookup1D(int16_t input, LookupEntry *table, int tableSize) {
+    if (tableSize <= 0) {
+        fprintf(stderr, "Error: Table size must be greater than zero.\n");
+        return 0;
     }
-  }
 
-  /* Didn't find it (we shouldn't ever get here). */
-  return true;
+    // Hledání nejbližší hodnoty
+    int16_t closestValue = table[0].value; // Výchozí hodnota
+    int16_t closestDistance = abs(input - table[0].key); // Výchozí vzdálenost
+
+    for (int i = 1; i < tableSize; i++) {
+        int16_t distance = abs(input - table[i].key);
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestValue = table[i].value;
+        }
+    }
+
+    return closestValue;
 }
 
 
-void Get_input_data(data_struct *var)
+/*void Get_input_data(data_struct *var)
 {
-    int16_t  buffer = 0;
+
     // buffer = user_ai_get_mv(AI_A_IN0);
 
     // //SDK lookup table :
@@ -135,6 +91,44 @@ void Get_input_data(data_struct *var)
     // buffer = user_ai_get_mv(AI_A_IN1);
     // lookup1d(&preassure_table, buffer, &var->pressure);
 
-    buffer = user_ai_get_mv(AI_A_IN0);
-    lookup1d(&throttle_table, buffer, &var->throttle);
+    //var->= user_ai_get_mv(AI_A_IN0);
+    
+    
+    //lookup1d(&throttle_table, buffer, &var->throttle);
+}
+*/
+
+int16_t Get_pressure()
+{
+  return (user_ai_get_mv(AI_A_IN0) / 2);
+}
+
+int16_t Get_throttle()
+{
+  return (user_ai_get_mv(AI_A_IN1) / 100);
+}
+
+ LookupEntry table[] = {
+        {455, 432},
+        {652, 270},
+        {833, 243},
+        {1000, 171}
+        {1154, 144}
+        {1296, 108}
+        {1429, 72}
+        {1552, 36}
+        {1667, 18}
+        {1774, 0}
+        {1875, -27}
+        {1970, -36}
+        {2059, -54}
+        {2143, -72}
+        {2222, -81}
+        {2500, -126}
+    };
+
+int16_t Get_temp()
+{
+  int16_t input = user_ai_get_mv(AI_A_IN2);
+    return lookup1D(input, table, tableSize);
 }
