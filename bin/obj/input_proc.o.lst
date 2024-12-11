@@ -12,155 +12,356 @@
   12              		.eabi_attribute 18, 4
   13              		.file	"input_proc.c"
   14              		.text
-  15              		.section	.text.Fill_lookup_tables,"ax",%progbits
+  15              		.section	.text.lookup1D,"ax",%progbits
   16              		.align	1
-  17              		.global	Fill_lookup_tables
+  17              		.global	lookup1D
   18              		.arch armv7e-m
   19              		.syntax unified
   20              		.thumb
   21              		.thumb_func
   22              		.fpu fpv4-sp-d16
-  24              	Fill_lookup_tables:
+  24              	lookup1D:
   25              		@ args = 0, pretend = 0, frame = 0
   26              		@ frame_needed = 0, uses_anonymous_args = 0
-  27              		@ link register save eliminated.
-  28 0000 034B     		ldr	r3, .L2
-  29 0002 0822     		movs	r2, #8
-  30 0004 1A80     		strh	r2, [r3]	@ movhi
-  31 0006 034A     		ldr	r2, .L2+4
-  32 0008 5A60     		str	r2, [r3, #4]
-  33 000a 034A     		ldr	r2, .L2+8
-  34 000c 9A60     		str	r2, [r3, #8]
-  35 000e 7047     		bx	lr
-  36              	.L3:
-  37              		.align	2
-  38              	.L2:
-  39 0010 00000000 		.word	throttle_table
-  40 0014 00000000 		.word	.LANCHOR0
-  41 0018 00000000 		.word	.LANCHOR1
-  43              		.section	.text.lookup1d,"ax",%progbits
-  44              		.align	1
-  45              		.global	lookup1d
-  46              		.syntax unified
-  47              		.thumb
-  48              		.thumb_func
-  49              		.fpu fpv4-sp-d16
-  51              	lookup1d:
-  52              		@ args = 0, pretend = 0, frame = 0
-  53              		@ frame_needed = 0, uses_anonymous_args = 0
-  54 0000 F0B5     		push	{r4, r5, r6, r7, lr}
-  55 0002 4568     		ldr	r5, [r0, #4]
-  56 0004 0688     		ldrh	r6, [r0]
-  57 0006 06F10043 		add	r3, r6, #-2147483648
-  58 000a 013B     		subs	r3, r3, #1
-  59 000c 35F91340 		ldrsh	r4, [r5, r3, lsl #1]
-  60 0010 8C42     		cmp	r4, r1
-  61 0012 0ADB     		blt	.L14
-  62 0014 B5F90030 		ldrsh	r3, [r5]
-  63 0018 8B42     		cmp	r3, r1
-  64 001a 0CDC     		bgt	.L7
-  65 001c 013E     		subs	r6, r6, #1
-  66 001e 002E     		cmp	r6, #0
-  67 0020 D8BF     		it	le
-  68 0022 0120     		movle	r0, #1
-  69 0024 06DD     		ble	.L6
-  70 0026 0023     		movs	r3, #0
-  71 0028 1AE0     		b	.L8
-  72              	.L14:
-  73 002a 8168     		ldr	r1, [r0, #8]
-  74 002c 31F91330 		ldrsh	r3, [r1, r3, lsl #1]
-  75 0030 1380     		strh	r3, [r2]	@ movhi
-  76 0032 0120     		movs	r0, #1
-  77              	.L6:
-  78 0034 F0BD     		pop	{r4, r5, r6, r7, pc}
-  79              	.L7:
-  80 0036 8368     		ldr	r3, [r0, #8]
-  81 0038 B3F90030 		ldrsh	r3, [r3]
-  82 003c 1380     		strh	r3, [r2]	@ movhi
-  83 003e 0120     		movs	r0, #1
-  84 0040 F8E7     		b	.L6
-  85              	.L10:
-  86 0042 091B     		subs	r1, r1, r4
-  87 0044 03FB01F3 		mul	r3, r3, r1
-  88 0048 ACEB0404 		sub	r4, ip, r4
-  89 004c 93FBF4F4 		sdiv	r4, r3, r4
-  90 0050 2318     		adds	r3, r4, r0
-  91 0052 1380     		strh	r3, [r2]	@ movhi
-  92 0054 0020     		movs	r0, #0
-  93 0056 EDE7     		b	.L6
-  94              	.L9:
-  95 0058 0133     		adds	r3, r3, #1
-  96 005a 9BB2     		uxth	r3, r3
-  97 005c B342     		cmp	r3, r6
-  98 005e 13DA     		bge	.L15
-  99              	.L8:
- 100 0060 5F00     		lsls	r7, r3, #1
- 101 0062 35F91340 		ldrsh	r4, [r5, r3, lsl #1]
- 102 0066 8C42     		cmp	r4, r1
- 103 0068 F6DC     		bgt	.L9
- 104 006a 07F1020E 		add	lr, r7, #2
- 105 006e 35F90EC0 		ldrsh	ip, [r5, lr]
- 106 0072 8C45     		cmp	ip, r1
- 107 0074 F0DB     		blt	.L9
- 108 0076 8368     		ldr	r3, [r0, #8]
- 109 0078 D85F     		ldrsh	r0, [r3, r7]
- 110 007a 33F90E30 		ldrsh	r3, [r3, lr]
- 111 007e 1B1A     		subs	r3, r3, r0
- 112 0080 DFD1     		bne	.L10
- 113 0082 1080     		strh	r0, [r2]	@ movhi
- 114 0084 0120     		movs	r0, #1
- 115 0086 D5E7     		b	.L6
- 116              	.L15:
- 117 0088 0120     		movs	r0, #1
- 118 008a D3E7     		b	.L6
- 120              		.section	.text.Get_input_data,"ax",%progbits
- 121              		.align	1
- 122              		.global	Get_input_data
- 123              		.syntax unified
- 124              		.thumb
- 125              		.thumb_func
- 126              		.fpu fpv4-sp-d16
- 128              	Get_input_data:
- 129              		@ args = 0, pretend = 0, frame = 0
- 130              		@ frame_needed = 0, uses_anonymous_args = 0
- 131 0000 10B5     		push	{r4, lr}
- 132 0002 0446     		mov	r4, r0
- 133 0004 0220     		movs	r0, #2
- 134 0006 FFF7FEFF 		bl	user_ai_get_mv
- 135 000a 221D     		adds	r2, r4, #4
- 136 000c 01B2     		sxth	r1, r0
- 137 000e 0248     		ldr	r0, .L18
- 138 0010 FFF7FEFF 		bl	lookup1d
- 139 0014 10BD     		pop	{r4, pc}
- 140              	.L19:
- 141 0016 00BF     		.align	2
- 142              	.L18:
- 143 0018 00000000 		.word	throttle_table
- 145              		.comm	throttle_table,12,4
- 146              		.comm	preassure_table,12,4
- 147              		.comm	temp_table,12,4
- 148              		.section	.data.throttle_arr_x_1d,"aw"
- 149              		.align	2
- 150              		.set	.LANCHOR0,. + 0
- 153              	throttle_arr_x_1d:
- 154 0000 F401     		.short	500
- 155 0002 E803     		.short	1000
- 156 0004 DC05     		.short	1500
- 157 0006 D007     		.short	2000
- 158 0008 C409     		.short	2500
- 159 000a B80B     		.short	3000
- 160 000c AC0D     		.short	3500
- 161 000e A00F     		.short	4000
- 162              		.section	.data.throttle_arr_y_1d,"aw"
- 163              		.align	2
- 164              		.set	.LANCHOR1,. + 0
- 167              	throttle_arr_y_1d:
- 168 0000 E803     		.short	1000
- 169 0002 A803     		.short	936
- 170 0004 0103     		.short	769
- 171 0006 4E02     		.short	590
- 172 0008 AE01     		.short	430
- 173 000a FA00     		.short	250
- 174 000c 5C00     		.short	92
- 175 000e 0000     		.short	0
- 176              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc
+  27 0000 70B5     		push	{r4, r5, r6, lr}
+  28 0002 002A     		cmp	r2, #0
+  29 0004 20DD     		ble	.L8
+  30 0006 0546     		mov	r5, r0
+  31 0008 B1F90200 		ldrsh	r0, [r1, #2]
+  32 000c 2E46     		mov	r6, r5
+  33 000e B1F90030 		ldrsh	r3, [r1]
+  34 0012 ED1A     		subs	r5, r5, r3
+  35 0014 002D     		cmp	r5, #0
+  36 0016 B8BF     		it	lt
+  37 0018 6D42     		rsblt	r5, r5, #0
+  38 001a 2DB2     		sxth	r5, r5
+  39 001c 012A     		cmp	r2, #1
+  40 001e 12DD     		ble	.L3
+  41 0020 0C46     		mov	r4, r1
+  42 0022 0439     		subs	r1, r1, #4
+  43 0024 01EB8202 		add	r2, r1, r2, lsl #2
+  44              	.L5:
+  45 0028 B4F90430 		ldrsh	r3, [r4, #4]
+  46 002c F31A     		subs	r3, r6, r3
+  47 002e 002B     		cmp	r3, #0
+  48 0030 B8BF     		it	lt
+  49 0032 5B42     		rsblt	r3, r3, #0
+  50 0034 1BB2     		sxth	r3, r3
+  51 0036 AB42     		cmp	r3, r5
+  52 0038 BCBF     		itt	lt
+  53 003a B4F90600 		ldrshlt	r0, [r4, #6]
+  54 003e 1D46     		movlt	r5, r3
+  55 0040 0434     		adds	r4, r4, #4
+  56 0042 9442     		cmp	r4, r2
+  57 0044 F0D1     		bne	.L5
+  58              	.L3:
+  59 0046 70BD     		pop	{r4, r5, r6, pc}
+  60              	.L8:
+  61 0048 044B     		ldr	r3, .L9
+  62 004a 1B68     		ldr	r3, [r3]
+  63 004c DB68     		ldr	r3, [r3, #12]
+  64 004e 2D22     		movs	r2, #45
+  65 0050 0121     		movs	r1, #1
+  66 0052 0348     		ldr	r0, .L9+4
+  67 0054 FFF7FEFF 		bl	fwrite
+  68 0058 0020     		movs	r0, #0
+  69 005a F4E7     		b	.L3
+  70              	.L10:
+  71              		.align	2
+  72              	.L9:
+  73 005c 00000000 		.word	_impure_ptr
+  74 0060 00000000 		.word	.LC0
+  76              		.global	__aeabi_i2d
+  77              		.global	__aeabi_ddiv
+  78              		.global	__aeabi_d2uiz
+  79              		.section	.text.Get_pressure,"ax",%progbits
+  80              		.align	1
+  81              		.global	Get_pressure
+  82              		.syntax unified
+  83              		.thumb
+  84              		.thumb_func
+  85              		.fpu fpv4-sp-d16
+  87              	Get_pressure:
+  88              		@ args = 0, pretend = 0, frame = 0
+  89              		@ frame_needed = 0, uses_anonymous_args = 0
+  90 0000 10B5     		push	{r4, lr}
+  91 0002 0020     		movs	r0, #0
+  92 0004 FFF7FEFF 		bl	user_ai_get_mv
+  93 0008 B0F5FA7F 		cmp	r0, #500
+  94 000c 12D2     		bcs	.L12
+  95 000e 224B     		ldr	r3, .L21+8
+  96 0010 9022     		movs	r2, #144
+  97 0012 1A70     		strb	r2, [r3]
+  98 0014 214B     		ldr	r3, .L21+12
+  99 0016 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 100 0018 C72B     		cmp	r3, #199
+ 101 001a 30D8     		bhi	.L17
+ 102 001c 0133     		adds	r3, r3, #1
+ 103 001e 1F4A     		ldr	r2, .L21+12
+ 104 0020 1370     		strb	r3, [r2]
+ 105 0022 4FF4C870 		mov	r0, #400
+ 106              	.L13:
+ 107 0026 1D4B     		ldr	r3, .L21+12
+ 108 0028 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 109 002a 642B     		cmp	r3, #100
+ 110 002c 84BF     		itt	hi
+ 111 002e 1A4B     		ldrhi	r3, .L21+8
+ 112 0030 1878     		ldrbhi	r0, [r3]	@ zero_extendqisi2
+ 113              	.L16:
+ 114 0032 10BD     		pop	{r4, pc}
+ 115              	.L12:
+ 116 0034 41F29413 		movw	r3, #4500
+ 117 0038 9842     		cmp	r0, r3
+ 118 003a 0CD9     		bls	.L14
+ 119 003c 164B     		ldr	r3, .L21+8
+ 120 003e 2822     		movs	r2, #40
+ 121 0040 1A70     		strb	r2, [r3]
+ 122 0042 164B     		ldr	r3, .L21+12
+ 123 0044 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 124 0046 C72B     		cmp	r3, #199
+ 125 0048 1CD8     		bhi	.L18
+ 126 004a 0133     		adds	r3, r3, #1
+ 127 004c 134A     		ldr	r2, .L21+12
+ 128 004e 1370     		strb	r3, [r2]
+ 129 0050 40F62820 		movw	r0, #2600
+ 130 0054 E7E7     		b	.L13
+ 131              	.L14:
+ 132 0056 114B     		ldr	r3, .L21+12
+ 133 0058 1C78     		ldrb	r4, [r3]	@ zero_extendqisi2
+ 134 005a 632C     		cmp	r4, #99
+ 135 005c 15D8     		bhi	.L19
+ 136 005e FFF7FEFF 		bl	__aeabi_i2d
+ 137 0062 0BA3     		adr	r3, .L21
+ 138 0064 D3E90023 		ldrd	r2, [r3]
+ 139 0068 FFF7FEFF 		bl	__aeabi_ddiv
+ 140 006c FFF7FEFF 		bl	__aeabi_d2uiz
+ 141 0070 80B2     		uxth	r0, r0
+ 142 0072 002C     		cmp	r4, #0
+ 143 0074 DDD0     		beq	.L16
+ 144 0076 013C     		subs	r4, r4, #1
+ 145 0078 084B     		ldr	r3, .L21+12
+ 146 007a 1C70     		strb	r4, [r3]
+ 147 007c D9E7     		b	.L16
+ 148              	.L17:
+ 149 007e 4FF4C870 		mov	r0, #400
+ 150 0082 D0E7     		b	.L13
+ 151              	.L18:
+ 152 0084 40F62820 		movw	r0, #2600
+ 153 0088 CDE7     		b	.L13
+ 154              	.L19:
+ 155 008a 0020     		movs	r0, #0
+ 156 008c CBE7     		b	.L13
+ 157              	.L22:
+ 158 008e 00BF     		.align	3
+ 159              	.L21:
+ 160 0090 66666666 		.word	1717986918
+ 161 0094 6666FA3F 		.word	1073374822
+ 162 0098 00000000 		.word	last_val_preasure
+ 163 009c 00000000 		.word	err_ctr_preasure
+ 165              		.section	.text.Get_throttle,"ax",%progbits
+ 166              		.align	1
+ 167              		.global	Get_throttle
+ 168              		.syntax unified
+ 169              		.thumb
+ 170              		.thumb_func
+ 171              		.fpu fpv4-sp-d16
+ 173              	Get_throttle:
+ 174              		@ args = 0, pretend = 0, frame = 0
+ 175              		@ frame_needed = 0, uses_anonymous_args = 0
+ 176 0000 08B5     		push	{r3, lr}
+ 177 0002 0120     		movs	r0, #1
+ 178 0004 FFF7FEFF 		bl	user_ai_get_mv
+ 179 0008 B0F5FA7F 		cmp	r0, #500
+ 180 000c 12D2     		bcs	.L24
+ 181 000e 1D4B     		ldr	r3, .L33
+ 182 0010 6422     		movs	r2, #100
+ 183 0012 1A70     		strb	r2, [r3]
+ 184 0014 1C4B     		ldr	r3, .L33+4
+ 185 0016 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 186 0018 C72B     		cmp	r3, #199
+ 187 001a 2CD8     		bhi	.L29
+ 188 001c 0133     		adds	r3, r3, #1
+ 189 001e 1A4A     		ldr	r2, .L33+4
+ 190 0020 1370     		strb	r3, [r2]
+ 191 0022 6420     		movs	r0, #100
+ 192              	.L25:
+ 193 0024 184B     		ldr	r3, .L33+4
+ 194 0026 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 195 0028 642B     		cmp	r3, #100
+ 196 002a 84BF     		itt	hi
+ 197 002c 154B     		ldrhi	r3, .L33
+ 198 002e 1878     		ldrbhi	r0, [r3]	@ zero_extendqisi2
+ 199              	.L28:
+ 200 0030 C0B2     		uxtb	r0, r0
+ 201 0032 08BD     		pop	{r3, pc}
+ 202              	.L24:
+ 203 0034 B0F57A6F 		cmp	r0, #4000
+ 204 0038 0BD9     		bls	.L26
+ 205 003a 124B     		ldr	r3, .L33
+ 206 003c 0022     		movs	r2, #0
+ 207 003e 1A70     		strb	r2, [r3]
+ 208 0040 114B     		ldr	r3, .L33+4
+ 209 0042 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 210 0044 C72B     		cmp	r3, #199
+ 211 0046 18D8     		bhi	.L30
+ 212 0048 0133     		adds	r3, r3, #1
+ 213 004a 0F4A     		ldr	r2, .L33+4
+ 214 004c 1370     		strb	r3, [r2]
+ 215 004e 0020     		movs	r0, #0
+ 216 0050 E8E7     		b	.L25
+ 217              	.L26:
+ 218 0052 0D4B     		ldr	r3, .L33+4
+ 219 0054 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 220 0056 632B     		cmp	r3, #99
+ 221 0058 11D8     		bhi	.L31
+ 222 005a 0C4A     		ldr	r2, .L33+8
+ 223 005c 82FB0012 		smull	r1, r2, r2, r0
+ 224 0060 C017     		asrs	r0, r0, #31
+ 225 0062 A0EB2210 		sub	r0, r0, r2, asr #4
+ 226 0066 6430     		adds	r0, r0, #100
+ 227 0068 80B2     		uxth	r0, r0
+ 228 006a 002B     		cmp	r3, #0
+ 229 006c E0D0     		beq	.L28
+ 230 006e 013B     		subs	r3, r3, #1
+ 231 0070 054A     		ldr	r2, .L33+4
+ 232 0072 1370     		strb	r3, [r2]
+ 233 0074 DCE7     		b	.L28
+ 234              	.L29:
+ 235 0076 6420     		movs	r0, #100
+ 236 0078 D4E7     		b	.L25
+ 237              	.L30:
+ 238 007a 0020     		movs	r0, #0
+ 239 007c D2E7     		b	.L25
+ 240              	.L31:
+ 241 007e 0020     		movs	r0, #0
+ 242 0080 D0E7     		b	.L25
+ 243              	.L34:
+ 244 0082 00BF     		.align	2
+ 245              	.L33:
+ 246 0084 00000000 		.word	last_val_pedal
+ 247 0088 00000000 		.word	err_ctr_throttle
+ 248 008c 67666666 		.word	1717986919
+ 250              		.section	.text.Get_temp,"ax",%progbits
+ 251              		.align	1
+ 252              		.global	Get_temp
+ 253              		.syntax unified
+ 254              		.thumb
+ 255              		.thumb_func
+ 256              		.fpu fpv4-sp-d16
+ 258              	Get_temp:
+ 259              		@ args = 0, pretend = 0, frame = 0
+ 260              		@ frame_needed = 0, uses_anonymous_args = 0
+ 261 0000 08B5     		push	{r3, lr}
+ 262 0002 0220     		movs	r0, #2
+ 263 0004 FFF7FEFF 		bl	user_ai_get_mv
+ 264 0008 40F6AC53 		movw	r3, #3500
+ 265 000c 9842     		cmp	r0, r3
+ 266 000e 0AD9     		bls	.L36
+ 267 0010 134B     		ldr	r3, .L39
+ 268 0012 D822     		movs	r2, #216
+ 269 0014 1A70     		strb	r2, [r3]
+ 270 0016 134A     		ldr	r2, .L39+4
+ 271 0018 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 272 001a 0133     		adds	r3, r3, #1
+ 273 001c 1370     		strb	r3, [r2]
+ 274              	.L37:
+ 275 001e 104B     		ldr	r3, .L39
+ 276 0020 93F90000 		ldrsb	r0, [r3]
+ 277 0024 08BD     		pop	{r3, pc}
+ 278              	.L36:
+ 279 0026 0F4B     		ldr	r3, .L39+4
+ 280 0028 93F90030 		ldrsb	r3, [r3]
+ 281 002c 632B     		cmp	r3, #99
+ 282 002e F6DC     		bgt	.L37
+ 283 0030 1722     		movs	r2, #23
+ 284 0032 0D49     		ldr	r1, .L39+8
+ 285 0034 00B2     		sxth	r0, r0
+ 286 0036 FFF7FEFF 		bl	lookup1D
+ 287 003a 40B2     		sxtb	r0, r0
+ 288 003c 0B4B     		ldr	r3, .L39+12
+ 289 003e 83FB0023 		smull	r2, r3, r3, r0
+ 290 0042 C017     		asrs	r0, r0, #31
+ 291 0044 C0EBA300 		rsb	r0, r0, r3, asr #2
+ 292 0048 054B     		ldr	r3, .L39
+ 293 004a 1870     		strb	r0, [r3]
+ 294 004c 054B     		ldr	r3, .L39+4
+ 295 004e 93F90030 		ldrsb	r3, [r3]
+ 296 0052 002B     		cmp	r3, #0
+ 297 0054 E3DD     		ble	.L37
+ 298 0056 013B     		subs	r3, r3, #1
+ 299 0058 024A     		ldr	r2, .L39+4
+ 300 005a 1370     		strb	r3, [r2]
+ 301 005c DFE7     		b	.L37
+ 302              	.L40:
+ 303 005e 00BF     		.align	2
+ 304              	.L39:
+ 305 0060 00000000 		.word	last_val_temp
+ 306 0064 00000000 		.word	err_ctr_temp
+ 307 0068 00000000 		.word	.LANCHOR0
+ 308 006c 67666666 		.word	1717986919
+ 310              		.comm	last_val_temp,1,1
+ 311              		.comm	err_ctr_temp,1,1
+ 312              		.global	table
+ 313              		.comm	last_val_pedal,1,1
+ 314              		.comm	err_ctr_throttle,1,1
+ 315              		.comm	last_val_preasure,1,1
+ 316              		.comm	err_ctr_preasure,1,1
+ 317              		.section	.data.table,"aw"
+ 318              		.align	2
+ 319              		.set	.LANCHOR0,. + 0
+ 322              	table:
+ 323 0000 9600     		.short	150
+ 324 0002 8F04     		.short	1167
+ 325 0004 C800     		.short	200
+ 326 0006 0504     		.short	1029
+ 327 0008 FA00     		.short	250
+ 328 000a 5803     		.short	856
+ 329 000c 2C01     		.short	300
+ 330 000e 6002     		.short	608
+ 331 0010 C701     		.short	455
+ 332 0012 B001     		.short	432
+ 333 0014 8C02     		.short	652
+ 334 0016 0E01     		.short	270
+ 335 0018 4103     		.short	833
+ 336 001a F300     		.short	243
+ 337 001c E803     		.short	1000
+ 338 001e AB00     		.short	171
+ 339 0020 8204     		.short	1154
+ 340 0022 9000     		.short	144
+ 341 0024 1005     		.short	1296
+ 342 0026 6C00     		.short	108
+ 343 0028 9505     		.short	1429
+ 344 002a 4800     		.short	72
+ 345 002c 1006     		.short	1552
+ 346 002e 2400     		.short	36
+ 347 0030 8306     		.short	1667
+ 348 0032 1200     		.short	18
+ 349 0034 EE06     		.short	1774
+ 350 0036 0000     		.short	0
+ 351 0038 5307     		.short	1875
+ 352 003a E5FF     		.short	-27
+ 353 003c B207     		.short	1970
+ 354 003e DCFF     		.short	-36
+ 355 0040 0B08     		.short	2059
+ 356 0042 CAFF     		.short	-54
+ 357 0044 5F08     		.short	2143
+ 358 0046 B8FF     		.short	-72
+ 359 0048 AE08     		.short	2222
+ 360 004a AFFF     		.short	-81
+ 361 004c C409     		.short	2500
+ 362 004e 82FF     		.short	-126
+ 363 0050 8C0A     		.short	2700
+ 364 0052 5AFF     		.short	-166
+ 365 0054 B80B     		.short	3000
+ 366 0056 26FF     		.short	-218
+ 367 0058 800C     		.short	3200
+ 368 005a BAFE     		.short	-326
+ 369              		.section	.rodata.lookup1D.str1.4,"aMS",%progbits,1
+ 370              		.align	2
+ 371              	.LC0:
+ 372 0000 4572726F 		.ascii	"Error: Table size must be greater than zero.\012\000"
+ 372      723A2054 
+ 372      61626C65 
+ 372      2073697A 
+ 372      65206D75 
+ 373              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc

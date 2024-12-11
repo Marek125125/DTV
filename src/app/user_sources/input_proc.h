@@ -14,6 +14,9 @@ typedef struct {
 //void Get_input_data(data_struct *var);
 //void Fill_lookup_tables(void);
 int16_t lookup1D(int16_t input, LookupEntry *table, int tableSize);
+uint16_t Get_pressure();
+uint8_t Get_throttle();
+int8_t Get_temp();
 
 
 

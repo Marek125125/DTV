@@ -21,8 +21,6 @@
 #include "stdio.h"
 #include "input_proc.h"
 
-void DecToHexStr(int dec, char *str)
-  { sprintf(str, "%X", dec); }
 
 uint16_t first_frame_sent = 0;
 void diag_start_request(
@@ -31,20 +29,33 @@ void diag_start_request(
                     0x01, 0xE0, FILLER_BYTE);
 }
 
-void read_data_request(bios_can_msg_typ *msg,data_struct *data) {
+void read_data_request(bios_can_msg_typ *msg,data_struct data) {
   if (msg->data[2] == DID_CHARGE_PRS_BYTE_1 && msg->data[3] == DID_CHARGE_PRS_BYTE_2) {
-    char val[4];
-    DecToHexStr(data->pressure,val);
-    user_can_msg_send(CAN_BUS_0, RESPONSE_ID, STANDARD_ID, 8, DID_CHARGE_PRS_SIZE, SID_READ_DATA_RESPONSE, DID_CHARGE_PRS_BYTE_1,
-                      DID_CHARGE_PRS_BYTE_2, val[0], val[1], FILLER_BYTE, FILLER_BYTE);
+    uint16_t tmp;
+    tmp=data.pressure/0.078125;
+    uint8_t low_byte = tmp & 0xFF  ;     
+    uint8_t high_byte = (tmp >> 8) & 0xFF ; 
+    user_can_msg_send(CAN_BUS_0, RESPONSE_ID, STANDARD_ID, 8, DID_CHARGE_PRS_SIZE,
+                       SID_READ_DATA_RESPONSE, DID_CHARGE_PRS_BYTE_1,
+                       DID_CHARGE_PRS_BYTE_2, high_byte,low_byte, FILLER_BYTE, FILLER_BYTE);
     
 
   }
   else if (msg->data[2] == DID_PEDAL_POS_BYTE_1 && msg->data[3] == DID_PEDAL_POS_BYTE_2) {
-    char val[4];
-    DecToHexStr(data->throttle,val);
-    user_can_msg_send(CAN_BUS_0, RESPONSE_ID, STANDARD_ID, 8, DID_PEDAL_POS_SIZE, SID_READ_DATA_RESPONSE, DID_PEDAL_POS_BYTE_1,
-                      DID_PEDAL_POS_BYTE_2, val[0], FILLER_BYTE, FILLER_BYTE, FILLER_BYTE);
+    uint8_t tmp;
+    tmp=data.throttle*2.55;
+    user_can_msg_send(CAN_BUS_0, RESPONSE_ID, STANDARD_ID, 8, DID_PEDAL_POS_SIZE,
+                      SID_READ_DATA_RESPONSE, DID_PEDAL_POS_BYTE_1,
+                      DID_PEDAL_POS_BYTE_2,tmp, FILLER_BYTE, FILLER_BYTE, FILLER_BYTE);
+    
+
+  }
+  else if (msg->data[2] == DID_COOLANT_BYTE_1 && msg->data[3] == DID_COOLANT_BYTE_2) {
+    uint8_t tmp;
+    tmp=data.temp+40;
+    user_can_msg_send(CAN_BUS_0, RESPONSE_ID, STANDARD_ID, 8, DID_COOLANT_SIZE,
+                      SID_READ_DATA_RESPONSE, DID_COOLANT_BYTE_1,
+                      DID_COOLANT_BYTE_2, tmp, FILLER_BYTE, FILLER_BYTE, FILLER_BYTE);
     
 
   }

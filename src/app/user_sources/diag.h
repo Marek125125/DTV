@@ -60,10 +60,20 @@
 #define DID_CHARGE_PRS_BYTE_2 0xF0
 #define DID_CHARGE_PRS_SIZE 0x05
 
+#define DID_COOLANT_BYTE_1 0xF4
+#define DID_COOLANT_BYTE_2 0x05
+#define DID_COOLANT_SIZE 0x04
 
 #define FIRST_FRAME 0x10
 #define FLOW_CONTROL 0x30
 
+
+typedef struct 
+{
+	int16_t temp;
+	uint16_t pressure;
+	uint8_t throttle;
+}data_struct;
 
 //BYTE[0] - size
 //BYTE[1] - MODE
@@ -74,10 +84,12 @@
 //BYTE[6] - DATA
 //BYTE[7] - DATA
 
-void DecToHexStr(int dec, char *str);
+
 void diag_start_request(bios_can_msg_typ* msg);
-void read_data_request(bios_can_msg_typ* msg,data_struct *data);
+void read_data_request(bios_can_msg_typ* msg,data_struct data);
 void consecutive_frame_sending(bios_can_msg_typ* msg);
+
+
 
 #ifdef __cplusplus
 extern "C"

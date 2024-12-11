@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <ApplicationDataChanged>false</ApplicationDataChanged>
-  <ASPath>C:\Users\tomas\AppData\Local\ApplicsStudio\app-4.14.0</ASPath>
   <BuildActions />
   <CanGateways />
   <CanSettings>
@@ -52,9 +51,10 @@
       <FDActive>false</FDActive>
     </CanSetting>
   </CanSettings>
-  <CompilerPath>C:\Users\tomas\AppData\Local\ApplicsStudio\app-4.16.0\Tools\GNUArmEmbedded\bin\</CompilerPath>
-  <DiagnosticRxBufferSizeJ1939>200</DiagnosticRxBufferSizeJ1939>
-  <DiagnosticTxBufferSizeJ1939>200</DiagnosticTxBufferSizeJ1939>
+  <CompilerPath>C:\Users\tomas\AppData\Local\ApplicsStudio\app-4.8.0\Tools\GNUArmEmbedded\bin\</CompilerPath>
+  <ASPath>C:\Users\tomas\AppData\Local\ApplicsStudio\app-4.14.0</ASPath>
+  <SystemXtalMhz>40</SystemXtalMhz>
+  <SystemHardware>S32K148</SystemHardware>
   <FileGenerationPreferences>
     <FileGenerationPreference>
       <Option>AutoGenerate</Option>
@@ -90,22 +90,11 @@
   <HardwareDrawingNumber>1.154.302.00</HardwareDrawingNumber>
   <HardwareRevision>C</HardwareRevision>
   <IgnoreProjectUpdate>NEVER</IgnoreProjectUpdate>
-  <IsImportedDSProject>false</IsImportedDSProject>
-  <J1939Model>
-    <PGNs />
-    <SPNs />
-  </J1939Model>
-  <J1939Settings />
-  <J1939StandardPgnDB>
-    <PgnList />
-  </J1939StandardPgnDB>
-  <LastBuild>2024-11-28T14:19:34.9467402+01:00</LastBuild>
+  <LastBuild>2024-12-06T13:02:43.0311136+01:00</LastBuild>
   <LibraryVersion />
   <ModuleName>CC16WP Application</ModuleName>
   <PartNumber>401081</PartNumber>
   <ProjectName>CC16WP_C_DTV</ProjectName>
   <StructureVersion>1</StructureVersion>
-  <SystemHardware>S32K148</SystemHardware>
-  <SystemXtalMhz>40</SystemXtalMhz>
   <Version>V0.0.0</Version>
 </Project>

@@ -25,7 +25,7 @@ void usercode_init(void)
     // User defined initializations
     // write app name and version to EEPROM (defined in dsl_cfg.h via Applics Studio)
     //user_eeprom_write_app_info((const uint8_t*)APPL_MODULE_NAME, (const uint8_t*)APPL_SW_VERSION);
-	Fill_lookup_tables();
+	//Fill_lookup_tables();
 }
 
 
@@ -46,7 +46,9 @@ void usercode(void)
 
 	//Get_input_data(Tdata);
 	
-	Get_input_data(&pin_input_data);
+	pin_input_data.pressure=Get_pressure();
+	pin_input_data.throttle=Get_throttle();
+	pin_input_data.temp=Get_temp();
 
 }
 
@@ -1449,7 +1451,7 @@ void user_can_receive_msg_callback(uint8_t bus_id, bios_can_msg_typ* msg)
 			diag_start_request(msg);
 			break;
 			case SID_READ_DATA:
-			read_data_request(msg,&pin_input_data);
+			read_data_request(msg,pin_input_data);
 			break;
 
 		}

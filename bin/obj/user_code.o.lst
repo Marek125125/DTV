@@ -23,89 +23,95 @@
   24              	usercode_init:
   25              		@ args = 0, pretend = 0, frame = 0
   26              		@ frame_needed = 0, uses_anonymous_args = 0
-  27 0000 08B5     		push	{r3, lr}
-  28 0002 FFF7FEFF 		bl	Fill_lookup_tables
-  29 0006 08BD     		pop	{r3, pc}
-  31              		.section	.text.usercode,"ax",%progbits
-  32              		.align	1
-  33              		.global	usercode
-  34              		.syntax unified
-  35              		.thumb
-  36              		.thumb_func
-  37              		.fpu fpv4-sp-d16
-  39              	usercode:
-  40              		@ args = 0, pretend = 0, frame = 0
-  41              		@ frame_needed = 0, uses_anonymous_args = 0
-  42 0000 08B5     		push	{r3, lr}
-  43 0002 0248     		ldr	r0, .L5
-  44 0004 FFF7FEFF 		bl	Get_input_data
-  45 0008 08BD     		pop	{r3, pc}
-  46              	.L6:
-  47 000a 00BF     		.align	2
-  48              	.L5:
-  49 000c 00000000 		.word	pin_input_data
-  51              		.section	.text.user_can_receive_msg_callback,"ax",%progbits
-  52              		.align	1
-  53              		.global	user_can_receive_msg_callback
-  54              		.syntax unified
-  55              		.thumb
-  56              		.thumb_func
-  57              		.fpu fpv4-sp-d16
-  59              	user_can_receive_msg_callback:
-  60              		@ args = 0, pretend = 0, frame = 0
-  61              		@ frame_needed = 0, uses_anonymous_args = 0
-  62 0000 08B5     		push	{r3, lr}
-  63 0002 0B68     		ldr	r3, [r1]
-  64 0004 B3F5FC6F 		cmp	r3, #2016
-  65 0008 00D0     		beq	.L13
-  66              	.L7:
-  67 000a 08BD     		pop	{r3, pc}
-  68              	.L13:
-  69 000c 0846     		mov	r0, r1
-  70 000e 4B7A     		ldrb	r3, [r1, #9]	@ zero_extendqisi2
-  71 0010 302B     		cmp	r3, #48
-  72 0012 08D0     		beq	.L14
-  73 0014 8B7A     		ldrb	r3, [r1, #10]	@ zero_extendqisi2
-  74 0016 102B     		cmp	r3, #16
-  75 0018 08D0     		beq	.L10
-  76 001a 222B     		cmp	r3, #34
-  77 001c F5D1     		bne	.L7
-  78 001e 0549     		ldr	r1, .L15
-  79 0020 FFF7FEFF 		bl	read_data_request
-  80 0024 F1E7     		b	.L7
-  81              	.L14:
-  82 0026 FFF7FEFF 		bl	consecutive_frame_sending
-  83 002a EEE7     		b	.L7
-  84              	.L10:
-  85 002c FFF7FEFF 		bl	diag_start_request
-  86 0030 EBE7     		b	.L7
-  87              	.L16:
-  88 0032 00BF     		.align	2
-  89              	.L15:
-  90 0034 00000000 		.word	pin_input_data
-  92              		.section	.text.user_sci_continuous_receive_callback,"ax",%progbits
-  93              		.align	1
-  94              		.global	user_sci_continuous_receive_callback
-  95              		.syntax unified
-  96              		.thumb
-  97              		.thumb_func
-  98              		.fpu fpv4-sp-d16
- 100              	user_sci_continuous_receive_callback:
- 101              		@ args = 0, pretend = 0, frame = 0
- 102              		@ frame_needed = 0, uses_anonymous_args = 0
- 103              		@ link register save eliminated.
- 104 0000 7047     		bx	lr
- 106              		.section	.text.user_int_timer_1ms,"ax",%progbits
- 107              		.align	1
- 108              		.global	user_int_timer_1ms
- 109              		.syntax unified
- 110              		.thumb
- 111              		.thumb_func
- 112              		.fpu fpv4-sp-d16
- 114              	user_int_timer_1ms:
- 115              		@ args = 0, pretend = 0, frame = 0
- 116              		@ frame_needed = 0, uses_anonymous_args = 0
- 117              		@ link register save eliminated.
- 118 0000 7047     		bx	lr
- 120              		.comm	pin_input_data,6,4
- 121              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc
+  27              		@ link register save eliminated.
+  28 0000 7047     		bx	lr
+  30              		.section	.text.usercode,"ax",%progbits
+  31              		.align	1
+  32              		.global	usercode
+  33              		.syntax unified
+  34              		.thumb
+  35              		.thumb_func
+  36              		.fpu fpv4-sp-d16
+  38              	usercode:
+  39              		@ args = 0, pretend = 0, frame = 0
+  40              		@ frame_needed = 0, uses_anonymous_args = 0
+  41 0000 10B5     		push	{r4, lr}
+  42 0002 FFF7FEFF 		bl	Get_pressure
+  43 0006 044C     		ldr	r4, .L4
+  44 0008 6080     		strh	r0, [r4, #2]	@ movhi
+  45 000a FFF7FEFF 		bl	Get_throttle
+  46 000e 2071     		strb	r0, [r4, #4]
+  47 0010 FFF7FEFF 		bl	Get_temp
+  48 0014 2080     		strh	r0, [r4]	@ movhi
+  49 0016 10BD     		pop	{r4, pc}
+  50              	.L5:
+  51              		.align	2
+  52              	.L4:
+  53 0018 00000000 		.word	pin_input_data
+  55              		.section	.text.user_can_receive_msg_callback,"ax",%progbits
+  56              		.align	1
+  57              		.global	user_can_receive_msg_callback
+  58              		.syntax unified
+  59              		.thumb
+  60              		.thumb_func
+  61              		.fpu fpv4-sp-d16
+  63              	user_can_receive_msg_callback:
+  64              		@ args = 0, pretend = 0, frame = 0
+  65              		@ frame_needed = 0, uses_anonymous_args = 0
+  66 0000 08B5     		push	{r3, lr}
+  67 0002 0B68     		ldr	r3, [r1]
+  68 0004 B3F5FC6F 		cmp	r3, #2016
+  69 0008 00D0     		beq	.L12
+  70              	.L6:
+  71 000a 08BD     		pop	{r3, pc}
+  72              	.L12:
+  73 000c 0846     		mov	r0, r1
+  74 000e 4B7A     		ldrb	r3, [r1, #9]	@ zero_extendqisi2
+  75 0010 302B     		cmp	r3, #48
+  76 0012 0AD0     		beq	.L13
+  77 0014 8B7A     		ldrb	r3, [r1, #10]	@ zero_extendqisi2
+  78 0016 102B     		cmp	r3, #16
+  79 0018 0AD0     		beq	.L9
+  80 001a 222B     		cmp	r3, #34
+  81 001c F5D1     		bne	.L6
+  82 001e 064B     		ldr	r3, .L14
+  83 0020 1968     		ldr	r1, [r3]	@ unaligned
+  84 0022 9A88     		ldrh	r2, [r3, #4]
+  85 0024 FFF7FEFF 		bl	read_data_request
+  86 0028 EFE7     		b	.L6
+  87              	.L13:
+  88 002a FFF7FEFF 		bl	consecutive_frame_sending
+  89 002e ECE7     		b	.L6
+  90              	.L9:
+  91 0030 FFF7FEFF 		bl	diag_start_request
+  92 0034 E9E7     		b	.L6
+  93              	.L15:
+  94 0036 00BF     		.align	2
+  95              	.L14:
+  96 0038 00000000 		.word	pin_input_data
+  98              		.section	.text.user_sci_continuous_receive_callback,"ax",%progbits
+  99              		.align	1
+ 100              		.global	user_sci_continuous_receive_callback
+ 101              		.syntax unified
+ 102              		.thumb
+ 103              		.thumb_func
+ 104              		.fpu fpv4-sp-d16
+ 106              	user_sci_continuous_receive_callback:
+ 107              		@ args = 0, pretend = 0, frame = 0
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109              		@ link register save eliminated.
+ 110 0000 7047     		bx	lr
+ 112              		.section	.text.user_int_timer_1ms,"ax",%progbits
+ 113              		.align	1
+ 114              		.global	user_int_timer_1ms
+ 115              		.syntax unified
+ 116              		.thumb
+ 117              		.thumb_func
+ 118              		.fpu fpv4-sp-d16
+ 120              	user_int_timer_1ms:
+ 121              		@ args = 0, pretend = 0, frame = 0
+ 122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 123              		@ link register save eliminated.
+ 124 0000 7047     		bx	lr
+ 126              		.comm	pin_input_data,6,4
+ 127              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gc

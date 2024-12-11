@@ -3,6 +3,9 @@
         "diag.h": "c",
         "user_api_util.h": "c",
         "io_tables.h": "c",
-        "user_api_ai.h": "c"
+        "user_api_ai.h": "c",
+        "stdio.h": "c",
+        "input_proc.h": "c",
+        "type_traits": "c"
     }
 }

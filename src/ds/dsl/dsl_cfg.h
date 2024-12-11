@@ -6,7 +6,7 @@
 *   \brief    Provides define functionality for the AS
 *             Project name: HW_CC16WP.sch
 *
-*   \date 28.11.2024 02:19:21 \author TaslCZ dr/
+*   \date 11.12.2024 11:14:04 \author TaslCZ dr/
 *
 *   \platform S32K148
 * --------------------------------------------------------------------------*/
